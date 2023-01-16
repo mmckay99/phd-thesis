@@ -1,0 +1,44 @@
+\begin{tikzpicture}
+\def\scalefactorp{2.1}
+    % \draw[help lines] (0,0) grid (12,6);
+    \begin{scope}[every node/.style={circle,thick,draw,minimum size=2.4mm}]
+        \def\plabeldist{0.4cm}
+        \begin{scope}[scale=1.0]
+            % \node[draw=none, align=center] (Pc) at (3,0.0) {pentagadget $P_r$ for some $1\leq r \leq 6q$};
+            % https://www.mathopenref.com/coordpolycalc.html
+            \node[thick, circle, label={[label distance=0.4cm]90:$p_r^2$}] (pr2) at ({90:\scalefactorp}) {};
+            \node[thick, circle, label={[label distance=0.4cm]162:$p_r^1$}] (pr1) at ({162:\scalefactorp}) {};
+            \node[thick, circle, label={[label distance=0.4cm]234:$p_r^5$}] (pr5) at ({234:\scalefactorp}) {};
+            \node[thick, circle, label={[label distance=0.4cm]306:$p_r^4$}] (pr4) at ({306:\scalefactorp}) {};
+            \node[thick, circle, label={[label distance=0.4cm]378:$p_r^3$}] (pr3) at ({378:\scalefactorp}) {};
+        \end{scope}
+        
+        \begin{scope}[shift={(5.0, 0.0)}]
+            \node[thick, circle, label={[label distance=\plabeldist]90:$b_i$}] (bi) at (1.8, 0.0) {};
+            \node[thick, circle, label={[align=right, label distance=0.4cm]180:$a_{2i}$}] (ai1) at (0.0,-1.5) {};
+            \node[thick, circle, label={[align=right, label distance=0.6cm]180:$a_{2i-1}$}] (ai2) at (0.0,1.5) {};
+            \node[draw=none] (bk1) at (4.0,-1.65) {};
+            \node[draw=none] (bk2) at (4.0,-0.55) {};
+            \node[draw=none] (bkdots) at (4.0,-1.1) {\hspace{2pt}$\dots$};
+            \node[draw=none] (bj) at (4.0,0.55) {$b_k$};
+            \node[draw=none] (bk) at (4.0,1.65) {$b_j$};
+        \end{scope}
+        
+        % \node[draw=none, text width=5.5cm, align=center] (aic) at (10.2,0.0) {for each $1\leq i \leq 3q$ where $N(w_i)=\{ w_j, w_k, \dots \}$};
+    \end{scope}
+    \begin{scope}
+        \foreach \from/\to in {pr1/pr2, pr2/pr3, pr3/pr4, pr4/pr5, pr5/pr1}
+            \draw [thick, darrow] (\from) -- (\to);
+        % \foreach \from/\to in {pr2/pr1, pr3/pr2, pr4/pr3, pr5/pr4, pr1/pr5}
+        %     \path [thick, -<--] (\from) -- (\to);
+        \foreach \from/\to in {pr1/pr3, pr3/pr5, pr5/pr2, pr2/pr4, pr4/pr1}
+            \draw [thick, ->-] (\from) -- (\to);
+        % TRIANGLE
+         \foreach \from/\to in {bi/bj, bi/bk, bi/bk1, bi/bk2}
+            \draw [thick, farrow] (\from) -- (\to);
+        \foreach \from/\to in {bi/ai1, ai1/ai2, ai2/bi}
+            \draw [thick, -->-] (\from) -- (\to);
+        \foreach \from/\to in {ai1/bi, ai2/ai1, bi/ai2}
+            \path [thick, -<--] (\from) -- (\to);
+    \end{scope}
+    \end{tikzpicture}

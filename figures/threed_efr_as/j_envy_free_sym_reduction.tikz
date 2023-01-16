@@ -1,0 +1,109 @@
+\definecolor{figurecolourschemewt1_adjusted}{rgb}{0.8,0.8,0.8}
+\definecolor{figurecolourschemewt1}{rgb}{0.5,0.5,0.5}
+\definecolor{figurecolourschemewt2}{rgb}{0.5,0.0,0.5}
+\definecolor{figurecolourschemewt3}{rgb}{0,0,0}
+\definecolor{figurecolourschemewt4}{rgb}{0,0,1}
+\definecolor{figurecolourschemewt5}{rgb}{0,1,0}
+\definecolor{figurecolourschemewt6}{rgb}{1,0,0}
+
+\begin{tikzpicture}
+
+\begin{scope}[every node/.style={circle,draw, minimum size=2.4mm}, scale=1.0]
+    \begin{scope}
+        % the lines from h1 to H
+        \def\honedist{4.8}
+        \def\honeangle{90} % formerly 36
+        \node[thick, circle, label={[label distance=0.4cm]270:$h_1$}] (h1) at ({\honedist*sin(\honeangle)*-1.0 - 1.6}, {\honedist*cos(\honeangle)}) {};
+        
+        % virtual nodes to show the "complete bipartiteness"
+        % \def\honeaspacing{2.0}
+        % \node[thick, circle] (h1a) at ({\honeaspacing*sin(90-\honeangle)*-1.0}, {\honeaspacing*cos(90-\honeangle)*-1.0}) {};
+        % \node[thick, circle] (h1b) at ({\honeaspacing*sin(90-\honeangle)*-0.5}, {\honeaspacing*cos(90-\honeangle)*-0.5}) {};
+        % \node[thick, circle] (h1c) at ({\honeaspacing*sin(90-\honeangle)*0.33}, {\honeaspacing*cos(90-\honeangle)*0.33}) {};
+        % \node[thick, circle] (h1d) at ({\honeaspacing*sin(90-\honeangle)*1.0}, {\honeaspacing*cos(90-\honeangle)*1.0}) {};
+        
+        % \draw[color=figurecolourschemewt2, very thick] (h1) -- (h1a) -- (h1b) -- (h1) -- (h1d);
+        % \path (h1) -- (h1c) node [draw=none, pos=0.18] {$\dots$};
+        \draw[color=figurecolourschemewt2, very thick] (h1) -- (0.0, 0.0);
+    
+        \begin{scope}[shift={(-1.5, 0.0)}]
+            \def\scalefactor{0.25}
+            \def\hlabeldist{0.4cm}
+            
+            \filldraw[color=enclosure_color, fill=white](-0.05, 0) circle (\scalefactor*15);
+            
+            \node[thick, circle, label={[label distance=\hlabeldist]76:$h_3$}] (h3) at (\scalefactor*3.09,\scalefactor*9.51) {};
+            \node[thick, circle, label={[label distance=\hlabeldist]94:$h_2$}] (h2) at (\scalefactor*-3.09,\scalefactor*9.51) {};
+            \node[thick, circle, label={[label distance=\hlabeldist]-225:$h_{11}$}] (h11) at (\scalefactor*-8.09,\scalefactor*5.88) {};
+            \node[thick, circle, label={[label distance=\hlabeldist]-180:$h_{10}$}] (h10) at (\scalefactor*-10.0,\scalefactor*0.0) {};
+            \node[thick, circle, label={[label distance=\hlabeldist]-135:$h_9$}] (h9) at (\scalefactor*-8.09,\scalefactor*-5.88) {};
+            \node[thick, circle, label={[label distance=\hlabeldist]-94:$h_8$}] (h8) at (\scalefactor*-3.09,\scalefactor*-9.51) {};
+            \node[thick, circle, label={[label distance=\hlabeldist]-76:$h_7$}] (h7) at (\scalefactor*3.09,\scalefactor*-9.51) {};
+            \node[thick, circle, label={[label distance=\hlabeldist]-45:$h_6$}] (h6) at (\scalefactor*8.09,\scalefactor*-5.88) {};
+            \node[thick, circle, label={[label distance=\hlabeldist]0:$h_5$}] (h5) at (\scalefactor*10.0,\scalefactor*0.0) {};
+            \node[thick, circle, label={[label distance=\hlabeldist]45:$h_4$}] (h4) at (\scalefactor*8.09,\scalefactor*5.88) {};
+        \end{scope}
+        
+        
+        \begin{scope}[shift={(5.0, 0.0)}]
+            \draw[color=figurecolourschemewt3] (0.0,-2.0) -- (0.0, 2.0);
+        
+            % the edges from L to C
+            % \draw[color=figurecolourschemewt3] (-0.45,-2.0) -- (-0.45, 2.0);
+            % \draw[color=figurecolourschemewt3] (-0.25,-2.0) -- (-0.25, 2.0);
+            % % \draw[color=figurecolourschemewt3] (0.25,-2.0) -- (0.25, 2.0);
+            % \node[draw=none] (dots1) at (0.13, 0.1) {$\dots$};
+            % \draw[color=figurecolourschemewt3] (0.45,-2.0) -- (0.45, 2.0);
+        \end{scope}
+        
+        \begin{scope}[shift={(5.0, -1.4)}]
+            % \filldraw[color=enclosure_color, fill=white](0, 0) circle (1.8);
+            \filldraw[color=enclosure_color, fill=white, rounded corners=0.5cm] (-1.7, -0.7) rectangle (1.7, 0.7) {};
+            \node[draw=none] (clabel) at (0.0, -0.05) {$c_1, c_2, \dots, c_{3q}$};
+            % \node[draw=none] (clabel) at (0.0, -1.0) {$w_{c_i}(c_j) \in \{ 2, 3 \}$};
+            
+            % \node[draw=none] (clabel) at (0.0, -1.0) {$w_{c_i}(c_j) =
+            % \begin{cases}
+            %     3 & \text{if } \{ w_i, w_j \} \in E\\
+            %     2 & \text{otherwise}
+            % \end{cases}$};
+        \end{scope}
+        
+        \begin{scope}[shift={(5.0, 1.4)}]
+            \def\scalefactorl{1.2}
+            \filldraw[color=enclosure_color, fill=white, rounded corners=0.5cm] (\scalefactorl*-1.5,\scalefactorl*-1.0) rectangle (\scalefactorl*1.5,\scalefactorl*1.0) {};
+            \node[thick, circle, label={[label distance=0.4cm]180:$l_1$}] (l1) at (\scalefactorl*-0.5,\scalefactorl*0.5) {};
+            \node[thick, circle, label={[label distance=0.4cm]0:$l_2$}] (l2) at (\scalefactorl*0.5,\scalefactorl*0.5) {};
+            \node[thick, circle, label={[label distance=0.4cm]180:$l_3$}] (l3) at (\scalefactorl*-0.5,\scalefactorl*-0.5) {};
+            \node[thick, circle, label={[label distance=0.4cm]0:$l_4$}] (l4) at (\scalefactorl*0.5,\scalefactorl*-0.5) {};
+        \end{scope}
+        
+        \begin{scope}
+            \draw[color=figurecolourschemewt1, thick] (l1) -- (l3) -- (l2) -- (l4) -- (l1);
+            \draw[color=figurecolourschemewt2, very thick] (l1) -- (l2);
+            \draw[color=figurecolourschemewt2, very thick] (l3) -- (l4);
+        \end{scope}
+        
+        % draw the edges inside H
+        \begin{scope}
+            \foreach \i in {2,3,4,5,6,7,8,9,10,11} \draw[color=figurecolourschemewt1_adjusted] let \n1={int(mod(\i+1,10)+2)} in (h\i) -- (h\n1);
+            \foreach \i in {2,3,4,5,6,7,8,9,10,11} \draw[color=figurecolourschemewt1_adjusted] let \n1={int(mod(\i+2,10)+2)} in (h\i) -- (h\n1);
+            
+            % figurecolourschemewt 3
+            \foreach \i in {3,5,7,9,11} \draw[color=figurecolourschemewt3] let \n1={int(mod(\i,10) + 2)} in (h\i) -- (h\n1);
+            \foreach \i in {2,3,4,5,6} \draw[color=figurecolourschemewt3] let \n1={int(mod(\i,10) + 5)} in (h\i) -- (h\n1);
+            
+            % figurecolourschemewt 4
+            \foreach \i in {2,4,6,8,10} \draw[color=figurecolourschemewt4, thick] let \n1={int(mod(\i,11) + 1)} in (h\i) -- (h\n1);
+            
+            % figurecolourschemewt 5
+            \foreach \i in {3,5,7,9,11} \draw[color=figurecolourschemewt5, thick] let \n1={int(mod(\i,10) + 1)} in (h\i) -- (h\n1);
+            
+            % figurecolourschemewt 6
+            \foreach \i in {2,4,6,8,10} \draw[color=figurecolourschemewt6, thick] let \n1={int(mod(\i,10) + 2)} in (h\i) -- (h\n1);
+        \end{scope}
+    \end{scope}
+\end{scope}
+\begin{scope}
+\end{scope}
+\end{tikzpicture}

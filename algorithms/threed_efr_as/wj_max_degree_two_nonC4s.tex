@@ -1,0 +1,20 @@
+\begin{algorithm}
+\textbf{Input:} a set of connected components $\mathcal{C}$ that are not $4$-cycles\\
+\textbf{Output:} a pair $(T, S)$ where $T$ is a set of triples of agents in $C$ and $S$ is a set of agents
+\smallskip
+\begin{algorithmic}
+\caption{Subroutine~\algorithmfont{nonC4Components} \label{alg:3defr_wje_subroutine_nonC4s}}
+\State $T \gets \varnothing$
+\For{each connected component $C$ in $\mathcal{C}$, labelling $C = ( c_1, c_2, \dots, c_{|C|} )$}
+    \For{$i = 1$ to $\lfloor |C|/3 \rfloor$}
+        \State $T \gets T \cup \{ \{ c_{3i-2}, c_{3i-1}, c_{3i} \} \}$
+    \EndFor
+    \State \textbf{end for}
+\EndFor
+\State \textbf{end for}
+\smallskip
+
+\State $S \gets \bigcup \mathcal{C} \setminus \bigcup T$
+\State \Return $(T, S)$
+\end{algorithmic}
+\end{algorithm}

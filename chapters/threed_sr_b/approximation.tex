@@ -1,0 +1,112 @@
+% Formally, 3DR-B-MSM is the optimisation variant of the 3DR-B stability existence problem in which the objective is to maximise $\textrm{nbt}(M, (N, P))$.
+The \emph{3DR-B Maximally Stable Matching problem} (\mysymbolfirstusedefinition{symboldef:threedr_b_msm}{3DR-B-MSM}) is the following optimisation problem: given an instance of 3DR-B, find a matching with the maximum number of non-blocking triples. Formally, 3DR-B-MSM is a maximisation problem in which any instance $(N, P)$ of 3DR-B-MSM is also instance of 3DR-B, a solution is a matching in $(N, P)$, and the measure is $|\textrm{nbt}(M, (N, P))|$. We showed in Theorem~\ref{thm:threed_sr_b_existence} that deciding if an instance of 3DR-B contains a matching with $\binom{3n}{3}$ non-blocking triples is $\NP$-complete, so it follows that 3DR-B-MSM is $\NP$-hard. In this section we present two approximation algorithms for 3DR-B-MSM. The first is a direct application of an existing result relating to 3PSA. The second is a novel serial dictatorship-style algorithm.
+
+There is a close relationship between 3DR-B and the Three-Person Stable Assignment problem (3PSA, introduced in Chapter~\ref{c:lit_review}). Recall that in 3DR-B, each agent has a strict preference list over the other $3n - 1$ agents. $\mathscr{B}$-preferences are then used to infer each agent's preferences over triples. In 3PSA, each agent instead has a strict preference list over the $\binom{3n - 1}{2}$ triples that they may belong to. We show that, given an instance $(N, P)$ of 3DR-B, it is possible to construct an instance $(N, P')$ of 3PSA with the same set of agents such that for any matching $M$, if a triple blocks $M$ in $(N, P)$ then it also blocks $M$ in $(N, P')$. From this result it follows that an existing $9/4$-approximation algorithm for 3PSA-MSM \cite{rosenbaum16}, which is defined analogously to 3DR-B-MSM, can be applied to construct a $9/4$-approximation algorithm for 3DR-B-MSM. The existing $9/4$-approximation algorithm for 3PSA-MSM was presented by Rosenbaum in 2016 \cite{rosenbaum16} and is called Algorithm~\algorithmfont{ASA}. It is an iterative greedy algorithm which involves, in each iteration, selecting a triple that once added to the matching, intersects the maximum number of non-blocking triples. 
+
+The design of our $9/4$-approximation algorithm for 3DR-B-MSM, which makes use of the relationship between 3PSA and 3DR-B, is essentially the same as the $9/4$-approximation algorithm that we described in Chapter~\ref{c:three_dsm_cyc} for 3-DSM-CYC-MSM. As we saw in Chapter~\ref{c:three_dsm_cyc}, the latter algorithm makes use of the analogous relationship between 3GSM and 3-DSM-CYC (in fact, Algorithm~\algorithmfont{AMSM} is also essentially the same as Algorithm~\algorithmfont{ASA} \cite{rosenbaum16}).
+
+\begin{thm}
+\label{thm:threed_sr_b_approxalgofournine}
+There exists a polynomial-time $9/4$-approximation algorithm for 3DR-B-MSM.
+\end{thm}
+\begin{proof}
+The approximation algorithm for 3DR-B-MSM involves constructing a corresponding instance of 3PSA-MSM, which has the same set of agents, and running Algorithm~\algorithmfont{ASA} \cite{rosenbaum16}.
+
+We first describe how to construct, in polynomial time, a corresponding instance $(N, P')$ of 3PSA such that $|\textrm{bt}(M, (N, P))| \geq |\textrm{bt}(M, (N, P'))|$ for any matching $M$. For each agent $\alpha_i \in N$, let $P'_{\alpha_i}$ be the list of all $2$-agent subsets of $N \setminus \{ \alpha_i \}$ in lexicographic order with respect to $P_{\alpha_i}$. Now, suppose $M$ is an arbitrary matching in $(N, P)$ and $r$ is a triple that blocks $M$ in $(N, P)$. We will show that $r$ also blocks $M$ in $(N, P')$. For any $\alpha_k$ in $r$ it must be that $\mathscr{B}_{\alpha_k}(r)$ precedes $\mathscr{B}_{\alpha_k}(M)$ in  $P_{\alpha_k}$. By the construction of $P'_{\alpha_k}$ as the lexicographic order of $P_{\alpha_k}$, it must be that $r$ precedes $M(\alpha_k)$ in $P'_{\alpha_k}$ and thus that $r$ also blocks $M$ in $(N, P')$. It follows that $|\textrm{bt}(M, (N, P'))| \geq |\textrm{bt}(M, (N, P))|$ and thus that $|\textrm{nbt}(M, (N, P))| \geq |\textrm{nbt}(M, (N, P'))|$, as required.
+
+Since Rosenbaum's~\cite{rosenbaum16} analysis of  Algorithm~\algorithmfont{ASA} shows that $|\textrm{nbt}(M, (N, P'))| \geq 4\binom{3n}{3}/9$, we can conclude that $|\textrm{nbt}(M, (N, P))| \geq 4\binom{3n}{3}/9$.
+% The algorithm involves first constructing a corresponding instance of 3PSA, involving the same set of agents, and running Algorithm~\algorithmfont{ASA} \cite{rosenbaum16}.
+% Construct $(N, P')$ as described in Lemma~\ref{lem:threed_sr_b_approxlex} and run Algorithm~\algorithmfont{ASA} \cite{rosenbaum16} to construct a matching $M$. By the statement of Lemma~\ref{lem:threed_sr_b_approxlex}, the number of non-blocking triples in $M$ in $(N, P')$ is greater than or equal to the number of non-blocking triples in $(N, P)$. It follows that the approximation ratio of this algorithm is also $9/4$.
+\end{proof}
+
+We now present an algorithm with an improved approximation ratio. This algorithm, called Algorithm~\algorithmfont{serialDictatorship}, is based on serial dictatorship. In is a variation of Algorithm~\algorithmfont{cyclicSerialDictatorship} that we presented for 3-DSM-CYC in Chapter~\ref{c:three_dsm_cyc}. The accompanying analysis is loosely based on the analysis of Algorithm~\algorithmfont{ASA} given by Rosenbaum \cite{rosenbaum16}.
+
+\input{algorithms/threed_sr_b/dictatorship}
+
+It is straightforward to show that Algorithm~\algorithmfont{serialDictatorship} returns a matching $M$ in polynomial time. We now analyse its approximation ratio in the same way we analysed the approximation ratio of Algorithm~\algorithmfont{cyclicSerialDictatorship} for Theorem~\ref{thm:three_dsm_cyc_unrestricted} in Chapter~\ref{c:three_dsm_cyc}, and show that our analysis is tight. We consider each triple in $M$ in the order that they were added to $M$ in the algorithm and count only the blocking triples that intersect that triple and do not intersect any previous triple.
+
+\begin{thm}
+\label{thm:threed_sr_b_approxalgo}
+There exists a polynomial-time $3/2$-approximation algorithm for 3DR-B-MSM.
+\end{thm}
+\begin{proof}
+Namely Algorithm~\algorithmfont{serialDictatorship}. By the pseudocode, there are $n$ iterations of the while loop so it is straightforward to show that the algorithm runs in polynomial time. For each $i$ where $1\leq i \leq n$, let $d_1^i, d_2^i, d_3^i$ be the agents labelled $d_1, d_2, d_3$ respectively in that iteration, $D_i = \{ d_1^i, d_2^i, d_3^i \}$, and $U_i$ be the set of agents in $U$ at the start of that iteration. Note that by the algorithm, $|U_i \setminus D_i| = 3n - 3i$.
+
+For each $i$ where $1\leq i \leq n$, let $S_i$ be the set of triples that block $M$, have a non-empty intersection with $D_i$, and have an empty intersection with $D_j$ for every $j < i$. It follows that $S_n = \varnothing$ since any triple that blocks $M$ and intersects the final triple $D_n$ must contain some agent not in $D_n$, which must belong to some previous triple $D_j$ where $1 \leq j < n$. We can now define $\textrm{bt}(M)$ in terms of $S_i$:
+\begin{align*}
+    \text{bt}(M) = \bigcup\limits_{i=1}^{n - 1} S_i\enspace.
+\end{align*}
+By definition, the sets $S_i$ are pairwise disjoint so it follows that
+\begin{align}
+    |\text{bt}(M)| = \sum\limits_{i=1}^{n - 1} |S_i|\enspace. \label{eqn:threed_sr_b_instab_as_si}
+\end{align}
+We now place an upper bound on $|S_i|$ for any $i$ where $1\leq i \leq n - 1$. For any such $i$, consider the $i\textsuperscript{th}$ iteration of the while loop. By the algorithm, $\mathscr{B}_{d_1^i}(U_i) = d_2^i$. It follows that any triple that blocks $M$ and contains $d_1^i$ contains some agent in $N \setminus (U_i \cup D_i)$ that has already been added to some triple $D_j$ in $M$ where $j < i$. Thus, no triple in $S_i$ contains $d_1^i$. Similarly, by the algorithm it must be that either $\mathscr{B}_{d_2^i}(U_i) = d_3^i$ or $\mathscr{B}_{d_2^i}(U_i) = d_1^i$, so any triple that blocks $M$ and contains $d_2^i$ contains some agent in $N \setminus (U_i \cup D_i)$, so likewise no triple in $S_i$ contains $d_2^i$. It follows that any triple in $S_i$ contains $d_3^i$ and two other agents in $N$. By the definition of $S_i$, any triple in $S_i$ has an empty intersection with $D_j$ for any $j < i$ so it must be that any triple in $S_i$ contains $d_3^i$ as well as two agents in $U_i \setminus D_i$. Since $|U_i \setminus D_i| = 3n - 3i$ it follows that
+\begin{align}
+    |S_i| \leq \binom{3n - 3i}{2}\label{eqn:threed_sr_b_instab_sizeofsi}\enspace.
+\end{align}
+By definition,
+\begingroup
+\allowdisplaybreaks
+\begin{align}
+    |\text{nbt}(M)| &= \binom{3n}{3} - |\text{bt}(M)|\nonumber\\
+    &= \binom{3n}{3} - \sum\limits_{i=1}^{n - 1} |S_i|  && \mbox{by Equation~\ref{eqn:threed_sr_b_instab_as_si}} \nonumber\\
+    &\geq \binom{3n}{3} - \sum\limits_{i=1}^{n - 1} \binom{3n-3i}{2} && \mbox{by Inequality~\ref{eqn:threed_sr_b_instab_sizeofsi}}\nonumber\\
+    &= 3n^3 - \frac{3n^2}{2} - \frac{n}{2}\enspace.\label{eqn:threed_sr_b_stabsize}
+\end{align}
+\endgroup
+Suppose $M^*$ is a matching in $(N, P)$ with the maximum number of non-blocking triples. The approximation ratio of the algorithm is thus
+\begin{align*}
+    \frac{|\textrm{nbt}(M^*)|}{|\textrm{nbt}(M)|} &\leq 
+    \binom{3n}{3} \frac{1}{|\textrm{nbt}(M)|} && \mbox{since $|\textrm{nbt}(M^*)| \leq \binom{3n}{3}$}\\[0.2em]
+    &\leq \frac{9n^2 - 9n + 2}{6n^2 - 3n - 1} && \mbox{by Inequality~\ref{eqn:threed_sr_b_stabsize}}\\[0.2em]
+    &\leq \frac{3}{2} && \mbox{since $n\geq 1$.}
+\end{align*}
+\end{proof}
+
+It is desirable to show that this analysis is tight, by constructing an instance $(N, P)$ of 3DR-B and showing that there exists some execution of Algorithm~\algorithmfont{serialDictatorship} that returns a matching $M$ for which $|\textrm{nbt}(M^*)|/|\textrm{nbt}(M)| = 3/2$, where $M^*$ is some matching in $(N, P)$ with the maximum number of non-blocking triples. We show that the analysis is tight asymptotically, by constructing an instance $\mathcal{I}_n$ of 3DR-B for some fixed $n \geq 1$, where the approximation ratio obtained by Algorithm~\algorithmfont{serialDictatorship} on $\mathcal{I}_n$ is $3/2 - o(1)$ in the worst case. The proof follows the same pattern as the analysis of Algorithm~\algorithmfont{cyclicSerialDictatorship} in Chapter~\ref{c:three_dsm_cyc}.
+
+The structure of the preferences of the agents in $\mathcal{I}_n$ corresponds directly to the counting argument used in the proof of Theorem~\ref{thm:threed_sr_b_approxalgo}. For any fixed $n$, construct $\mathcal{I}_n$ as follows. First, let $N = \{ \alpha_1, \alpha_2, \dots, \alpha_{3n} \}$. Next, for each agent $\alpha_j \in N$, construct $P_{\alpha_j}$ so that it lists every agent in $N \setminus \{ \alpha_j \}$ in ascending order of subscript. Finally, for each $i$ where $1\leq i \leq n$, modify $P_{\alpha_3i}$ by shifting $\alpha_{3i - 2}$ and $\alpha_{3i - 1}$ to the right so that $\alpha_{3i - 2}$ is the second-to-last agent in $P_{\alpha_i}$ and $\alpha_{3i - 1}$ is the last agent in $P_{\alpha_i}$.
+
+% let
+% \begin{flalign*}
+% \setlength\arraycolsep{2pt}
+% \begin{array}{r c c c c c c c c c c c}
+% P_{\alpha_{3i - 2}} :& \alpha_1 & \alpha_2 & \dots & \alpha_{3i - 3} & \alpha_{3i - 1} & \alpha_{3i} & \alpha_{3i + 1 } & \dots & \alpha_{n} & &\\
+% P_{\alpha_{3i - 1}} :& \alpha_1 & \alpha_2 & \dots & \alpha_{3i - 3} & \alpha_{3i - 2} & \alpha_{3i} & \alpha_{3i + 1} & \dots & \alpha_{n} & &\\
+% P_{\alpha_{3i}} :& \alpha_1 & \alpha_2 & \dots & \alpha_{3i - 3} & \alpha_{3i + 1} & \alpha_{3i + 2} & \alpha_{3i + 3} & \dots & \alpha_{n} & \alpha_{3i - 2} & \alpha_{3i - 1}\\
+% % P_{\alpha_{3i - 1}} :& \alpha_1 & \alpha_2 & \dots & \alpha_{n}\\
+% % P_{\alpha_{3i}} :& \alpha_n & \alpha_{n-1} & \dots & \alpha_1
+% \end{array}
+% \end{flalign*}
+As in the proof of Theorem~\ref{thm:threed_sr_b_approxalgo}, for each $i$ where $1\leq i \leq n$, let $d_1^i, d_2^i, d_3^i$ be the agents labelled $d_1, d_2, d_3$ respectively in that iteration, $D_i = \{ d_1^i, d_2^i, d_3^i \}$, and $U_i$ be the set of agents in $U$ at the start of that iteration. Since the selection of agents in $U$ is arbitrary, suppose $d_1^i = \alpha_1$. It follows that $d_2^i = \alpha_2$ and $d_2^i = \alpha_3$ and thus $U_2 = N \setminus \{ \alpha_1, \alpha_2, \alpha_3 \}$. Similarly, the second triple chosen is $D_2 = \{ \alpha_4, \alpha_5, \alpha_6 \}$. In general, it follows that $M = \{ \{ \alpha_1, \alpha_2, \alpha_3 \}, \{ \alpha_4, \alpha_5, \alpha_6 \}, \dots, \{ \alpha_{3n - 2}, \alpha_{3n - 1}, \alpha_{3n} \} \}$ and $U_i = \bigcup_{j = i}^{n} \{ \alpha_{3j - 2}, \alpha_{3j - 1}, \alpha_{3j} \}$. Note that now, for any $\alpha_k \in N$, $\alpha_k$ prefers to $\mathscr{B}_{\alpha_k}(M)$ any agent $\alpha_{3i}$ where $3i < k$.
+
+As in the proof of Theorem~\ref{thm:threed_sr_b_approxalgo}, for each $i$ where $1\leq i \leq n$, let $S_i$ be the set of triples that block $M$, have a non-empty intersection with $D_i$, and have an empty intersection with $D_j$ for every $j < i$. By definition it follows that $S_i \subseteq \binom{U_i}{3}$ and $S_n = \varnothing$. As in the proof of Theorem~\ref{thm:threed_sr_b_approxalgo}, it can be shown that for any $i$ where $1\leq i \leq n$, no triple in $S_i$ contains $\alpha_{3i - 2}$ and no triple in $S_i$ contains $\alpha_{3i - 1}$. It remains that each triple in $S_i$ contains $\alpha_{3i}$ as well as two agents in $U_i \setminus D_i$, which we label $\alpha_k$ and $\alpha_l$. Since $U_i \setminus D_i = \bigcup_{j = i + 1}^{n} \{ \alpha_{3j - 2}, \alpha_{3j - 1}, \alpha_{3j} \}$, it must be that $k \geq 3i + 1$ and $l \geq 3i + 1$. Since $k \neq l$ assume without loss of generality that $k \geq 3i + 2$. It follows that $\mathscr{B}_{\alpha_{3i}}(\{ \alpha_k, \alpha_l \}) = \alpha_k$ precedes both $\alpha_{3i - 1}$ and $\alpha_{3i - 2}$ in $P_{\alpha_{3i}}$. As we noted, since $3i < k$ it must be that $\alpha_{3i}$ precedes $\mathscr{B}_{\alpha_k}(M)$ in $P_{\alpha_k}$. Similarly, since $3i < l$ it must be that $\alpha_{3i}$ precedes $\mathscr{B}_{\alpha_l}(M)$ in $P_{\alpha_l}$. It follows that the triple $\{ \alpha_{3i}, \alpha_k, \alpha_l \}$ blocks $M$ and hence also belongs to $S_i$. Since the selection of $\alpha_k, \alpha_l$ as two agents in $U_i \setminus D_i$ was arbitrary it follows that
+\begin{align*}
+    S_i = \{ \{ \alpha_{3i}, \alpha_k, \alpha_l \} : \alpha_k, \alpha_l \in U_i \setminus D_i \}\enspace.
+\end{align*}
+It follows immediately that
+\begin{align*}
+    |S_i| = \binom{3n - 3i}{2}
+\end{align*}
+which shows that the upper bound on $|S_i|$ in Inequality~\ref{eqn:threed_sr_b_instab_sizeofsi} in Theorem~\ref{thm:threed_sr_b_approxalgo} is tight. The same argument used in the proof of Theorem~\ref{thm:threed_sr_b_approxalgo} then shows that
+\begin{align}
+    |\textrm{nbt}(M)| = 3n^3 - \frac{3n^2}{2} - \frac{n}{2} \label{eqn:threed_sr_b_bsizeofnbttight}\enspace.
+\end{align}
+We now show that a stable matching exists in $\mathcal{I}_n$. Let
+\begin{align*}
+    M^* = \{ \alpha_1, \alpha_2, \alpha_{3n} \} \cup \bigcup\limits_{i = 1}^{n - 1} \{ \{ \alpha_{3i}, \alpha_{3i + 1}, \alpha_{3i + 2} \} \}\enspace.
+\end{align*}
+Note first that by the construction of $M^*$, $\mathscr{B}_{\alpha_2}(M^*) = \mathscr{B}_{\alpha_{3n}}(M^*) = \alpha_1$, $\mathscr{B}_{\alpha_1}(M^*) = \alpha_2$. Note also that for any $i$ where $1 \leq i \leq n - 1$, $\mathscr{B}_{\alpha_{3i}}(M^*) = \alpha_{3i + 1}$, $\mathscr{B}_{\alpha_{3i + 1}}(M^*) = \alpha_{3i + 2}$, and $\mathscr{B}_{\alpha_{3i + 2}}(M^*) = \alpha_{3i + 1}$. It follows in general, by the construction of $\mathcal{I}_n$, that for any two agents $\alpha_j$ and $\alpha_k$ if $\alpha_k$ precedes $\mathscr{B}_{\alpha_j}(M^*)$ in $P_{\alpha_j}$ then $k < j$. Consider an arbitrary triple $\{ \alpha_i, \alpha_j, \alpha_k \} \in \binom{N}{3}$ where $i < j < k$. It follows that $\mathscr{B}_{\alpha_i}(\{ \alpha_j, \alpha_k \})$ succeeds $\mathscr{B}_{\alpha_i}(M)$ in $P_{\alpha_i}$ and thus that this triple does not block $M^*$. It follows that $M^*$ is stable. Now
+\begingroup
+\allowdisplaybreaks
+\begin{align*}
+    \frac{|\textrm{nbt}(M^*)|}{|\textrm{nbt}(M)|} &= \binom{3n}{3}\frac{1}{|\textrm{nbt}(M)|} && \mbox{since $M^*$ is stable}\\[0.2em]
+    &= \frac{9n^2 - 9n + 2}{6n^2 - 3n - 1} && \mbox{by Equation~\ref{eqn:threed_sr_b_bsizeofnbttight}}\\[0.2em]
+    &= \frac{3}{2} - o(1)
+\end{align*}
+\endgroup
+which shows that the analysis is tight asymptotically.
+
+
+
+% $M(\alpha_{3i}) = \{ \alpha_{3i}, \alpha_{3i - 1}, \alpha_{3i - 2}$ each triple containing two agents in $U_i$

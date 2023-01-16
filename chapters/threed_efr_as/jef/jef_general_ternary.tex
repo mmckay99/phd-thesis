@@ -1,0 +1,140 @@
+A natural next step would be to ask if the polynomial-time algorithm described in Theorem~\ref{thm:threed_efr_as_jef_binary_algorithm} can be extended to the setting in which preferences are ternary, i.e.\ $v_{\alpha_i}(\alpha_j) \in \{ 0, 1, 2 \}$. We show that, assuming $\P \neq \NP$, this is not the case, and the problem of deciding if a given instance of 3DR-AS contains a j-envy-free matching is $\NP$-complete, even when preferences are ternary.
+
+We present a polynomial-time reduction from a special case of \emph{Directed Triangle Packing} (DTP, Problem~\ref{pr:DTP}).
+
+\begin{myproblem}[Directed Triangle Packing (DTP)]
+\label{pr:DTP}\mysymbolfirstusedefinition{symboldef:dtp}{}
+\begin{samepage}
+\begin{adjustwidth}{8pt}{8pt}
+\inp a simple directed graph $G=(W, A)$ where $W=\{ w_1, w_2, \dots, w_{3q} \}$ for some integer $q$\\
+\ques Can the vertices of $G$ be partitioned into $q$ disjoint sets $X=\{X_1, X_2, \dots, X_q\}$, each set containing exactly three vertices, such that each $X_p=\{ w_i,w_j,w_k \}$ in $X$ is a directed $3$-cycle, i.e.\ the arcs $( w_i,w_j )$, $( w_j, w_k )$, and $( w_k, w_i )$ belong to $A$?
+\end{adjustwidth}
+\end{samepage}
+\end{myproblem}
+
+We claim that DTP is $\NP$-complete, even when $G$ is antisymmetric (i.e.\ it contains no bidirectional arcs). As noted by Cechl\'arov\'a, Fleiner, and Manlove \cite{CFM05}, the proof of this claim can be obtained using a simple modification to the reduction presented by Garey and Johnson for Partition Into Triangles \cite[Theorem~3.7]{GJ79}. It is this restricted variant of DTP, in which $G$ is antisymmetric, that we reduce from to show that deciding if a given instance of 3DR-AS with ternary (but not necessarily symmetric) preferences contains a j-envy-free matching.
+
+We shall first describe the reduction from DTP in detail and then provide some intuition with respect to its design. 
+
+The reduction, shown in Figure~\ref{fig:threed_efr_as_jef_terasym_reduction}, is as follows. Suppose $G=(W, A)$ is an arbitrary instance of DTP. We shall construct an instance $(N, V)$ of 3DR-AS. Unless otherwise specified, assume that $v_{\alpha_i}(\alpha_j)=0$ for any $\alpha_i, \alpha_j \in N$. To simplify the description of the valuations in the reduction, in this section we write $i \myoplus y$ to denote $((i + y - 1) \bmod 5) + 1$.
+
+First construct a set of five agents $H = \{ h_1, h_2, h_3, h_4, h_5 \}$. For each $i$ where $1\leq i \leq 5$ let $v_{h_i}(h_{i \myoplus 1}) = v_{h_{i \myoplus 1}}(h_i) = 1$, $v_{h_i}(h_{i \myoplus 3}) = 1$, and $v_{h_i}(h_{i \myoplus 2}) = 2$. Next, construct a set $L = \{ l_1, l_2, l_3, l_4 \}$ of four agents. Let $v_{l_1}(l_2) = v_{l_2}(l_1) = v_{l_3}(l_4) = v_{l_4}(l_3) = 2$ and $v_{l_1}(l_3) = v_{l_1}(l_4) = v_{l_2}(l_3) = v_{l_2}(l_4) = v_{l_3}(l_1) = v_{l_3}(l_2) = v_{l_4}(l_1) = v_{l_4}(l_2) = 1$. Next, construct a set $C = \{ c_1, c_2, \dots, c_{3q} \}$ of $3q$ agents. For each $i$ where $1\leq i \leq 3q$ let $v_{c_i}(l_3) = v_{l_3}(c_i) = v_{l_4}(c_i) = 1$ and $v_{c_i}(l_4) = 2$. For each $i$ and $j$ where $1\leq i, j \leq 3q$ let $v_{c_i}(c_j) = 2$ if $( w_i, w_j ) \in A$ otherwise $1$. This completes the construction of $(N, V)$. Note that the structure of the valuations among the agents in $C$ reflects the directed graph $G$. 
+
+We make some remarks on the design of the constructed instance. The design of $H$ is derived from a particular instance that contains no j-envy-free matching. This instance comprises $H$ as well as a single isolated agent $\alpha_{z}$, where $v_{\alpha_{z}}(h_i) = v_{h_i}(\alpha_{z}) = 0$ for each $i$ where $1\leq i \leq 5$. In fact, the proof that this instance contains no j-envy-free matching can be directly derived from the proof of a lemma that appears later in this section (Lemma~\ref{lem:threed_efr_as_jef_terasym_atleasttwotriplescontainoneagentinH}).
+
+It is straightforward to show that the reduction runs in polynomial time. To prove that the reduction is correct we show that the 3DR-AS instance $(N, V)$ contains a j-envy-free matching if and only if the DTP instance $G$ contains a directed triangle packing.
+
+\begin{figure}
+    \centering
+    \input{figures/threed_efr_as/j_envy_free_terasym_reduction.tikz}
+    \caption{The reduction from DTP to the problem of deciding if a given instance of 3DR-AS with ternary preferences contains a j-envy-free matching}
+    \label{fig:threed_efr_as_jef_terasym_reduction}
+\end{figure}
+
+We first show that if the DTP instance $G$ contains a directed triangle packing then the 3DR-AS instance $(N, V)$ contains a j-envy-free matching.
+
+\begin{lem}
+\label{lem:threed_efr_as_jef_terasym_first_direction}
+If $G$ contains a directed triangle packing then $(N, V)$ contains a j-envy-free matching.
+\end{lem}
+\begin{proof}
+Suppose $G$ contains a directed triangle packing $X = \{ X_1, X_2, \dots, X_q \}$. We shall construct a matching $M$ that is j-envy-free. First, add $\{ h_1, h_2, h_3 \}$, $\{ h_4, l_1, l_2 \}$, and $\{ h_5, l_3, l_4 \}$ to $M$. Next, for each directed $3$-cycle $X_p = \{ w_i, w_j, w_k \}$ in $X$, add $\{ c_i, c_j, c_k \}$ to $M$.
+
+Suppose for a contradiction that some agent $\alpha_j$ exists where $\alpha_j$ has j-envy for some other agent $\alpha_{k_1}$ where $M(\alpha_{k_1}) = \{ \alpha_{k_1}, \alpha_{k_2}, \alpha_{k_3} \}$. Since $N = H \cup L \cup C$ it must be that either $\alpha_{k_1} \in H$, $\alpha_{k_1} \in L$, or $\alpha_{k_1} \in C$. We show that each case leads to a contradiction. It follows that no such $\alpha_j$ exists and thus that $M$ is j-envy-free.
+\begin{itemize}
+    \item Suppose $\alpha_{k_1} \in H$. By the construction of $M$ there are two possibilities: either $\alpha_{k_1} \in \{ h_1, h_2, h_3 \}$ or $\alpha_{k_1} \in \{ h_4, h_5 \}$. 
+    \begin{itemize}
+    \item Suppose firstly that $\alpha_{k_1} \in \{ h_4, h_5 \}$ then by the construction of $M$ either $\{ \alpha_{k_2}, \alpha_{k_3} \} = \{ l_1, l_2 \}$ or $\{ \alpha_{k_2}, \alpha_{k_3} \} = \{ l_3, l_4 \}$. Note that $u_{l_1}(M) = u_{l_2}(M) = u_{l_3}(M) = u_{l_4}(M) = 2$. Since $u_{l_1}(\{ l_3, l_4 \}) = 2$ and $u_{l_2}(\{ l_3, l_4 \}) = 2$, neither $l_1$ nor $l_2$ has j-envy for $\alpha_{k_1}$, so $\alpha_j \notin \{ l_1, l_2 \}$. Similarly, since $u_{l_3}(\{ l_1, l_2 \}) = 2$ and $u_{l_4}(\{ l_1, l_2 \}) = 2$ neither $l_3$ nor $l_4$ has j-envy for $\alpha_{k_1}$, so $\alpha_j \notin \{ l_3, l_4 \}$. Since $u_{c_i}(M) = 3$, $u_{c_i}(\{ l_1, l_2 \}) = 0$, and $u_{c_i}(\{ l_1, l_2 \}) = 2$ for any $i$ where $1\leq i \leq 3q$, it must be no agent in $C$ has j-envy for $\alpha_{k_1}$, so $\alpha_j \notin C$. It remains that $\alpha_{j} \in H$. Since this implies $v_{l_1}(\alpha_j) = v_{l_2}(\alpha_j) = v_{l_3}(\alpha_j) = v_{l_4}(\alpha_j) = 0$ it follows that $\alpha_j$ does not have j-envy for $\alpha_{k_1}$ and thus that $\alpha_{k_1} \notin \{ h_4, h_5 \}$.
+    
+    \item Suppose then that $\alpha_{k_1} \in \{ h_1, h_2, h_3 \}$. Since $\alpha_j$ has j-envy for $\alpha_{k_1}$ it must be that $v_{\alpha_j}(\alpha_{k_2}) \geq 1$ so it follows that $\alpha_j \in \{ h_4, h_5 \}$. If $\alpha_{k_1} = h_1$ and $\alpha_j = h_4$ then we reach a contradiction since $h_4$ has j-envy for $h_1$ but $v_{h_3}(h_1) = 1 = v_{h_3}(h_4)$. Similarly, if $\alpha_{k_1} = h_1$ and $\alpha_j = h_5$ then we reach a contradiction since $v_{h_2}(h_1) = 1 = v_{h_2}(h_5)$. If $\alpha_{k_1} = h_2$ or $\alpha_{k_1} = h_3$ then we also reach a contradiction since $v_{h_1}(h_4) = v_{h_1}(h_5) = 1 = v_{h_1}(h_2) < 2 = v_{h_1}(h_3)$.
+    \end{itemize}
+    
+    \item Suppose $\alpha_{k_1} \in C$. By the construction of $M$ it must be that $\alpha_{k_2} \in C$ and $\alpha_{k_3} \in C$ so we label $\alpha_{k_1} = c_{i_1}$, $\alpha_{k_2} = c_{i_2}$, and $\alpha_{k_3} = c_{i_3}$. By the construction of $(N, V)$ in the reduction it follows that $v_{c_{i_2}}(c_{i_1}) \geq 1$ and $v_{c_{i_3}}(c_{i_1}) \geq 1$. Since $\alpha_j$ has j-envy for $c_{i_1}$ it follows then that $v_{c_{i_2}}(\alpha_j) = 2$ and $v_{c_{i_3}}(\alpha_j) = 2$. By the construction of the instance there are two possibilities: either $\alpha_j = l_4$ or $\alpha_j \in C$. If $\alpha_j = l_4$ then $u_{l_4}(\{ c_{i_2}, c_{i_3} \}) = 2$ which is a contradiction since by assumption $l_4$ has j-envy for $c_{i_1}$ but $u_{l_4}(M) = 2$. If $\alpha_j \in C$ then label $\alpha_j = c_{i_4}$. Since $v_{c_{i_2}}(c_{i_4}) = 2$ and $v_{c_{i_3}}(c_{i_4}) = 2$, by the construction of $C$ it must be that $( w_{i_2}, w_{i_4} ) \in A$ and $( w_{i_3}, w_{i_4} ) \in A$, where the vertices $w_{i_2}, w_{i_3}, w_{i_4}$ are the vertices in $W$ that correspond respectively to the agents $c_{i_2}, c_{i_3}, c_{i_4}$ in $C$. Since $G$ is antisymmetric, it follows that $( w_{i_4}, w_{i_2} ) \notin A$ and $( w_{i_4}, w_{i_3} ) \notin A$ so it must be that $v_{c_{i_4}}(c_{i_2}) = v_{c_{i_4}}(c_{i_3}) = 1$. This is also a contradiction since by assumption $c_{i_4}$ has j-envy for $c_{i_1}$ but $u_{c_{i_4}}(\{ c_{i_2}, c_{i_3} \}) = 2$ and by the construction of $M$ it must be that $u_{c_{i_4}}(M) = 3$.
+    
+    \item Suppose $\alpha_{k_1} \in L$. It must be that $\alpha_{k_1} = l_{i_1}$, $\alpha_{k_2} = l_{i_2}$, and $\alpha_{k_3} = h_{i_3}$, for some $i_1, i_2$ where $1 \leq i_1, i_2 \leq 4$ and $i_3 \in \{ 4, 5 \}$. If $\alpha_j \in H$ then it must be that $v_{l_{i_2}}(\alpha_j) = 0$ which contradicts the supposition that $\alpha_j$ has j-envy for $l_{i_1}$. Otherwise, if $\alpha_j \notin H$ then $v_{h_{i_3}}(\alpha_j) = 0$, which also contradicts the supposition that $\alpha_j$ has j-envy for $l_{i_1}$.
+\end{itemize}
+\end{proof}
+
+We now show that if the 3DR-AS instance $(N, V)$ contains a j-envy-free matching then the DTP instance $G$ contains a directed triangle packing.
+
+\begin{lem}
+\label{lem:threed_efr_as_jef_terasym_hbelongsto3}
+If $(N, V)$ contains a j-envy-free matching $M$ then $\sigma(H, M) \geq 3$.
+\end{lem}
+\begin{proof}
+Since $|H|=5$ it must be that $\sigma(H, M) \geq 2$. Suppose for a contradiction that $\sigma(H, M) = 2$. It must be that one triple in $M$ contains three agents in $H$ and one triple in $M$ contains two agents in $H$. Suppose the former triple is $\{ h_{i_1}, h_{i_2}, h_{i_3} \}$ and the latter triple is $\{ h_{i_4}, h_{i_5}, \alpha_j \}$, where $1\leq i_1, i_2, \dots, i_5 \leq 5$ and $\alpha_j \in N \setminus H$. There are five symmetries in $H$ and $\binom{5}{2}=10$ possible assignments of $\{ h_{i_4}, h_{i_5} \}$ to two agents in $H$, so we need only consider the two assignments $i_4 = 1$, $i_5 = 2$ and $i_4 = 1$, $i_5 = 3$, which are not symmetric. If $i_4 = 1$ and $i_5 = 2$ then it remains that $\{ i_1, i_2, i_3 \} = \{ 3, 4, 5 \}$. In this case, $h_5$ has j-envy for $\alpha_j$ since $u_{h_5}(M) = 2 < 3 \leq u_{h_5}(\{ h_1, h_2 \})$, $v_{h_1}(\alpha_j) = 0 < 1 = v_{h_1}(h_5)$, and $v_{h_2}(\alpha_j) = 0 < 1 = v_{h_2}(h_5)$. If $i_4 = 1$ and $i_5 = 3$ then it remains that $\{ i_1, i_2, i_3 \} = \{ 2, 4, 5 \}$. In this case, $h_4$ has j-envy for $\alpha_j$ since $u_{h_4}(M) = 2 < 3 \leq u_{h_4}(\{ h_1, h_3 \})$, $v_{h_1}(\alpha_j) = 0 < 1 = v_{h_1}(h_4)$, and $v_{h_3}(\alpha_j) = 0 < 1 = v_{h_3}(h_4)$. 
+\end{proof}
+
+\begin{lem}
+\label{lem:threed_efr_as_jef_terasym_atleasttwotriplescontainoneagentinH}
+If $(N, V)$ contains a j-envy-free matching $M$  then at least two triples in $M$ each contain exactly one agent in $H$.
+\end{lem}
+\begin{proof}
+By Lemma~\ref{lem:threed_efr_as_jef_terasym_hbelongsto3}, $\sigma(H, M) \geq 3$. If, contrary to the lemma statement, at most one triple in $M$ contains exactly one agent in $H$ then it must be that two triples in $M$ each contain two agents in $H$ and one triple in $M$ contains exactly one agent in $H$. Suppose one of the two former triples is $\{ h_{i_1}, h_{i_2}, \alpha_{j_1} \}$ and the latter triple is $\{ h_{i_3}, \alpha_{j_2}, \alpha_{j_3} \}$, where $1\leq i_1, i_2, i_3 \leq 5$ and $\alpha_{j_1}, \alpha_{j_2}, \alpha_{j_3} \in N \setminus H$. By the construction of the instance it must be that $v_{h_{i_1}}(\alpha_{j_1}) = v_{h_{i_2}}(\alpha_{j_1}) = 0$,  $v_{h_{i_1}}(h_{i_3}) \geq 1$ and $v_{h_{i_2}}(h_{i_3}) \geq 1$. It follows that $h_{i_3}$ has j-envy for $\alpha_{j_1}$ since $u_{h_{i_3}}(M) = 0 < 2 \leq u_{h_{i_3}}(\{ h_{i_1}, h_{i_2} \})$, $v_{h_{i_1}}(\alpha_j) = 0 < 1 \leq v_{h_{i_1}}(h_{i_3})$, and $v_{h_{i_2}}(\alpha_j) = 0 < 1 \leq v_{h_{i_2}}(h_{i_3})$. This contradicts the supposition that $M$ is j-envy-free.
+\end{proof}
+
+We have shown in Lemma~\ref{lem:threed_efr_as_jef_terasym_atleasttwotriplescontainoneagentinH} that if $(N, V)$ contains a j-envy-free matching $M$ then at least two triples in $M$ each contain exactly one agent in $H$. Suppose $t_{\beta}, t_{\gamma} \in M$ are two such triples and $t_{\beta} = \{ h_{a_1}, \alpha_{b_1}, \alpha_{b_2} \}$ and $t_{\gamma} = \{ h_{a_2}, \alpha_{b_3}, \alpha_{b_4} \}$.
+
+\begin{lem}
+\label{lem:threed_efr_as_jef_terasym_lequalsthefourisolated}
+If $(N, V)$ contains a j-envy-free matching then $\{ \alpha_{b_1}, \alpha_{b_2}, \alpha_{b_3}, \alpha_{b_4} \} = L$.
+\end{lem}
+\begin{proof}
+Suppose for a contradiction that $\{ \alpha_{b_1}, \alpha_{b_2}, \alpha_{b_3}, \alpha_{b_4} \} \neq L$.
+
+By definition, $\{ \alpha_{b_1}, \alpha_{b_2}, \alpha_{b_3}, \alpha_{b_4} \} \cap H = \varnothing$ and $\{ \alpha_{b_1}, \alpha_{b_2}, \alpha_{b_3}, \alpha_{b_4} \} \neq L$ it must be that at least one agent in $\{ \alpha_{b_1}, \alpha_{b_2}, \alpha_{b_3}, \alpha_{b_4} \}$ belongs to $C$. Assume without loss of generality that $\alpha_{b_1} \in C$.
+
+Note that by construction of the instance, the valuation of any agent not in $H$ for any other agent not in $H$ is at least $1$. 
+
+Since $\alpha_{b_2} \notin H$, it must be that $u_{\alpha_{b_2}}(M) = v_{\alpha_{b_2}}(\alpha_{b_1})$. By the design of the instance, since $\alpha_{b_2} \notin H$ and $\alpha_{b_1} \notin H$ it must be that $v_{\alpha_{b_2}}(\alpha_{b_1}) \in \{ 1, 2 \}$. We consider each possibility of $u_{\alpha_{b_2}}(M) = v_{\alpha_{b_2}}(\alpha_{b_1})$.
+
+Firstly, suppose $u_{\alpha_{b_2}}(M) = 1$. As noted earlier in this proof, since $\alpha_{b_2}, \alpha_{b_3}, \alpha_{b_4} \in N \setminus H$ it must be that $v_{\alpha_{b_2}}(\alpha_{b_3}) \geq 1$ and $v_{\alpha_{b_2}}(\alpha_{b_4}) \geq 1$. It follows that $\alpha_{b_2}$ has j-envy for $h_{a_2}$, since $u_{\alpha_{b_2}}(M) = 1 < 2 \leq u_{\alpha_{b_2}}(\{ \alpha_{b_3}, \alpha_{b_4} \})$, $v_{\alpha_{b_3}}(h_{a_2}) = 0 < 1 \leq v_{\alpha_{b_3}}(\alpha_{b_2})$, and $v_{\alpha_{b_4}}(h_{a_2}) = 0 < 1 \leq v_{\alpha_{b_4}}(\alpha_{b_2})$. This contradicts the supposition that $M$ is j-envy-free.
+
+Suppose then that $u_{\alpha_{b_2}}(M) = 2$, so $v_{\alpha_{b_2}}(\alpha_{b_1}) = 2$. Since $\alpha_{b_1} \in C$ by assumption, by the design of the instance it must be $\alpha_{b_2} \in C$. For the remainder of this lemma only, label $\alpha_{b_1} = c_{i_1}$ and $\alpha_{b_2} = c_{i_2}$. Since $v_{c_{i_2}}(c_{i_1}) = 2$ it follows that $( w_{i_2}, w_{i_1} ) \in A$. Since $G$ is antisymmetric it must be that $( w_{i_1}, w_{i_2} ) \notin A$ and thus that $v_{c_{i_1}}(c_{i_2}) = 1$. Since $M(c_{i_1}) = \{ c_{i_1}, c_{i_2}, h_{a_1} \}$ it follows that $u_{c_{i_1}}(M) = v_{c_{i_1}}(c_{i_2}) = 1$. Now $\alpha_{b_1}$ has j-envy for $h_{a_2}$, since $u_{\alpha_{b_1}}(M) = 1 < 2 \leq u_{\alpha_{b_1}}(\{ \alpha_{b_3}, \alpha_{b_4} \})$, $v_{\alpha_{b_3}}(h_{a_2}) = 0 < 1 \leq v_{\alpha_{b_3}}(\alpha_{b_1})$, and $v_{\alpha_{b_4}}(h_{a_2}) = 0 < 1 \leq v_{\alpha_{b_4}}(\alpha_{b_1})$. This contradicts the supposition that $M$ is j-envy-free.
+\end{proof}
+
+\begin{lem}
+\label{lem:threed_efr_as_jef_terasym_structureofL}
+If $(N, V)$ contains a j-envy-free matching then $\{ \{ \alpha_{b_1}, \alpha_{b_2} \}, \{ \alpha_{b_3}, \alpha_{b_4} \} \} = \{ \{ l_1, l_2 \}, \{ l_3, l_4 \} \}$.
+\end{lem}
+\begin{proof}
+By Lemma~\ref{lem:threed_efr_as_jef_terasym_lequalsthefourisolated}, $\{ \alpha_{b_1}, \alpha_{b_2}, \alpha_{b_3}, \alpha_{b_4} \} = L$. There are now three possibilities: first that $\{ \{ \alpha_{b_1}, \alpha_{b_2} \}, \{ \alpha_{b_3}, \alpha_{b_4} \} \} = \{ \{ l_1, l_3 \}, \{ l_2, l_4 \} \}$, second that $\{ \{ \alpha_{b_1}, \alpha_{b_2} \}, \{ \alpha_{b_3}, \alpha_{b_4} \} \} = \{ \{ l_1, l_4 \}, \{ l_2, l_3 \} \}$, and third that $\{ \{ \alpha_{b_1}, \alpha_{b_2} \}, \{ \alpha_{b_3}, \alpha_{b_4} \} \} = \{ \{ l_1, l_2 \}, \{ l_3, l_4 \} \}$.
+
+First suppose $\{ \{ \alpha_{b_1}, \alpha_{b_2} \}, \{ \alpha_{b_3}, \alpha_{b_4} \} \} = \{ \{ l_1, l_3 \}, \{ l_2, l_4 \} \}$. Without loss of generality assume that $\alpha_{b_1} = l_1$. Now $l_1$ has j-envy for $h_{a_2}$ since $u_{l_1}(\{ h_{a_1}, l_3 \}) = 1 < 3 = u_{l_1}(\{ l_2, l_4 \})$, $v_{l_2}(h_{a_2}) = 0 < 2 = v_{l_2}(l_1)$, and $v_{l_4}(h_{a_2}) = 0 < 1 = v_{l_4}(l_1)$.
+
+Second suppose $\{ \{ \alpha_{b_1}, \alpha_{b_2} \}, \{ \alpha_{b_3}, \alpha_{b_4} \} \} = \{ \{ l_1, l_4 \}, \{ l_2, l_3 \} \}$. Without loss of generality assume that $\alpha_{b_1} = l_1$. As before, $l_1$ has j-envy for $h_{a_2}$ since $u_{l_1}(\{ h_{a_1}, l_4 \}) = 1 < 3 = u_{l_1}(\{ l_2, l_3 \})$, $v_{l_2}(h_{a_2}) = 0 < 2 = v_{l_2}(l_1)$, and $v_{l_3}(h_{a_2}) = 0 < 1 = v_{l_3}(l_1)$.
+
+It remains that $\{ \{ \alpha_{b_1}, \alpha_{b_2} \}, \{ \alpha_{b_3}, \alpha_{b_4} \} \} = \{ \{ l_1, l_2 \}, \{ l_3, l_4 \} \}$.
+\end{proof}
+
+By Lemma~\ref{lem:threed_efr_as_jef_terasym_structureofL}, either $\{ \alpha_{b_1}, \alpha_{b_2} \} = \{ l_1, l_2 \}$ or $\{ \alpha_{b_1}, \alpha_{b_2} \} = \{ l_3, l_4 \}$. Without loss of generality assume that $\{ \alpha_{b_1}, \alpha_{b_2} \} = \{ l_3, l_4 \}$.
+
+\begin{lem}
+\label{lem:threed_efr_as_jef_terasym_eachcigets3}
+If $(N, V)$ contains a j-envy-free matching $M$ then $u_{c_i}(M) \geq 3$ for each $i$ where $1\leq i \leq 3q$.
+\end{lem}
+\begin{proof}
+Suppose to the contrary that some $1\leq i \leq 3q$ exists where $u_{c_i}(M) < 3$. Then $c_i$ has j-envy for $h_{a_1}$ since $u_{c_i}(M) \leq 2 < 3 = u_{c_i}(\{ l_3, l_4 \})$, $v_{l_3}(h_{a_1}) = 0 < 1 = v_{l_3}(c_i)$, and $v_{l_4}(h_{a_1}) = 0 < 1 = v_{l_4}(c_i)$. This contradicts our supposition that $M$ is j-envy-free.
+\end{proof}
+
+\begin{lem}
+\label{lem:threed_efr_as_jef_terasym_second_direction}
+If $(N, V)$ contains a j-envy-free matching $M$ then $G$ contains a directed triangle packing.
+\end{lem}
+\begin{proof}
+Suppose $(N, V)$ contains a j-envy-free matching $M$. Lemma~\ref{lem:threed_efr_as_jef_terasym_eachcigets3} shows that $u_{c_i}(M) \geq 3$ for each $i$ where $1\leq i \leq 3q$. By construction, it follows that $M(c_i)$ contains two agents $c_j, c_k$ such that $v_{c_i}(c_j) \geq 1$ and $v_{c_i}(c_k) = 2$. Hence $c_k$ corresponds to a vertex $w_k \in W$ where $( w_i, w_k ) \in A$ and, since $G$ is antisymmetric, $( w_k, w_i ) \notin A$. Since $c_i$ was chosen arbitrarily it follows that $\{ w_i, w_j, w_k \}$ is a directed $3$-cycle in $G$. It follows thus that there are exactly $q$ triples in $M$ each containing three agents $\{ c_i, c_j, c_k \}$ where the three corresponding vertices $\{ w_i, w_j, w_k \}$ form a directed $3$-cycle in $G$. From these triples a directed triangle packing $X$ can be easily constructed.
+\end{proof}
+
+% \paragraph{Correctness of the reduction: conclusion}
+
+We have now shown that the 3DR-AS instance $(N, V)$ contains a j-envy-free matching if and only if the DTP instance $G$ contains a directed triangle packing. This shows that the reduction is correct.
+
+\begin{thm}
+\label{thm:threed_efr_as_jef_terasym_npcomplete}
+Deciding if a given instance of 3DR-AS contains a j-envy-free matching is $\NP$-complete, even when preferences are ternary.
+\end{thm}
+\begin{proof}
+It is straightforward to show that this decision problem belongs to $\NP$, since for any two agents $\alpha_i, \alpha_j \in N$ we can test if $\alpha_i$ j-envies $\alpha_j$ in constant time. 
+
+We have presented a polynomial-time reduction from a restricted version of Directed Triangle Packing (DTP), which is $\NP$-complete \cite{CFM05}. Given a directed antisymmetric graph $G$, the reduction constructs an instance $(N, V)$ of 3DR-AS with ternary preferences. Lemmas~\ref{lem:threed_efr_as_jef_terasym_first_direction} and~\ref{lem:threed_efr_as_jef_terasym_second_direction} show that $(N, V)$ contains a j-envy-free matching if and only if $G$ contains a directed triangle packing and thus that this decision problem is $\NP$-hard.
+\end{proof}

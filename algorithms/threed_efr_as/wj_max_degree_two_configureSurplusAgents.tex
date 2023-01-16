@@ -1,0 +1,26 @@
+\begin{algorithm}
+\textbf{Input:}\myhackyalgorithmbox{a set $\hat{S}\subseteq N$ of agents where $|\hat{S}|$ is divisible by three and the maximum degree of the subgraph induced by $\hat{S}$ in $(N, E)$ is $1$}
+\textbf{Output:} a set of $|\hat{S}|/3$ triples
+\smallskip
+\begin{algorithmic}
+\caption{Subroutine~\algorithmfont{configureSurplusAgents} \label{alg:3defr_wje_subroutine_configureSurplusAgents}}
+\State $P \gets $\myhackyalgorithmbox{the set of agents with degree $0$ in the subgraph induced by $\hat{S}$ in $(N, E)$, labelling $P = \{ p_1, p_2, \dots, p_{|P|} \}$}
+\State $\mathcal{Q} \gets $\myhackyalgorithmbox{%
+a set containing each pair of agents $\{ q_i, q_j \} \subset \hat{S}$ where $\{ q_i, q_j \} \in E$, labelling $\mathcal{Q} = \{ Q_1, Q_2, \dots, Q_{|\mathcal{Q}|} \}$}
+\State $\mathcal{X} \gets \varnothing$
+\If{$|\mathcal{Q}| \geq |\hat{S}|/3$}
+    \State $\mathcal{X} \gets \{ q_1, q_2, \dots, q_{|\hat{S}|/3} \}$
+\Else
+    \LineComment{note that $|P| > 2(|\hat{S}|/3 - |Q|)$ since by definition $|P| = |\hat{S}| - 2|\mathcal{Q}|$}
+    \State $\mathcal{W} \gets \{ \{ p_i, p_{2i} \} : 1 \leq i \leq |\hat{S}|/3 - |Q| \}$
+    \State $\mathcal{X} \gets \mathcal{Q} \cup \mathcal{W}$
+\EndIf
+\State \textbf{end if}
+\smallskip
+\State $Y \gets \hat{S} \setminus \bigcup \mathcal{X}$
+\LineComment{Suppose $\mathcal{X} = \{ X_1, X_2, \dots, X_{|\hat{S}|/3} \}$ and $Y = \{ y_1, y_2, \dots, y_{|\hat{S}|/3} \}$. Note that $\mathcal{X}$ is a set of pairs of agents and $Y$ is a set of individual agents. }
+% \LineComment{suppose $X = \{ x_1, x_2, \dots, x_{|\hat{S}|/3} \}$ and $Y = \{ y_1, y_2, \dots, y_{|\hat{S}|/3} \}$}
+% \LineComment{note that $X$ is a set of pairs of agents while $Y$ is a set of individual agents}
+\State \Return $\{ X_i \cup \{ y_i \} : 1 \leq i \leq |\hat{S}|/3 \}$
+\end{algorithmic}
+\end{algorithm}

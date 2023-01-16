@@ -1,0 +1,40 @@
+\begin{tikzpicture}
+% \node[draw=none] (casenumber) at (-1.5, 3.0) {\emph{Case 7}};
+% \draw[help lines,step=0.5] (0,0) grid (14,4);
+\begin{scope}[every node/.style={circle,draw, minimum size=2.4mm}, scale=1.0]
+    \begin{scope}
+        \begin{scope}[shift={(0.0, 0.0)}]
+            \node[thick, circle, label={[label distance=0.05cm]-90:$r_1^4$}] (r14) at (0,0) {};
+            \node[thick, circle, label={[label distance=0.05cm]-90:$r_1^3$}] (r13) at (1,0) {};
+            \node[thick, circle, label={[label distance=0.05cm]90:$r_1^2$}] (r12) at (1,1) {};
+            \node[thick, circle, label={[label distance=0.05cm]90:$r_1^1$}] (r11) at (0,1) {};
+        \end{scope}
+        
+        \begin{scope}[shift={(2.0, 0.0)}]
+            \node[thick, circle, label={[label distance=0.05cm]-90:$r_2^4$}] (r24) at (0,0) {};
+            \node[thick, circle, label={[label distance=0.05cm]-90:$r_2^3$}] (r23) at (1,0) {};
+            \node[thick, circle, label={[label distance=0.05cm]90:$r_2^2$}] (r22) at (1,1) {};
+            \node[thick, circle, label={[label distance=0.05cm]90:$r_2^1$}] (r21) at (0,1) {};
+        \end{scope}
+        
+        \begin{scope}[shift={(4.0, 0.0)}]
+            \node[thick, circle, label={[label distance=0.05cm]-90:$r_3^4$}] (r34) at (0,0) {};
+            \node[thick, circle, label={[label distance=0.05cm]-90:$r_3^3$}] (r33) at (1,0) {};
+            \node[thick, circle, label={[label distance=0.05cm]90:$r_3^2$}] (r32) at (1,1) {};
+            \node[thick, circle, label={[label distance=0.05cm]90:$r_3^1$}] (r31) at (0,1) {};
+        \end{scope}
+    \end{scope}
+    
+    \dashedcontainerthing{r11,r21,r12};
+    \dashedcontainerthing{r22,r31,r32};
+    \dashedcontainerthing{r14,r24,r13};
+    \dashedcontainerthing{r23,r34,r33};
+    % \dashedcontainerthing{r3,r21,r12};
+    
+\end{scope}
+
+\begin{scope}
+    \foreach \from/\to in {r11/r12, r12/r13, r13/r14, r14/r11, r21/r22, r22/r23, r23/r24, r24/r21, r31/r32, r32/r33, r33/r34, r34/r31}
+        \draw [thick] (\from) -- (\to);
+\end{scope}
+\end{tikzpicture}

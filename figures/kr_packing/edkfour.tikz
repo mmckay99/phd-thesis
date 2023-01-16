@@ -1,0 +1,135 @@
+\newcommand\Kfourdraw[4]{%
+    \draw (#1) -- (#2) -- (#3) -- (#4) -- (#1);
+    \draw (#1) -- (#3);
+    \draw (#2) -- (#4);
+}
+
+\tikzset{gradientpath/.style n args={3}{
+    postaction={
+    decorate,
+    decoration={
+    markings,
+    mark=between positions 0 and \pgfdecoratedpathlength step 0.2pt with {
+    \pgfmathsetmacro\myval{multiply(
+        divide(
+        \pgfkeysvalueof{/pgf/decoration/mark info/distance from start}, \pgfdecoratedpathlength
+        ),
+        100
+    )};
+    \pgfsetfillcolor{#3!\myval!#2};
+    \pgfpathcircle{\pgfpointorigin}{#1};
+    \pgfusepath{fill};}
+}}}}
+
+
+\begin{tikzpicture}
+
+% \filldraw[color=red, fill=none](0.0, 0.0) circle (\innerradius);
+% \filldraw[color=red, fill=none](0.0, 0.0) circle (\outerradius);
+
+\begin{scope}[shift={(-4.0, 0.0)}, every node/.style={thick, circle, draw, minimum size=2.4mm, fill=white}]
+
+\def\innerradius{4.4}
+\def\outerradius{6.4}
+
+\node[draw=none] (hijminus1) at (105:{\outerradius}) {};
+\node[draw=none, label={[label distance=0.4cm]90:$a_i^j$}] (aij) at (90:{\outerradius}) {};
+\node[label={[label distance=0.4cm]80:$b_i^j$}] (bij) at (75:{\outerradius}) {};
+\node[draw=none, label={[label distance=0.4cm]70:$c_i^j$}] (cij) at (60:{\outerradius}) {};
+\node[draw=none, label={[label distance=0.4cm]60:$d_i^j$}] (dij) at (45:{\outerradius}) {};
+\node[label={[label distance=0.4cm]50:$e_i^j$}] (eij) at (30:{\outerradius}) {};
+\node[draw=none, label={[label distance=0.4cm]40:$h_i^j$}] (hij) at (15:{\outerradius}) {};
+\node[draw=none] (aij1) at (0:{\outerradius}) {};
+
+\node[draw=none] (yijminus1) at (112.5:{\innerradius}) {};
+\node[label={[label distance=0.4cm]270:$u_i^j$}] (uij) at (90:{\innerradius}) {};
+\node[label={[label distance=0.4cm]247.5:$v_i^j$}] (vij) at (67.5:{\innerradius}) {};
+\node[label={[label distance=0.4cm]225:$w_i^j$}] (wij) at (45:{\innerradius}) {};
+\node[label={[label distance=0.4cm]202.5:$y_i^j$}] (yij) at (22.5:{\innerradius}) {};
+\node[draw=none] (uij1) at (0:{\innerradius}) {};
+
+\path[gradientpath={0.2pt}{black}{white}] (aij) -- (hijminus1);
+\path[gradientpath={0.2pt}{black}{white}] (aij) -- (yijminus1);
+\path[gradientpath={0.2pt}{black}{white}] (uij) -- (yijminus1);
+\path[gradientpath={0.2pt}{black}{white}] (uij) -- (hijminus1);
+% \draw (yijminus1) -- (hijminus1);
+\Kfourdraw{aij}{bij}{uij}{vij}
+\Kfourdraw{cij}{vij}{dij}{wij}
+\draw (bij) -- (cij);
+\draw (dij) -- (eij);
+\draw (wij) -- (yij);
+\draw (dij) -- (yij);
+\draw (wij) -- (eij);
+\draw (eij) -- (yij);
+\draw (eij) -- (hij);
+\draw (yij) -- (hij);
+
+\path[gradientpath={0.2pt}{black}{white}] (hij) -- (aij1);
+\path[gradientpath={0.2pt}{black}{white}] (yij) -- (uij1);
+\path[gradientpath={0.2pt}{black}{white}] (hij) -- (uij1);
+\path[gradientpath={0.2pt}{black}{white}] (yij) -- (aij1);
+
+\draw plot [smooth] coordinates {(aij) ($ (bij) !.4! (vij) $) (cij)};
+\draw plot [smooth] coordinates {(dij) ($ (eij) !.4! (yij) $) (hij)};
+
+% redraw a,c,d,h
+\node (aijfake) at (aij) {};
+\node (cijfake) at (cij) {};
+\node (dijfake) at (dij) {};
+\node (hijfake) at (hij) {};
+
+\begin{scope}[shift={(22.5:3.8)}]
+\begin{scope}[shift={(-67.5:2.6)}]
+\node[label={[label distance=0.4cm]-67.5:$w_r$}] (wr) at (30:{\outerradius}) {};
+\end{scope}
+\end{scope}
+
+\begin{scope}[shift={(22.5:2.6)}]
+\node[label={[label distance=0.4cm]112.5:$s_r^1$}] (sr1) at (30:{\outerradius}) {};
+\node[label={[label distance=0.4cm]-67.5:$t_r^1$}] (tr1) at (15:{\outerradius}) {};
+\end{scope}
+
+\begin{scope}[shift={(22.5:5.0)}]
+\node[label={[label distance=0.4cm]112.5:$s_r^2$}] (sr2) at (30:{\outerradius}) {};
+\node[label={[label distance=0.4cm]-67.5:$t_r^2$}] (tr2) at (15:{\outerradius}) {};
+\end{scope}
+
+\draw (sr1) -- (tr1) -- (wr) -- (tr2) -- (sr2) -- cycle;
+\draw (tr1) -- (sr2);
+\draw (tr2) -- (sr1);
+% alternate idea for curved lines
+% \path (wr) edge [bend right=10] (sr1);
+% \path (wr) edge [bend left=10] (sr2);
+\draw (wr) -- (sr1);
+\draw (wr) -- (sr2);
+\draw (sr1) -- (sr2);
+\end{scope}
+
+
+% clause gadget
+
+% \begin{scope}[shift={(4.0, 0.0)}]
+% \draw[help lines] (0,0) grid (4,4);
+% \end{scope}
+
+
+% draw the gradient, based on https://tex.stackexchange.com/q/606045
+% \begin{scope}
+% \draw[red] (0,0) ++(90:\outerradius) arc (90:105:\outerradius);
+% \def\startangle{90}
+% \def\changeangle{22.5}
+% \def\inter{1}
+% \begin{scope}
+%     \foreach \i in {0,\inter,...,\changeangle}
+%         {
+%         \pgfmathsetmacro\ix{\i+\startangle}
+%         \pgfmathsetmacro\colorvalue{\i/\changeangle}
+%         \definecolor{slicecolor}{rgb}{\colorvalue,\colorvalue,\colorvalue}
+%         \pgfmathsetmacro\jx{\i+\inter+\startangle}
+%         \filldraw[thin,red,fill opacity=\colorvalue, draw=none] (0:0) -- ((\ix:\outerradius) arc (\ix:\jx:\outerradius) -- (0:0) -- cycle;
+%         }
+% \end{scope}
+% \end{scope}
+
+
+\end{tikzpicture}

@@ -1,0 +1,55 @@
+\begin{algorithm}
+\textbf{Input:}\myhackyalgorithmbox{an instance $(N, E)$ of 3DR-AS with binary and symmetric preferences and maximum degree $2$}\\
+\textbf{Output:} either a wj-envy-free matching $M$ or ``belongs to \iwjnomaxdegreetwofamily/''
+\smallskip
+\caption{Algorithm~\algorithmfont{wjPathsCycles} \label{alg:3defr_wje_paths_cycles}}
+% \begin{adjustwidth}{1.75em}{}
+\begin{algorithmic}
+\State $M \gets \varnothing$; $\hat{T} \gets \varnothing$; $\hat{S} \gets \varnothing$
+\State $\mathcal{C} \gets$ the set of all connected components in $(N, E)$ that are not $4$-cycles
+\State $(T, S) \gets \algorithmfont{nonC4Components}(\mathcal{C})$
+\State $\mathcal{R} \gets$ the set of $4$-cycles in $(N, E)$, labelling $\mathcal{R} = \{ R_1, R_2, \dots, R_{|\mathcal{R}|} \}$
+\State $l \gets 0$
+
+\If{$|\mathcal{R}| \bmod 3 = 2$}
+    \If{$|S|\geq 4$}
+        \State $\{ w_1, w_2, w_3, w_4 \} \gets \algorithmfont{pickLowDegree}(S, 4)$
+        \State $\hat{S} \gets S \setminus \{ w_1, w_2, w_3, w_4 \}$
+        \State $\hat{T} \gets T$
+    \ElsIf{$|T| \geq 1$}
+        \LineComment{note that $|S|=1$ by Proposition~\ref{prop:threed_efr_as_wjenvy_maxdeg2_algo_rmod3is2_specialcase}}
+        \State $w_1 \gets$ the agent in $S$
+        \State $\hat{t} \gets$ some triple in $T$
+        \State $\{ w_2, w_3, w_4 \} \gets \hat{t}$
+        \State $\hat{S} \gets \varnothing$
+        \State $\hat{T} \gets T \setminus \hat{t}$
+    \Else
+        \State \Return ``$(N, E)$ belongs to \iwjnomaxdegreetwofamily/''
+    \EndIf
+    \State \textbf{end if}
+    \smallskip
+    
+    \State $M \gets M \cup \algorithmfont{oneC4TwoSingles}(R_1, w_1, w_2) \cup \algorithmfont{oneC4TwoSingles}(R_2, w_3, w_4)$
+    \State $l \gets 2$
+\ElsIf{$|\mathcal{R}| \bmod 3 = 1$} 
+    \LineComment{note that $|S| \geq 2$ by Proposition~\ref{prop:threed_efr_as_wjenvy_maxdeg2_algo_mod3is1}}
+    \State $\{ w_1, w_2 \} \gets \algorithmfont{pickLowDegree}(S, 2)$
+    \State $\hat{S} \gets S \setminus \{ w_1, w_2 \}$
+    \State $\hat{T} \gets T$
+    \State $M \gets M \cup \algorithmfont{oneC4TwoSingles}(R_1, w_1, w_2)$
+    \State $l \gets 1$
+\Else 
+    \LineComment{it must be that $|\mathcal{R}| \bmod 3 = 0$} 
+    \State $\hat{S} \gets S$
+    \State $\hat{T} \gets T$
+\EndIf
+\State \textbf{end if}
+\smallskip
+
+\LineComment{it must be that $3$ divides $(|\mathcal{R}| - l)$} 
+\State $\mathcal{R}' \gets \{ R_{l+1}, R_{l+2}, \dots, R_{|\mathcal{R}|} \}$
+\State $M \gets M \cup \algorithmfont{multipleOfThreeC4s}(\mathcal{R}') \cup \hat{T} \cup \algorithmfont{configureSurplusAgents}(\hat{S})$
+\State \Return $M$
+\end{algorithmic}
+% \end{adjustwidth}
+\end{algorithm}

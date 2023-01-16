@@ -1,0 +1,592 @@
+% Replace "oneside" with "twoside" to set the gutter correctly for two-sided printing.
+% Add "nogutter" option for digital copy (without binding offsets).
+% If printed copy is twoside, use [twoside,nogutter] for digital copy.
+\documentclass[oneside,nogutter]{style/glasgowthesis}
+% \documentclass[twoside]{style/glasgowthesis}
+\makeatletter
+\newcommand*{\DetectThesisClassDigitalMode}{%
+    \IfSubStr{@classoptionslist}{nogutter=true}{true}{false}%
+}
+\makeatother
+
+% incredible fix by Joseph Wright https://tex.stackexchange.com/a/447004 which corrects an issue I think is caused by subscriptcorrection option to newtxmath in combination with labels with underscores (e.g. bibliography entries)
+\makeatletter
+\edef\savedcodes{\catcode`\noexpand\_=\the\catcode`\_}
+\edef\@tempa{\csname opt@newtxmath.sty\endcsname}
+\def\@tempb{{subscriptcorrection}}
+\expandafter\expandafter\expandafter
+  \in@\expandafter\@tempb\expandafter{\@tempa}
+\ifin@
+  \catcode`\_=12 %
+\fi
+\makeatother
+
+% this code can help with labels changed? lost source
+% \makeatletter
+% \def\@testdef #1#2#3{%
+%   \def\reserved@a{#3}\expandafter \ifx \csname #1@#2\endcsname
+%  \reserved@a  \else
+% \typeout{^^Jlabel #2 changed:^^J%
+% \meaning\reserved@a^^J%
+% \expandafter\meaning\csname #1@#2\endcsname^^J}%
+% \@tempswatrue \fi}
+
+% Some suggestions of Andrew T. Young from https://web.archive.org/web/20220714055623/https://aty.sdsu.edu/bibliog/latex/LaTeXtoPDF.html - they seem good to me!
+\renewcommand{\topfraction}{0.9} % max fraction of floats at top
+\renewcommand{\bottomfraction}{0.8}	% max fraction of floats at bottom
+%   Parameters for TEXT pages (not float pages):
+\setcounter{topnumber}{2}
+\setcounter{bottomnumber}{2}
+\setcounter{totalnumber}{4} % 2 may work better
+\setcounter{dbltopnumber}{2} % for 2-column pages
+\renewcommand{\dbltopfraction}{0.9}	% fit big float above 2-col. text
+\renewcommand{\textfraction}{0.07} % allow minimal text w. figs
+% Parameters for FLOAT pages (not text pages):
+\renewcommand{\floatpagefraction}{0.7} % require fuller float pages
+% N.B.: floatpagefraction MUST be less than topfraction !!
+\renewcommand{\dblfloatpagefraction}{0.7} % require fuller float pages
+
+% \widowpenalty10000
+% \clubpenalty10000
+
+% this makes the list of algorithms look like the list of figures
+% https://tex.stackexchange.com/a/374686
+% \usepackage{etoolbox}
+\newlength\insanelyhugespacebetweenchapters
+\newlength\insanelyhugespacebetweenalgorithms
+\setlength{\insanelyhugespacebetweenchapters}{15pt}
+\setlength{\insanelyhugespacebetweenalgorithms}{5pt}
+\makeatletter
+\patchcmd{\@chapter}% <cmd>
+  {\chaptermark{#1}}% <search>
+  {\chaptermark{#1}%
+  \addtocontents{loa}{\protect\addvspace{\insanelyhugespacebetweenchapters}}}% replace
+  {}{}% <success><failure>
+\makeatother
+\AtEndEnvironment{algorithm}{%
+  \addtocontents{loa}{\protect\addvspace{\insanelyhugespacebetweenalgorithms}}%
+}
+
+\usepackage[pagebackref,
+            pdftex,
+            pdfusetitle,
+            linktoc=all]{hyperref}
+\renewcommand*{\backref}[1]{}
+\renewcommand*{\backrefalt}[4]{
+    \ifcase #1 (not cited)%
+          \or (cited on page~#2)%
+          \else (cited on pages~#2)%
+    \fi%
+    }
+
+\usepackage[noend]{algpseudocode}
+\usepackage[chapter]{algorithm}
+\usepackage{complexity}
+\usepackage{graphics}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{mcaption}
+\usepackage[font=scriptsize]{subfig}
+\usepackage{bookmark}
+\usepackage{enumitem}
+\usepackage{color}
+\usepackage{changebar}
+\usepackage{soul}
+\usepackage{afterpage}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor,colortbl,bm,graphicx,adjustbox}
+\usepackage{thmtools}
+\usepackage{thm-restate}
+\usepackage{xspace}
+\usepackage{listofitems}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{bigdelim}
+\usepackage{booktabs}
+\usepackage{relsize}
+\usepackage{mathtools}
+\usepackage{readarray}
+\usepackage{longtable}
+
+% \setlength{\headheight}{28pt}
+
+\declaretheorem[name=Theorem, numberwithin=chapter]{thm}
+\declaretheorem[name=Lemma, numberwithin=chapter]{lem}
+\declaretheorem[name=Proposition, numberwithin=chapter]{prop}
+\declaretheorem[style=remark, numbered=no, name=Proof sketch]{proofsketch}
+\declaretheorem[style=remark, numberwithin=chapter, name=Definition]{definition}
+\declaretheorem[name=Model, numberwithin=chapter]{model}
+\declaretheorem[name=Problem, numberwithin=chapter]{pr}
+\declaretheorem[name=Observation, numberwithin=chapter]{observation}
+\declaretheorem[name=Corollary, numberwithin=chapter]{cor}
+
+% used for my own symbol solution, adapted from https://tex.stackexchange.com/a/350947
+\newcommand{\mysymbolfirstusedefinition}[2]{%
+    \phantomsection%
+    \label{#1}%
+    \hypertarget{#1}{#2}%
+}
+\newcommand{\mysymbolpageref}[1]{%
+    \hyperlink{#1}{\pageref{#1}}
+}
+
+\declaretheoremstyle[
+notebraces={}{},
+headpunct={},
+headformat={\NAME\ \NUMBER.~\NOTE},
+headfont=\bfseries, 
+postheadhook = {\hspace*{0pt}\vspace*{-3pt}},
+% postheadspace = \newline, 
+spaceabove = 0.5cm, 
+spacebelow = 0.5cm]{myproblemstyle}
+\declaretheorem[style=myproblemstyle, numberwithin=chapter, name=Problem]{myproblem}
+
+\declaretheoremstyle[
+notebraces={}{},
+headpunct={},
+headformat={\NAME\ \NUMBER.~\NOTE},
+headfont=\itshape, 
+postheadhook = {\hspace*{0pt}\vspace*{-3pt}},
+% postheadspace = \newline, 
+spaceabove = 0.5cm, 
+spacebelow = 0.5cm]{mydefinitionstyle}
+\declaretheorem[style=mydefinitionstyle, numberwithin=chapter, name=Definition]{mydefinition}
+
+\declaretheoremstyle[
+notebraces={}{},
+headpunct={},
+headformat={\NAME\ \NUMBER~{\normalfont(\cite{HedonicGamesHOCSC})}.~\NOTE},
+headfont=\itshape, 
+postheadhook = {\hspace*{0pt}\vspace*{-3pt}},
+% postheadspace = \newline, 
+spaceabove = 0.5cm, 
+spacebelow = 0.5cm]{mydefinitionofhedonicgamestyle}
+\declaretheorem[style=mydefinitionofhedonicgamestyle, numberwithin=chapter, numberlike=mydefinition, name=Definition]{mydefinitionofhedonicgame}
+
+% tells relsize package what the smallest acceptable font size is
+\renewcommand\RSsmallest{5.2pt}
+\newcommand{\algorithmfont}[1]{\textsf{\relscale{0.9}#1}}
+
+\algdef{S}[WHILE]{WhileNoDo}[1]{\algorithmicwhile\ #1}%
+
+\newcommand{\myoplus}{\oplus}
+
+\newcommand{\inp}{\textit{Input: }} 
+\newcommand{\outp}{\textit{Output: }}
+\newcommand{\ques}{\textit{Question: }}
+\newcommand{\instance}{\textit{Instance: }}
+\newcommand{\solution}{\textit{Solution: }}
+\newcommand{\measure}{\textit{Measure: }}
+
+\newcommand{\vdkr}{\texorpdfstring{VDK\textsubscript{$r$}}{VDKr}\xspace}
+\newcommand{\edkr}{\texorpdfstring{EDK\textsubscript{$r$}}{VDKr}\xspace}
+\newcommand{\vdktwo}{\texorpdfstring{VDK\textsubscript{$2$}}{VDK2}\xspace}
+\newcommand{\edktwo}{\texorpdfstring{EDK\textsubscript{$2$}}{EDK2}\xspace}
+\newcommand{\vdkthree}{\texorpdfstring{VDK\textsubscript{$3$}}{VDK3}\xspace}
+\newcommand{\edkthree}{\texorpdfstring{EDK\textsubscript{$3$}}{EDK3}\xspace}
+\newcommand{\vdkfour}{\texorpdfstring{VDK\textsubscript{$4$}}{VDK4}\xspace}
+\newcommand{\edkfour}{\texorpdfstring{EDK\textsubscript{$4$}}{EDK4}\xspace}
+\newcommand{\vdkfive}{\texorpdfstring{VDK\textsubscript{$5$}}{VDK5}\xspace}
+\newcommand{\edkfive}{\texorpdfstring{EDK\textsubscript{$5$}}{EDK5}\xspace}
+
+\def\mistfvariant/{MIS-3-TF}
+\def\maxtwosatthreeshort/{M2S3}
+\def\maxtwosatthree/{Max $\text{2SAT}^{\leq 3}$}
+\def\porschenxsatvariant/{$\text{X3SAT}_{+}^{\,=3}$}
+
+\def\iwjnomaxdegreetwofamily/{$\mathcal{I}^\star$}
+
+\def\glossarychaptertitle/{Glossary of abbreviations}
+
+% partially copied from the source of tocloft so the glossary matches the toc
+\makeatletter
+\newcommand \myglossarydotfill {\leavevmode \cleaders \hbox{$\m@th\mkern 4.5mu\hbox{.}\mkern 4.5mu$}\hfill}
+\makeatother
+
+% \hbox{$\m@th\mkern #1 mu\hbox{\cftdot}\mkern #1 mu$}\hfill
+
+% makes the vertical spacing between fracs nicer
+% https://tex.stackexchange.com/a/55180
+\usepackage{mathtools}
+\makeatletter
+\newlength\minalignvsep
+\def\align@preamble{%
+  &\hfil
+    \setboxz@h{\@lign$\m@th\displaystyle{##}$}%
+    \ifnum\row@>\@ne
+    \ifdim\ht\z@>\ht\strutbox@
+    \dimen@\ht\z@
+    \advance\dimen@\minalignvsep
+    \ht\strutbox\dimen@
+    \fi\fi
+    \strut@
+    \ifmeasuring@\savefieldlength@\fi
+    \set@field
+    \tabskip\z@skip
+  &\setboxz@h{\@lign$\m@th\displaystyle{{}##}$}%
+    \ifnum\row@>\@ne
+    \ifdim\ht\z@>\ht\strutbox@
+    \dimen@\ht\z@
+    \advance\dimen@\minalignvsep
+    \ht\strutbox@\dimen@
+    \fi\fi
+    \strut@
+    \ifmeasuring@\savefieldlength@\fi
+    \set@field
+    \hfil
+    \tabskip\alignsep@
+}
+\makeatother
+\minalignvsep.3em
+
+% define mystrut and undermat
+% https://tex.stackexchange.com/q/374985
+\newcommand*\mystrut[1]{\vrule width0pt height0pt depth#1\relax}
+\newcommand\undermat[2]{%	
+  \makebox[0pt][l]{$\smash{\underbrace{\mystrut{1em}\phantom{%	
+    \begin{matrix}#2\end{matrix}}}_{\text{$#1$}}}$}#2}
+    
+% allow math mode commas to line break
+% https://tex.stackexchange.com/a/19100
+\AtBeginDocument{%
+  \mathchardef\mathcomma\mathcode`\,
+  \mathcode`\,="8000 
+}
+{\catcode`,=\active
+  \gdef,{\mathcomma\discretionary{}{}{}}
+}
+
+% made this myself to allow for indented multiline assignments in algorithms
+% based on various stackoverflow answers
+\usepackage{silence}
+\WarningFilter{etex}{Extended allocation}
+\usepackage{linegoal}
+\makeatletter
+\algnewcommand{\myhackyalgorithmbox}[1]{ \begin{tabularx}{\linegoal}[t]{@{}X@{}} #1\end{tabularx}}
+\makeatother
+
+% line comments in pseudocode
+\makeatletter
+\algnewcommand{\LineComment}[1]{\State \(\triangleright\) \myhackyalgorithmbox{#1}
+}
+\makeatother
+
+\algrenewcommand\algorithmicindent{1.0em}
+
+% using this in algorithms to control multiline blocks of text, see https://tex.stackexchange.com/a/432874 and its usage in the algorithms
+\newcommand{\myalgorithmparboxwidth}{\textwidth-\algorithmicindent-\widthof{$\mathcal{Q} \gets$}}
+
+% made this myself
+\newcommand{\paranote}[2] {
+\begin{tcolorbox}[enhanced, parbox=false, colback=#1, drop shadow]
+    \begin{minipage}{\textwidth}
+        {\sffamily Note: #2}
+    \end{minipage}
+\end{tcolorbox}
+\medskip
+}
+
+% make it so \paragraphs are numbered and get a newline after
+\usepackage{titlesec}
+\titleformat{\paragraph}
+{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+\setcounter{secnumdepth}{5}
+
+% define "struts", as suggested by Claudio Beccari in
+% a piece in TeX and TUG News, Vol. 2, 1993.
+% https://tex.stackexchange.com/questions/65127/extra-vertical-space-after-hline-causes-a-gap-in-the-right-border-of-an-array
+\newcommand\Tstrut{\rule{0pt}{2.6ex}}         % = `top' strut
+\newcommand\Bstrut{\rule[-0.9ex]{0pt}{0pt}}   % = `bottom' strut
+
+\usepackage{tikz}
+\usetikzlibrary{arrows,decorations.markings,decorations.pathreplacing,patterns,matrix,calc,positioning,backgrounds,arrows.meta,shapes,decorations.markings,fadings,fpu}
+
+\newcommand\solutionconceptsdiagramarrow{-Straight Barb[length=1.4mm]}
+
+\tikzset{edge from parent/.append style={\solutionconceptsdiagramarrow}}
+
+% https://tex.stackexchange.com/a/529159/194703, this helps avoid a particular 'dimension too large' error
+\makeatletter
+\tikzset{use fpu reciprocal/.code={%
+\def\pgfmathreciprocal@##1{%
+    \begingroup
+    \pgfkeys{/pgf/fpu=true,/pgf/fpu/output format=fixed}%
+    \pgfmathparse{1/##1}%
+    \pgfmath@smuggleone\pgfmathresult
+    \endgroup
+}}}%
+\makeatother
+
+\definecolor{enclosure_color}{rgb}{0.6,0.6.,0.6}
+\definecolor{figurecolourschemewt1_adjusted}{rgb}{0.8,0.8,0.8}
+\definecolor{figurecolourschemewt1}{rgb}{0.5,0.5,0.5}
+\definecolor{figurecolourschemewt2}{rgb}{0.5,0.0,0.5}
+\definecolor{figurecolourschemewt3}{rgb}{0,0,0}
+\definecolor{figurecolourschemewt4}{rgb}{0,0,1}
+\definecolor{figurecolourschemewt5}{rgb}{0,1,0}
+\definecolor{figurecolourschemewt6}{rgb}{1,0,0}
+
+\newcommand{\figurecolorschemewtonename}{grey}
+\newcommand{\figurecolorschemewttwoname}{purple}
+\newcommand{\figurecolorschemewtthreename}{black}
+\newcommand{\figurecolorschemewtfourname}{blue}
+\newcommand{\figurecolorschemewtfivename}{green}
+\newcommand{\figurecolorschemewtsixname}{red}
+
+\newcommand{\myfirstchoicearrow}{%
+    % filled arrow
+    % \begin{scope}[yscale=0.7, xscale=1.1]
+    %     \filldraw (0.0,0.0) -- (-0.125cm, 0.15cm) -- (-0.125cm, -0.15cm) -- (0.0, 0.0);
+    % \end{scope}
+    \draw (0.0,0.0) -- (-0.125cm, 0.15cm);
+    \draw (0.0, 0.0) -- (-0.125cm, -0.15cm);
+}
+
+\newcommand{\myvaluationarrow}{%
+    \draw (0.0,0.0) -- (-0.125cm, 0.15cm);
+    \draw (0.0, 0.0) -- (-0.125cm, -0.15cm);
+}
+
+\newcommand{\myvaluationarrowreversed}{%
+\begin{scope}[xscale=-1.0]
+\myvaluationarrow
+\end{scope}
+}
+
+\tikzset{firstchoicearrow/.style={decoration={
+  markings,
+  mark=at position .5 with {\myfirstchoicearrow}
+  }
+  ,postaction={decorate}}}
+
+\tikzset{farrow/.style={decoration={
+  markings,
+  mark=at position 1.3cm with {\myvaluationarrow},
+  }
+  ,postaction={decorate}}}
+
+\tikzset{darrow/.style={decoration={
+  markings,
+  mark=at position .2 with {\myvaluationarrowreversed},
+  mark=at position .8 with {\myvaluationarrow},
+  }
+  ,postaction={decorate}}}
+
+\tikzset{darrow12/.style={decoration={
+  markings,
+  mark=at position {0.2*\pgfdecoratedpathlength} with {\myvaluationarrowreversed},
+  mark=at position {0.8*\pgfdecoratedpathlength-0.4mm} with {\myvaluationarrow},
+  mark=at position {0.8*\pgfdecoratedpathlength+0.4mm} with {\myvaluationarrow},
+  }
+  ,postaction={decorate}}}
+  
+\tikzset{darrow22/.style={decoration={
+  markings,
+  mark=at position {0.2*\pgfdecoratedpathlength-0.4mm} with {\myvaluationarrowreversed},
+  mark=at position {0.2*\pgfdecoratedpathlength+0.4mm} with {\myvaluationarrowreversed},
+  mark=at position {0.8*\pgfdecoratedpathlength-0.4mm} with {\myvaluationarrow},
+  mark=at position {0.8*\pgfdecoratedpathlength+0.4mm} with {\myvaluationarrow},
+%   mark=between positions 0.8 and 1.0 step 3mm with {\arrow{angle 90[width=2.5mm]}},
+  }
+  ,postaction={decorate}}}
+
+\tikzset{-->-/.style={decoration={
+  markings,
+  mark=at position .8 with {\myvaluationarrow}},postaction={decorate}}}
+  
+\tikzset{-<--/.style={decoration={
+  markings,
+  mark=at position .8 with {\myvaluationarrow}},postaction={decorate}}}
+  
+\tikzset{->-/.style={decoration={
+  markings,
+  mark=at position .5 with {\myvaluationarrow} },postaction={decorate}}}
+
+\tikzset{--->/.style={decoration={
+  markings,
+  mark=at position 1 with {\myvaluationarrow} },postaction={decorate}}}
+
+\tikzset{
+  nat/.style     = {fill=white,draw=none,ellipse,minimum size=0.3cm,inner sep=1pt},
+}
+
+% this is to fix an issue with tikz angles
+% see https://tex.stackexchange.com/a/260833
+\makeatletter
+\tikzset{
+  reset label anchor/.code={%
+    \let\tikz@auto@anchor=\pgfutil@empty
+    \def\tikz@anchor{#1}
+  },
+  reset label anchor/.default=center,
+  every label/.append style={reset label anchor}
+}
+\makeatother
+
+% convex hull stuff (used for dashedcontainerthing), note requires \usepackage{readarray} https://tex.stackexchange.com/questions/70999/highlight-a-group-of-nodes-in-a-tikz-tree/71000#71000
+\pgfdeclarelayer{background}
+\pgfsetlayers{background,main}
+\newcommand{\convexpath}[2]{
+[   
+    create hullnodes/.code={
+        \global\edef\namelist{#1}
+        \foreach [count=\counter] \nodename in \namelist {
+            \global\edef\numberofnodes{\counter}
+            \node at (\nodename) [draw=none,name=hullnode\counter] {};
+        }
+        \node at (hullnode\numberofnodes) [name=hullnode0,draw=none] {};
+        \pgfmathtruncatemacro\lastnumber{\numberofnodes+1}
+        \node at (hullnode1) [name=hullnode\lastnumber,draw=none] {};
+    },
+    create hullnodes
+]
+($(hullnode1)!#2!-90:(hullnode0)$)
+\foreach [
+    evaluate=\currentnode as \previousnode using \currentnode-1,
+    evaluate=\currentnode as \nextnode using \currentnode+1
+    ] \currentnode in {1,...,\numberofnodes} {
+  let
+    \p1 = ($(hullnode\currentnode)!#2!-90:(hullnode\previousnode)$),
+    \p2 = ($(hullnode\currentnode)!#2!90:(hullnode\nextnode)$),
+    \p3 = ($(\p1) - (hullnode\currentnode)$),
+    \n1 = {atan2(\y3,\x3)},
+    \p4 = ($(\p2) - (hullnode\currentnode)$),
+    \n2 = {atan2(\y4,\x4)},
+    \n{delta} = {-Mod(\n1-\n2,360)}
+  in 
+    {-- (\p1) arc[start angle=\n1, delta angle=\n{delta}, radius=#2] -- (\p2)}
+}
+-- cycle
+}
+\newcommand\dashedcontainerthing[1]{
+\readlist*\nodes{#1}%
+\begin{scope}[on background layer]
+    \ifthenelse{\nodeslen>1}{
+        \draw[thick, densely dashed] \convexpath{#1}{0.353cm};
+        \fill[white] \convexpath{#1}{9.6pt};
+    }{
+        \node[draw, thick, circle, densely dashed, minimum size=20pt] (anonymousnode) at (\nodes[1]) {};
+    }
+\end{scope}
+}
+
+\newtcolorbox{ipmodelbox}[1][]{ams align,
+    colback=white, %yellow!10!white,
+    colframe=black, %red!50!black,
+    top=4pt,bottom=12pt,left=-32pt,right=18pt,
+    boxsep=0pt,
+    boxrule=0.5pt,
+    arc=0pt,
+    outer arc=0pt,
+    code={}
+}
+
+% Fancy Header and Footer
+\usepackage{fancyhdr}                    
+\pagestyle{fancy}                       
+\fancyfoot{}                            
+\renewcommand{\headrulewidth}{0.2pt}
+
+\ifdefined\DetectThesisClassDigitalMode
+    \fancyhead[L,RO]{\bfseries\thepage}    
+    \fancyhead[LO]{\bfseries\nouppercase{\rightmark}}
+\else
+    % Page number (boldface): left-even, right-odd
+    \fancyhead[LE,RO]{\bfseries\thepage}    
+    % Chapter in the right on even pages
+    %\fancyhead[RE]{\bfseries\nouppercase{\leftmark}}
+    
+    % Section in the left on odd pages
+    \fancyhead[LO]{\bfseries\nouppercase{\rightmark}}     
+\fi
+
+\setlength{\headheight}{15pt}        % adjust for fancyhdr warning
+% \pagestyle{fancy}                    % clear all header and footer fields
+% \fancyhf{}
+% \fancyhead[L]{\slshape \rightmark}   % put section heading left
+% \fancyhead[R]{\thepage}              % put page number right
+
+% % redefine "plain" to fix page numbering (on first page of chapters)
+\fancypagestyle{plain} { %
+   \fancyhf{}                           % clear all header and footer fields
+   \fancyhead[L]{\slshape \rightmark}  % no section heading for these pages
+   \fancyhead[R]{\bfseries\thepage}
+   \renewcommand{\headrulewidth}{0pt}   % no headrule for these pages
+   \renewcommand{\footrulewidth}{0pt}
+}
+
+% checkmarks
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+\newcommand{\xmark}{\ding{55}}%
+\newcommand{\note}[1]{\emph{\textbf{Note:}[#1]}}
+
+% \usepackage[color=gray!2]{draftwatermark}
+% \SetWatermarkText{wien}
+
+% hides the contents of proof environments
+% \usepackage{environ}
+% \NewEnviron{killcontents}{}
+% \let\proof\killcontents
+% \let\endproof\endkillcontents
+
+\newcommand{\showacknowledgements}{}
+\ifdefined\showacknowledgements%
+    \usepackage{fetamont}
+    \usepackage[T1]{fontenc}
+    \newcommand{\ackfont}[1]{{\itshape\ffmfamily\relscale{1.22} #1}}
+\fi
+
+\begin{document}
+
+\pagestyle{empty}
+\pagenumbering{gobble}
+\setcounter{tocdepth}{2}
+
+\newcommand{\ThesisTitle}{Algorithmic Aspects of Fixed-Size~Coalition Formation}
+\newcommand{\AuthorName}{Michael McKay}
+% \input{writing_conventions}
+\input{preliminaries/cover}
+\cleardoublepage
+\input{preliminaries/abstract}
+\newpage
+\renewcommand{\listalgorithmname}{List of Pseudocode}
+\tableofcontents
+% \listoftables
+% \listoftheorems
+\listoffigures
+\listofalgorithms
+\newpage
+\input{preliminaries/acknowledgements}
+\newpage
+\input{preliminaries/declaration_publications}
+\cleardoublepage
+
+% Reset page numbering
+\pagestyle{fancy}
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+% Number chapter bookmarks
+\bookmarksetup{numbered}
+
+\input{chapters/introduction/introduction}
+\input{chapters/lit_review/lit_review}
+\input{chapters/three_dsm_cyc/three_dsm_cyc}
+\input{chapters/threed_sr_b/threed_sr_b}
+\input{chapters/threed_sr_w/threed_sr_w}
+\input{chapters/threed_sr_as/threed_sr_as}
+\input{chapters/threed_efr_as/threed_efr_as}
+\input{chapters/kr_packing/kr_packing}
+\input{chapters/conclusion}
+
+\input{preliminaries/glossary}
+% \appendix
+% \input{chapters/appendix}
+
+\newpage
+\bibliographystyle{bibliography/vancouver_modified}
+\bibliography{bibliography/final}
+\addcontentsline{toc}{chapter}{Bibliography}
+\end{document}

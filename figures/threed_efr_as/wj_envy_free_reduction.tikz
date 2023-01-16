@@ -1,0 +1,74 @@
+\begin{tikzpicture}
+% \node[draw=none] (casenumber) at (-1.5, 3.0) {\emph{Case 7}};
+% \draw[help lines,step=0.5] (0,0) grid (14,4);
+\begin{scope}[every node/.style={circle,draw, minimum size=2.4mm}, scale=0.95]
+    \begin{scope}
+        \begin{scope}[shift={(-5.5, 0.0)}]
+            \node[thick, circle, label={[label distance=0.4cm]0:$w_i^1$}] (v1) at (0,{1.0*1.4}) {};
+            \node[thick, circle, label={[label distance=0.4cm]270:$w_i^2$}] (v2) at ({-0.866*1.4},{-0.5*1.4}) {};
+            \node[thick, circle, label={[label distance=0.4cm]270:$w_i^3$}] (v3) at ({0.866*1.4},{-0.5*1.4}) {};]
+            
+            \node[draw=none] (v1a) at (0,{1.0*2.5}) {};
+            \node[draw=none] (v2a) at ({-0.866*2.5},{-0.5*2.5}) {};
+            \node[draw=none] (v3a) at ({0.866*2.5},{-0.5*2.5}) {};
+            
+            % \begin{scope}[scale=2, shift={(0.0, 0.433)}]
+            % \draw [rounded corners=6.5mm, densely dashed] (0.0, 0.0)--(-0.75, -1.3)--(0.75, -1.3)--cycle;
+            % \end{scope}
+        \end{scope}
+        
+        \begin{scope}[shift={(0.0, 0.0)}]
+            \node[thick, circle, label={[label distance=0.4cm]0:$d_r^1$}] (dr1) at (0,{1.0*1.4}) {};
+            \node[thick, circle, label={[label distance=0.4cm]270:$d_r^2$}] (dr2) at ({-0.866*1.4},{-0.5*1.4}) {};
+            \node[thick, circle, label={[label distance=0.4cm]270:$d_r^3$}] (dr3) at ({0.866*1.4},{-0.5*1.4}) {};]
+            \node[thick, circle, label={[label distance=0.4cm]30:$d_r^4$}] (dr4) at ({0.0},{0.0}) {};]
+            
+            \node[draw=none] (dr1a) at (0,{1.0*2.5}) {};
+            \node[draw=none] (dr2a) at ({-0.866*2.5},{-0.5*2.5}) {};
+            \node[draw=none] (dr3a) at ({0.866*2.5},{-0.5*2.5}) {};
+            
+            % \begin{scope}[scale=2, shift={(0.0, 0.433)}]
+            % \draw [rounded corners=6.5mm, densely dashed] (0.0, 0.0)--(-0.75, -1.3)--(0.75, -1.3)--cycle;
+            % \end{scope}
+        \end{scope}
+        
+        \begin{scope}[shift={(5.5, 0.0)}]
+            \node[thick, circle, label={[label distance=0.4cm]90:$g_{4i-1}$}] (gi1) at (0,{1.0*1.4}) {};
+            \node[thick, circle, label={[label distance=0.4cm]270:$g_{4i-2}$}] (gi2) at ({-0.866*1.4},{-0.5*1.4}) {};
+            \node[thick, circle, label={[label distance=0.4cm]270:$g_{4i-3}$}] (gi3) at ({0.866*1.4},{-0.5*1.4}) {};]
+            \node[thick, circle, label={[label distance=0.4cm]30:$g_{4i}$}] (gi4) at ({0.0},{0.0}) {};]
+            
+            % \node[draw=none] (dr1a) at (0,{1.0*2.8}) {};
+            % \node[draw=none] (dr2a) at ({-0.866*2.8},{-0.5*2.8}) {};
+            % \node[draw=none] (dr3a) at ({0.866*2.8},{-0.5*2.8}) {};
+            
+            % \begin{scope}[scale=2, shift={(0.0, 0.433)}]
+            % \draw [rounded corners=6.5mm, densely dashed] (0.0, 0.0)--(-0.75, -1.3)--(0.75, -1.3)--cycle;
+            % \end{scope}
+        \end{scope}
+        
+    \end{scope}
+
+\end{scope}
+
+\begin{scope}
+    \foreach \from/\to in {v1/v2, v2/v3, v3/v1, v1/v1a, v2/v2a, v3/v3a}
+        \draw [thick] (\from) -- (\to);
+        
+    \foreach \from/\to in {dr1/dr1a, dr2/dr2a, dr3/dr3a, dr1/dr4, dr2/dr4, dr3/dr4}
+        \draw [thick] (\from) -- (\to);
+        
+        \foreach \from/\to in {gi1/gi4, gi2/gi4, gi3/gi4}
+        \draw [thick] (\from) -- (\to);
+        
+    % \draw[thick] (dr4) to[out=225, in=70] (dr6);
+    % \draw[thick] (dr4) to[out=315, in=110] (dr7);
+    
+    % \draw[thick] (dr5) to[out=70, in=225] (dr6);
+    % \draw[thick] (dr5) to[out=20, in=225] (dr7);
+    
+    % \draw[thick] (dr8) to[out=160, in=315] (dr6);
+    % \draw[thick] (dr8) to[out=110, in=315] (dr7);
+
+\end{scope}
+\end{tikzpicture}

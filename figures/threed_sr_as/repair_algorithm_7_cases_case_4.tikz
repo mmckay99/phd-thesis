@@ -1,0 +1,44 @@
+
+
+\begin{tikzpicture}
+% \node[draw=none] (casenumber) at (-1.5, 3.0) {\emph{Case 4}};
+\begin{scope}[every node/.style={circle,draw, minimum size=2.4mm}, xscale=1.0]
+    \node[thick, circle, label={[label distance=0.5cm]270:$\alpha_{i}$}] (ai) at (1,0.5) {};
+    \node[thick, circle, label={[label distance=0.6cm]180:$\alpha_{j_2}$}] (aj2) at (1,3.5) {};
+    \node[thick, circle, label={[label distance=0.5cm]180:$\alpha_{j_1}$}] (aj1) at (0.5,2) {};
+    \node[thick, circle, label={[label distance=0.5cm]270:$\alpha_{j_3}$}] (aj3) at (1.3,2) {};
+    \node[thick, circle, label={[label distance=0.5cm]90:$\alpha_{j_4}$}] (aj4) at (2.1,2) {};
+    
+    \node[thick, circle, label={[label distance=0.5cm]270:$\alpha_{y_1}$}] (ay1) at (0.2,0.5) {};
+    
+    \node[thick, circle, label={[label distance=0.5cm]90:$S_4$}] (s4) at (2.9,2) {};
+    \node[thick, circle, label={[label distance=0.5cm]90:$S_5$}] (s5) at (3.7,2) {};
+    \node[thick, circle, label={[label distance=0.5cm]90:$S_6$}] (s6) at (4.5,2) {};
+    
+    \node[rectangle, white, text=black, fill=white, minimum width=6mm, minimum height=12mm, inner sep=0.5mm] (dots1) at (5.3,2) {\hspace{2pt}$\dots$};
+    
+    \node[thick, circle, label={[shift={(-0.1, 0.5)}]:$S_{3d-2}$}] (s3d2) at (6.1,2) {};
+    \node[thick, circle, label={[shift={(0.1, 0.5)}]:$S_{3d-1}$}] (s3d1) at (6.9,2) {};
+    \node[thick, circle, label={[shift={(0.1, 0.5)}]:$S_{3d}$}] (s3d) at (7.7,2) {};
+    
+    \node[rectangle, white, text=black, fill=white, minimum width=6mm, minimum height=10mm, inner sep=0.5mm] (dots2) at (8.5,2) {\hspace{2pt}$\dots$};
+    
+    \node[thick, circle, label={[shift={(0.1, -1.5)}]}] (s3c2) at (9.3,2) {};
+    \node[thick, circle, label={[label distance=0.5cm]90:$S_{3c-1}$}] (s3c1) at (10.1,2) {};
+    \node[thick, circle, label={[label distance=0.5cm]90:$S_{3c}$}] (s3c) at (10.9,2) {};
+    
+    \node[draw=none, inner sep=0, minimum size=0] (s3by) at (10.4, 0.5]) {};
+    
+    \draw [thick, rounded corners=2mm] (ai.east)--(s3by.center)--(s3c);
+    
+    \dashedcontainerthing{aj1,aj2,aj3};
+    \dashedcontainerthing{aj4,s4,s5};
+    \dashedcontainerthing{s6,s3d2,s3d1};
+    \dashedcontainerthing{s3d,s3c2,s3c1};
+    \dashedcontainerthing{s3c,s3by,ai,ay1,ai,s3by,s3c};
+\end{scope}
+\begin{scope}
+    \foreach \from/\to in {aj2/aj1, aj1/ai, aj1/aj3, aj3/aj4, aj4/s4, s4/s5, s5/s6, s6/dots1, dots1/s3d2, s3d2/s3d1, s3d1/s3d, s3d/dots2, dots2/s3c2, s3c2/s3c1, s3c1/s3c, ay1/ai}
+        \draw [thick] (\from) -- (\to);
+\end{scope}
+\end{tikzpicture}

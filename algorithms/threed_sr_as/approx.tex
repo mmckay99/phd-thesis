@@ -1,0 +1,26 @@
+\begin{algorithm}
+\textbf{Input:} an instance $(N, V)$ of 3DR-AS with binary and symmetric preferences\\
+\textbf{Output:} a stable matching $M$ in $(N, V)$
+\smallskip
+\begin{algorithmic}
+\caption{Algorithm~\algorithmfont{findStableUW}\label{alg:threed_sr_as_approximationalgo}} 
+\State $M_1 \gets \algorithmfont{findStable}((N, V))$
+\State $U \gets \text{agents in $N$ unmatched in $M_1$}$
+\State $\mathcal{Q} \gets \algorithmfont{maximal2DMatching}((N, V), U)$
+\If {$|\mathcal{Q}| \geq |U|/3 $}
+    \State $\mathcal{X} \gets \text{any $|U|/3$ elements of $\mathcal{Q}$}$
+\Else
+    % \LineComment{Note that since $\mathcal{Q}$ is a set of disjoint pairs and $|U|\geq 1$ it follows that $|U \setminus \bigcup \mathcal{Q}|=|U|-2|\mathcal{Q}| > 2\lfloor |U|/3 \rfloor - 2|\mathcal{Q}| = 2(\lfloor |U|/3 \rfloor - |\mathcal{Q}|)$.}
+    \LineComment{note that $|U \setminus \bigcup \mathcal{Q}| > 2(|U|/3 - |\mathcal{Q}|)$ since $|U \setminus \bigcup \mathcal{Q}| = |U| - 2|\mathcal{Q}|$}
+\State $\mathcal{W} \gets |U|/3 - |\mathcal{Q}| \text{ pairs of agents chosen from the set of agents $U \setminus \bigcup \mathcal{Q}$}$
+\State $\mathcal{X} \gets \mathcal{Q} \cup \mathcal{W}$
+\EndIf
+\State \textbf{end if}
+\smallskip
+
+\State $Y \gets U \setminus \bigcup \mathcal{X}$
+\LineComment{Suppose $\mathcal{X}=\{X_1, X_2, \dots, X_{|U|/3}\}$ and $Y=\{y_1, y_2, \dots, y_{|U|/3}\}$. Note that $\mathcal{X}$ is a set of pairs of agents and $Y$ is a set of individual agents.}
+\State $M_2 \gets \{ X_i \cup \{ y_i \} : 1 \leq i \leq |U|/3\}$
+\State \Return $M_1 \cup M_2$
+\end{algorithmic}
+\end{algorithm}

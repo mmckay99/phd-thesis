@@ -1,0 +1,114 @@
+We now consider instances of 3DR-AS with binary and symmetric preferences in which the maximum degree of the underlying graph is $3$. In contrast with Theorem~\ref{thm:threed_efr_as_ef_algorithm}, we show that deciding if a given instance of 3DR-AS contains an envy-free matching is $\NP$-complete, even when preferences are binary and symmetric and the maximum degree is $3$.
+
+We present a polynomial-time reduction from a variant of \emph{Exact Satisfiability} (XSAT) \cite{GJ79}. An instance of XSAT is a boolean formula in conjunctive normal form (CNF). We write $C=\{ c_1, c_2, \dots, c_{m} \}$ to represent such a formula as the set of its clauses. We represent each clause $c_r\in C$ as a set of literals. Each literal is either an occurrence of a single variable or its negation. Given a formula, we write $X$ to mean the set of variables contained in the formula. A \emph{truth assignment} $f : X \mapsto \{\text{true}, \text{false}\}$ is an assignment of values to the set of variables. We say that an \emph{exact model} is a truth assignment to the variables such that each clause contains exactly one true literal (and therefore exactly two false literals). Given an instance $C$, if an exact model exists then we say that $C$ is \emph{exactly satisfiable}. Deciding if an instance $C$ of XSAT is exactly satisfiable is $\NP$-complete \cite{SchaeferSatComplexity78} even when each clause contains exactly three literals. Porschen et al.\ \cite[Lemma~5]{PSSW14} show that this problem remains $\NP$-complete even for the restricted case every literal is positive and each variable occurs in exactly three clauses, which they denote by $3$-$\text{CNF}_{+}^3$-$\text{XSAT}$. We shall refer to this variant as \porschenxsatvariant/ (Problem~\ref{pr:xsatvariant}). Note that in this problem $|X|=m$.
+
+\begin{myproblem}[\porschenxsatvariant/]
+\label{pr:xsatvariant}\mysymbolfirstusedefinition{symboldef:porschenxsatvariant}{}
+\begin{samepage}
+\begin{adjustwidth}{8pt}{8pt}
+\inp a boolean formula in conjunctive normal form, represented as a set of clauses $C = \{ c_1, c_2, \dots, c_{m} \}$, in which every literal is positive and each variable occurs in exactly three clauses\\
+\ques Is $C$ exactly satisfiable?
+\end{adjustwidth}
+\end{samepage}
+\end{myproblem}
+The reduction, illustrated in Figure~\ref{fig:threed_efr_as_regular_envy_free_reduction}, is as follows. Suppose $C$ is an arbitrary instance of \porschenxsatvariant/. We shall construct an instance $(N, E)$ of 3DR-AS.
+
+For each variable $x_i \in X$, there are three corresponding literals in three different clauses. For each such $x_i$, arbitrarily label each of these literals as the first, second, and third occurrences of $x_i$.
+\begin{figure}
+    \centering
+    \input{figures/threed_efr_as/regular_envy_free_reduction.tikz}
+    \caption[The reduction from \porschenxsatvariant/ to the problem of deciding if a given instance of 3DR-AS contains an envy-free matching]{The reduction from \porschenxsatvariant/ to the problem of deciding if a given instance of 3DR-AS contains an envy-free matching. A variable gadget $W_i$ and clause gadget $D_r$ are represented as undirected graphs.}
+    \label{fig:threed_efr_as_regular_envy_free_reduction}
+\end{figure}
+For each variable $x_i \in X$ construct a set of three agents $W_i = \{ w_i^1, w_i^2, w_i^3 \}$, which we refer to as the \emph{$i\textsuperscript{th}$ variable gadget}. Add the edges $\{ w_i^1, w_i^2 \}$, $\{ w_i^2, w_i^3 \}$, and $\{ w_i^3, w_i^1 \}$ to $E$. Next, for each clause $c_r\in C$ construct a set of eight agents $D_r = \{ d_r^1, d_r^2, \dots, d_r^8 \}$, which we refer to as the \emph{$r\textsuperscript{th}$ clause gadget}. Add the edges $\{ d_r^1, d_r^4 \}$, $\{ d_r^2, d_r^5 \}$, $\{ d_r^3, d_r^8 \}$, $\{ d_r^4, d_r^6 \}$, $\{ d_r^4, d_r^7 \}$, $\{ d_r^5, d_r^6 \}$, $\{ d_r^5, d_r^7 \}$, $\{ d_r^8, d_r^6 \}$, and $\{ d_r^8, d_r^7 \}$. Next, we shall connect the variable and clause gadgets. Consider each clause $c_r = \{ x_i, x_j, x_k \}$. If $c_r$ contains the first occurrence of $x_i$ then add the edge $\{ d_r^1, w_i^1 \}$. Alternatively, if $c_r$ contains the second occurrence of $x_i$ then add the edge $\{ d_r^1, w_i^2 \}$. Alternatively, if $c_r$ contains the third occurrence of $x_i$ then add the edge $\{ d_r^1, w_i^3 \}$. Similarly, add an edge between $d_r^3$ and an agent in $W_j$ depending on the index of the occurrence of $x_j$ in the clause $c_r$. Finally, add an edge between $d_r^4$ and an agent in $W_k$ depending on the index of the occurrence of $x_k$ in the clause $c_r$. We say that the clause gadget $D_r$ is adjacent to the variable gadgets $W_i$, $W_j$, and $W_k$, and vice-versa.
+
+This completes the construction of $(N, E)$. Note that each agent in a variable gadget has degree $3$, the agents $d_r^4, d_r^5, d_r^6, d_r^7$ and $d_r^8$ for each $1 \leq r \leq m$ have degree $3$, and the agents $d_r^1, d_r^2, d_r^3$ for each $1 \leq r \leq m$ have degree $2$. It follows that the maximum degree of $(N, E)$ is $3$. 
+
+It is straightforward to show that this reduction can be performed in polynomial time. To prove that the reduction is correct we show that the 3DR-AS instance $(N, E)$ contains an envy-free matching if and only if the \porschenxsatvariant/ instance $C$ is exactly satisfiable.
+
+We first prove some preliminary results. Recall that for any set of agents $S \subseteq N$, $\sigma(S, N)$ denotes the number of triples in $N$ that each contain at least one agent in $S$.
+\ifdefined\vdkr
+\else
+\errmessage{if this is not in the thesis, change this so it does not say recall}
+\fi
+
+\begin{lem}
+\label{lem:threed_efr_as_util1_neighbourhoodthreetriples}
+Suppose $M$ is a matching in $(N, E)$. If $u_{\alpha_i}(M)=1$ and $\sigma(N(\alpha_i), M)=\deg(\alpha_i)$ then $\alpha_i$ is not envious in $M$.
+\end{lem}
+\begin{proof}
+Suppose, to the contrary, that $\alpha_i$ envies some $\alpha_j\in N$. Then $u_{\alpha_i}(M(\alpha_j) \setminus \{ \alpha_j \})=2$. It follows that two agents in $N(\alpha_i)$ belong to the same triple, $M(\alpha_j)$, so $\sigma(N(\alpha_i), M) < \deg(\alpha_i)$, which is a contradiction. 
+\end{proof}
+
+\begin{lem}
+\label{lem:threed_efr_as_util0}
+Suppose $M$ is a matching in $(N, E)$. If $u_{\alpha_i}(M)=0$ then $\alpha_i$ is envious in $M$.
+\end{lem}
+\begin{proof}
+Note that by construction of $(N, E)$, each agent has degree at least one. Suppose then, for a contradiction, that there exists some $\alpha_i\in N$ where $u_{\alpha_i}(M)=0$. There must exist some $\alpha_j$ where $\{ \alpha_i, \alpha_j \}\in E$, so it follows that $\alpha_i$ envies both agents in $M(\alpha_j)$, which is a contradiction.
+\end{proof}
+
+% t(S) is at most |S|
+% t(S) is at least \lceil |S|/3 \rceil
+
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=0.6\textwidth]{figures/efr_reduction_1.png}
+%     \caption{A variable gadget and clause gadget represented as undirected graphs}
+%     \label{fig:threed_efr_as_my_label}
+% \end{figure}
+
+
+We now show that if the \porschenxsatvariant/ instance $C$ is exactly satisfiable then the 3DR-AS instance $(N, E)$ contains an envy-free matching.
+
+\begin{lem}
+\label{lem:threed_efr_as_regularenvy_firstdirection}
+If $C$ is exactly satisfiable then $(N, E)$ contains an envy-free matching.
+\end{lem}
+\begin{proof}
+Suppose $f$ is an exact model of $C$. We shall construct a matching $M$ that is envy-free. For each $x_i$ in $X$ where $f(x_i)$ is false, add $\{ w_i^1, w_i^2, w_i^3 \}$ to $M$. Next, consider each clause $c_r = \{ x_i, x_j, x_k \}$ and the corresponding clause gadget $D_r$, labelling $i, j, k$ such that $W_i$ contains an agent adjacent to $d_r^1$, $W_j$ contains an agent adjacent to $d_r^2$, and $W_k$ contains an agent adjacent to $d_r^3$. There are three cases: $f(x_i)$ is true while both $f(x_j)$ and $f(x_k)$ are false, $f(x_j)$ is true while both $f(x_i)$ and $f(x_k)$ are false, and $f(x_k)$ is true while both $f(x_i)$ and $f(x_j)$ are false. In the first case, suppose $c_r$ contains the $u\textsuperscript{th}$ occurrence of $x_i$. Add the triples $\{ w_i^u, d_r^1, d_r^4 \}$, $\{ d_r^2, d_r^5, d_r^7 \}$, and $\{ d_r^3, d_r^6, d_r^8 \}$. The constructions in the second and third cases are symmetric: in the second case, suppose $c_r$ contains the $u\textsuperscript{th}$ occurrence of $x_j$. Add the triples $\{ w_j^u, d_r^2, d_r^5 \}$, $\{ d_r^1, d_r^4, d_r^6 \}$, and $\{ d_r^3, d_r^7, d_r^8 \}$. In the third case, suppose $c_r$ contains the $u\textsuperscript{th}$ occurrence of $x_k$. Add the triples $\{ w_k^u, d_r^3, d_r^8 \}$, $\{ d_r^1, d_r^4, d_r^6 \}$, and $\{ d_r^2, d_r^5, d_r^7 \}$.
+
+Now for any variable gadget $W_i$ either $\sigma(W_i, M) = 1$ or $\sigma(W_i, M) = 3$. For each clause gadget $D_r$, there exist two triples in $M$ that each contain three agents in $D_r$ and one triple in $M$ that contains two agents in $D_r$ and one agent in some variable gadget. There are therefore three kinds of triple in $M$: those triples that contain three agents belonging to the same variable gadget; those triples that contain one agent in some variable gadget and two agents in a clause gadget; and those triples that contain three agents in the same clause gadget. We shall show that no triple of each kind contains an envious agent.
+
+First, consider some triple $t\in M$ where $t=W_i$ for some variable gadget $W_i$. Since each agent in $t$ has utility $2$, no agent in $t$ is envious.
+
+Second, consider some triple $t\in M$ that contains one agent $w_i^a$ in some variable gadget $W_i$ and two agents in some clause gadget $D_r$. By the construction of $M$, either the triple contains $\{ w_i^u, d_r^1, d_r^4 \}$, $\{ w_i^a, d_r^2, d_r^5 \}$, or $\{ w_i^a, d_r^3, d_r^8 \}$. Suppose the triple contains $\{ w_i^a, d_r^1, d_r^4 \}$. Since $u_{d_r^1}(M)=2$ clearly $d_r^1$ is not envious. By construction, $\sigma(W_i, M)=3$ so since $u_{w_i^a}(M)\geq 1$ it follows by Lemma~\ref{lem:threed_efr_as_util1_neighbourhoodthreetriples} that $w_i^u=a$ is also not envious. Similarly, since $M(d_r^6) \neq M(d_r^7)$ it follows that $\sigma(N(d_r^4), M)=3$ so, by Lemma~\ref{lem:threed_efr_as_util1_neighbourhoodthreetriples}, $d_r^4$ is also not envious. The proof in the two remaining cases, in which the triple comprises $\{ w_i^a, d_r^2, d_r^5 \}$ or $\{ w_i^a, d_r^3, d_r^8 \}$, is symmetric.
+
+Third, consider some triple $t\in M$ where $t\subset D_r$ for some clause gadget $D_r$. There are four cases: either $t=\{ d_r^1, d_r^4, d_r^6 \}$, $t=\{ d_r^2, d_r^5, d_r^7 \}$, $t=\{ d_r^3, d_r^6, d_r^8 \}$, or $t=\{ d_r^3, d_r^7, d_r^8 \}$. Suppose $t=\{ d_r^1, d_r^4, d_r^6 \}$. Since $\sigma(N(d_r^1), M)=2$ and $u_{d_r^1}(M)=1$ by Lemma~\ref{lem:threed_efr_as_util1_neighbourhoodthreetriples} $d_r^1$ is not envious. Since $M(d_r^5) \neq M(d_r^8)$, it must be that $\sigma(N(d_r^6), M)=3$ so since $u_{d_r^6}(M)=1$, by Lemma~\ref{lem:threed_efr_as_util1_neighbourhoodthreetriples} $d_r^6$ is not envious. Since $u_{d_r^4}(M)=2$, $d_r^4$ is also not envious. The proof in the three remaining cases, in which $t=\{ d_r^2, d_r^5, d_r^7 \}$, $t=\{ d_r^3, d_r^6, d_r^8 \}$, or $t=\{ d_r^3, d_r^7, d_r^8 \}$, is symmetric. It follows that no agent in $t$ is envious. 
+\end{proof}
+
+We now show that if the 3DR-AS instance $(N, E)$ contains an envy-free matching then the \porschenxsatvariant/ instance $C$ is exactly satisfiable.
+
+\begin{lem}
+\label{lem:threed_efr_as_regularenvy_seconddirection_triangle_split_stay}
+If $(N, E)$ contains an envy-free matching $M$ then for any variable gadget $W_i$, either $\sigma(W_i, M)=1$ or $\sigma(W_i, M)=3$.
+\end{lem}
+\begin{proof}
+Since $|W_i|=3$, clearly $1 \leq \sigma(W_i, M) \leq 3$. Suppose for a contradiction that $\sigma(W_i, M)=2$. It must be that some triple in $M$ contains exactly two agents in $W_i$ and some third agent, which we label $\alpha_j$. Label the remaining agent in the variable gadget $w_i^a$. Since the maximum degree of the instance is three, it must be that $u_{w_i^a}(M)\leq 1$. It follows that $w_i^a$ envies $\alpha_j$ since $u_{w_i^a}(M(\alpha_j) \setminus \{ \alpha_j \}) = 2$.
+\end{proof}
+
+\begin{lem}
+\label{lem:threed_efr_as_regularenvy_seconddirection}
+If $(N, E)$ contains an envy-free matching then $C$ is exactly satisfiable.
+\end{lem}
+\begin{proof}
+Suppose $M$ is an envy-free matching in $(N, E)$. By Lemma~\ref{lem:threed_efr_as_regularenvy_seconddirection_triangle_split_stay}, for any variable gadget $W_i$ either $\sigma(W_i, M)=1$ or $\sigma(W_i, M)=3$. Construct a truth assignment $f$ in $C$ by setting $f(x_i)$ to be true if $\sigma(W_i, M)=3$ and false otherwise. Each variable $x_i$ corresponds to exactly one variable gadget $W_i$ so it follows that $f$ is a valid truth assignment. By the construction of $(N, E)$, each clause $c_r$ corresponds to exactly one clause gadget $D_r$. Each clause gadget is adjacent to three variable gadgets that correspond to the three variables in that clause. To show that $f$ is an exact model of $C$, it is sufficient to show that for each clause gadget $D_r$ there exists exactly one variable gadget $W_i$ such that $D_r$ is adjacent to $W_i$ and $\sigma(W_i, M)=3$.
+ 
+Consider an arbitrary clause gadget $D_r$ and the corresponding clause $c_r=\{ x_i, x_j, x_k\}$, labelling $i, j, k$ such that $d_r^1$ is adjacent to some agent in $W_i$, $d_r^2$ is adjacent to some agent in $W_j$ and $d_r^3$ is adjacent to some agent in $W_k$. We shall show that a contradiction exists if either $D_r$ is adjacent to two variable gadgets $W_i, W_j$ where $\sigma(W_i, M)=\sigma(W_j, M)=3$ or $D_r$ is adjacent to three variable gadgets $W_i, W_j, W_k$ where $\sigma(W_i, M)=\sigma(W_j, M)=\sigma(W_k, M)=1$. The remaining possibility is that $D_r$ is adjacent to exactly one variable gadget $W_i$ where $\sigma(W_i, M)=3$ and exactly two variable gadgets $W_j, W_k$ where $\sigma(W_j, M)=\sigma(W_k, M)=1$.
+
+First, suppose that $D_r$ is adjacent to two variable gadgets $W_{i}$ and $W_{j}$ where $\sigma(W_i, M)=3$ and $\sigma(W_j, M)=3$. Suppose $c_r$ contains the $a\textsuperscript{th}$ occurrence of $x_i$ and the $b\textsuperscript{th}$ occurrence of $x_j$. Consider $M(w_i^a)$. By Lemma~\ref{lem:threed_efr_as_util0}, no agent has utility $0$ in $M$, so either $\{ d_r^1, d_r^4 \} \in M(w_i^a)$, $\{ d_r^2, d_r^5 \} \in M(w_i^a)$, or $\{ d_r^3, d_r^8 \} \in M(w_i^a)$. Similarly, either $\{ d_r^1, d_r^4 \} \in M(w_j^b)$, $\{ d_r^2, d_r^5 \} \in M(w_j^b)$, or $\{ d_r^3, d_r^8 \} \in M(w_j^b)$. By the symmetry of the clause gadget, assume without loss of generality that $\{ d_r^1, d_r^4 \} \in M(w_i^a)$ and $\{ d_r^2, d_r^5 \} \in M(w_j^b)$. Consider $d_r^6, d_r^7$ and $d_r^8$. Since no agent has utility $0$, the only possibility is that $\{ d_r^6, d_r^7, d_r^8 \} \in M$. It then follows that $d_r^4$ envies $d_r^8$, since $u_{d_r^4}(M)=1$ and $u_{d_r^4}(\{ d_r^6, d_r^7 \})=2$, which is a contradiction.
+
+Second, suppose that $D_r$ is adjacent to three variable gadgets $W_i, W_j, W_k$ where $\sigma(W_i, M)=\sigma(W_j, M)=\sigma(W_k, M)=1$. Since $|D_r|=8$, there exists triple in $M$ that contains some agent $d_r^a \in D_r$ as well as some agent $\alpha_p \notin D_r$. It follows that either $u_{d_r^a}(M)=0$ or $u_{\alpha_p}(M)=0$, which contradicts Lemma~\ref{lem:threed_efr_as_util0}.
+\end{proof}
+
+We have now shown that the 3DR-AS instance $(N, E)$ contains an envy-free matching if and only if the \porschenxsatvariant/ instance $C$ is exactly satisfiable. This shows that the reduction is correct.
+
+\begin{thm}
+\label{thm:threed_efr_as_regularenvy_npcomplete}
+Deciding if a given instance of 3DR-AS contains an envy-free matching is $\NP$-complete, even when preferences are binary and symmetric and the underlying graph has maximum degree $3$.
+\end{thm}
+\begin{proof}
+It is straightforward to show that this decision problem belongs to $\NP$, since for any two agents $\alpha_i, \alpha_j \in N$ we can test if $\alpha_i$ envies $\alpha_j$ in constant time. 
+
+We have presented a polynomial-time reduction from \porschenxsatvariant/, which is $\NP$-complete \cite{PSSW14}. Given an arbitrary instance $C$ of \porschenxsatvariant/, the reduction constructs an instance $(N, E)$ of 3DR-AS with binary and symmetric preferences and maximum degree $3$. Lemmas~\ref{lem:threed_efr_as_regularenvy_firstdirection} and~\ref{lem:threed_efr_as_regularenvy_seconddirection} show that $(N, E)$ contains an envy-free matching if and only if $C$ is exactly satisfiable and thus that this decision problem is $\NP$-hard.
+\end{proof}

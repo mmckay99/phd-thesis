@@ -1,0 +1,126 @@
+% In this thesis we study the algorithmic aspects of models in which agents form coalitions, and in particular coalitions of a fixed size.
+
+% Such models can represent practical scenarios, such as a set of autonomous robots who must form work teams, or a class of students who are to be matched into pairs by their teacher. 
+
+% In such scenarios, there may be some criteria by which one possible outcome, for example of robots in work teams or students into pairs, is better than another. It may be that each autonomous robot has a unique capability, so the robots should be programmed to form work teams such that the probability of the overall goal being achieved is maximised. Alternatively, each student may have a preference over possible partners, and the teacher's aim is to ensure as many students are satisfied as possible.
+
+% In the former scenario, a robotics engineer might need to program the robots to form work teams in a way that is mathematically optimal. The solution to this problem is an efficient algorithm, which can be implemented collectively in the software of each robot. In a new environment, the robots can then run the algorithm and form a set of work teams that is optimal.
+
+% If the class is relatively small, the teacher may be able to pair students informally. Even in a large class, it may
+
+% n the latter scenario, 
+
+
+% be acceptable to pair students up in an informal way.
+
+
+% , such that at least a majority of the students are satisfied. Such an approach may be 
+
+% In fact, it is possible to model both scenarios in a formal, mathematical way. 
+
+
+% Alternatively, they might be purely theoretical models, involving abstract agents that form coalitions based on some  
+
+% They appear in a variety of fields, with a variety of names, and often the aspects of academic interest are different. For example, research in game theory studies models in which autonomous agents form coalitions cooperatively in order to achieve a desirable outcome \cite{aumann1964bargaining,Peters2008}. This type of research can provide insights into how humans make decisions in the real world. Other research in economics involves a market of agents that form coalitions in order to divide a common budget \cite{DominikPetersThesis} or trade a commodity \cite{SS74}. This research can also inform solutions for real-life problems of resource allocation and fair division. 
+
+% The contribution of this thesis is to the interdisciplinary area of computational social choice, in which the focus is on the computational aspects of such models \cite{HedonicGamesHOCSC}. For example, we might ask if there exists a practical algorithm that, given a set of agents, can produce an outcome that is somehow optimal. Such an algorithm might be of practical use to decision makers. Alternatively, if we can show that some problem is $\NP$-hard then it is likely that no such algorithm exists. More generally, computational results might also help us understand more about the model itself.
+
+% % The models that we study involve a set of agents that form coalitions. or states that form economic agreements. 
+
+% Specifically, we focus on models in which a set of agents is partitioned into disjoint coalitions of a fixed size. We call such a partition a \emph{matching}. For example, such a model might represent a set of students that are matched into pairs, or a set of cooperative robots that are matched into work teams of size three. An algorithm, or mechanism, that matches students into pairs or robots into work teams in a somehow-optimal way could be useful in practice.
+
+
+
+
+
+% We assume that each agent has a preference only between the possible coalitions that they might belong to. 
+
+
+
+
+
+
+% Such models are called \emph{hedonic} because each agent cares only about their own coalition \cite{HedonicGamesHOCSC}. In fact, we assume that the preferences of the agents are systematic and can be represented formally. For example, it may be that each agent assigns a numerical valuation to every other agent, and prefers one coalition to another if the sum of their valuations of the other agents in the former coalition is higher than in the latter coalition. These valuations could represent a degree of amity between two students or the combined efficiency of two robots when they are assigned to the same work team. We refer to such a system as a \emph{system of preference representation}.
+
+% % As well as a fixed coalition size, most of the problem models we consider in this thesis have two other key attributes. 
+% % First, each agent has a preference over the possible coalitions in which they may belong to. Usually in the problem a \emph{system of preference representation} is specified. For example, it may be that agents assign a numerical valuation to each other and compare two coalitions based on the sum of their valuations of the other agents in each coalition.
+
+% Our research focuses on the existence of matchings in which the agents are somehow satisfied. The precise definition of a satisfactory matching is known as the \emph{solution concept}. For example, for some specific set of students we could ask if there exists a matching of the students into pairs of partners in which each student's partner is, to some degree, a friend. Alternatively, we could ask if there exists a matching of the robots into work teams such that the total efficiency of the robot workforce is maximised. More generally, we might ask if there are restricted cases in which a satisfactory matching is bound to exist.
+
+% We might also ask if a satisfactory matching can be found by an efficient algorithm, or consider the problem of verifying that a given matching is satisfactory. The solutions to such problems can often be applied in practice, to assign agents into coalitions \cite{IJangHedonicGamesRobots2018}, or to predict the behaviour of autonomous agents in the real world \cite{LRRSS15}.
+
+% % From the literature, many of these types of problems are very likely to be intractable, even in very restricted cases. Recent research in thus area thus considers approximate solutions, restricted cases, or fixed parameters. 
+
+% % Our main focus is a class of problem models, involving coalitions of size three, that we call \emph{Three-Dimensional Roommates} (3DR). 
+
+% % In this thesis, we consider a number of different models that relate to coalition formation, and for each one consider some related computational problems. 
+
+% % The models of coalition formation that we focus on here have been described as \emph{hedonic coalition formation games} (or \emph{hedonic games} for short) \cite{DG80, BJ02, Haj06}. The term `game' could be misleading, since often no competition is involved or assumptions are made relating to the agents' behaviour. The term `hedonic' means that we assume agents preference between two coalition partitions depends only on the evaluation of their own coalition. 
+
+% % Hedonic games are very closely related to the study of \emph{matching under preferences} \cite{KMR15_DO_NOT_USE_THERE_IS_A_MORE_GENERAL_ONE, AMUP}. This topic also involves models of agents with preferences. In this case agents might have preferences over a fixed set of resources that must be distributed. Some research has considered the problem of constructing an matching of resources to agents respecting the agents' preferences in a particular way. Other research models agents with preferences over other agents. For example, it may be that model involves producing a set of pairs of agents based on the agents' preferences \cite{Irv85}. This particular problem is a form of hedonic game. Matching under preferences links to many practical applications. The seminal work on the topic considered a model of potential students applying to universities \cite{GS62}. Other real-life applications include assigning junior doctors to hospitals or children to schools \cite{ZZZ18}.
+
+% % The fields of hedonic games and matching under preferences are intertwined, and my research involves theory and terminology from both. In particular, my research has focused on models that can be viewed as hedonic games with a constraint on the size of possible coalitions. These models also generalise the well-known \emph{Stable Roommates problem} \cite{Irv85, GS62} that belongs to the area of matching under preferences.
+
+In this thesis we study the algorithmic aspects of models in which agents form coalitions.
+
+Sometimes, these models can be applied in practice. For example, consider a set of cooperative robots that may form work teams in order to maximise their total efficiency (in terms of some specific criteria). In such an application, research in this area can provide practical tools and techniques to organise the robots in an optimal way \cite{IJangHedonicGamesRobots2018}. Other models are less directly applicable, but by studying them we can make insights into how autonomous agents, such as humans, behave in the real world \cite{aumann1964bargaining,Peters2008}. Even purely abstract research involving agents that form coalitions has led to interesting and sometimes unexpected theoretical results.
+
+The models that we focus on involve a set of agents which is to be partitioned into disjoint \emph{coalitions} of a fixed size. We call such a partition a \emph{matching}. For example, this might represent a set of robot workers who will organise themselves into work teams, where each work team contains three robots. We assume that each agent has \emph{preferences} between the possible coalitions that they might belong to. For example, it may be that for practical reasons each robot can only evaluate its own individual efficiency in a specific work team. Each robot therefore assigns a numerical score to each of the work teams it may belong to, where a higher score indicates that a given robot is more effective in that work team. Alternatively, such a model might represent a set of students in a class who must be assigned to pairs by their teacher. Each student might list their classmates in order from the most preferred to least preferred.
+
+In these models, a central idea is the existence of a matching that satisfies some specific criteria, or is somehow optimal. For example, for a specific set of robots, we might seek a matching in which the sum of the individual robots' efficiency scores is maximised. Alternatively, for a specific set of students we might ask whether it is possible to pair the students such that no two students both prefer each other to their respectively assigned partners. We refer to these criteria as \emph{solution concepts}. The solution concept in the latter example, which involves a set of agents that may deviate away from their assigned coalitions, is a type of \emph{stability}. Stability is a central concept in the theory of coalition formation in general and this thesis in particular. 
+
+% We assume that each agent has a preference only between the possible coalitions that they might belong to. Such models are called \emph{hedonic} because each agent cares only about their own coalition \cite{HedonicGamesHOCSC}. In fact, we assume that the preferences of the agents are systematic and can be represented formally. For example, it may be that each agent assigns a numerical valuation to every other agent, and prefers one coalition to another if the sum of their valuations of the other agents in the former coalition is higher than in the latter coalition. These valuations could represent a degree of amity between two students or the combined efficiency of two robots when they are assigned to the same work team. We refer to such a system as a \emph{system of preference representation}.
+
+The specific contribution of this thesis relates to the algorithmic aspects of these models. For example, one of our new results is an algorithm that could be used to construct a matching of robots into work teams that satisfies a type of stability. For a slightly different solution concept we show that, for a given set of robots, a matching that satisfies that solution concept does not necessarily exist. Furthermore, deciding whether a given set of robots can be matched in such a way that satisfies that solution concept is $\NP$-complete. In contrast, we show that if the robots' scores are all restricted in a certain way then such a matching must always exist, and can be found by an efficient algorithm. 
+
+
+
+% that we consider can be related directly consider a model that represents the cooperative robots. In this thesis we 
+
+
+
+
+
+% For example, this algorithm could then be used by the robot workers in order to find a set of work teams in which their collective efficiency is maximised. Alternatively, we might show for a given model that certain problems are, in a specific sense, intractable. In a real life setting, this tells us that certain types of algorithm may not work well in practice.
+
+
+% Such an algorithm might be of practical use to decision makers. Alternatively, if we can show that some problem is $\NP$-hard then it is likely that no such algorithm exists. More generally, computational results might also help us understand more about the model itself.
+
+% The contribution of this thesis is 
+
+% lead to interesting
+
+
+% It may be that each robot has a unique capability, so the problem is to program the robots to form work teams such that the probability of achieving the goal is maximised. 
+
+% in which our new results provide  
+% . For example,  such as a set of autonomous robots who must form work teams, or a class of students who are to be matched into pairs by their teacher. 
+
+% Such models appear in a variety of fields, with a variety of names, and often the aspects of academic interest are different. For example, research in game theory studies models in which autonomous agents form coalitions cooperatively in order to achieve a desirable outcome . This type of research can provide insights into how humans make decisions in the real world. Other research in economics involves a market of agents that form coalitions in order to divide a common budget \cite{DominikPetersThesis} or trade a commodity \cite{SS74}. This research can also inform solutions for real-life problems of resource allocation and fair division. 
+
+
+
+% The models that we study involve a set of agents that form coalitions. or states that form economic agreements. 
+
+
+% For example, this might represent a set of $60$ robot workers who must organise themselves into exactly $10$ work teams, each of size three. Alternatively, it could represent a class of $30$ students that must be organised by their teacher into $15$ pairs. They also involve...
+
+
+
+
+
+
+
+
+
+
+
+% In the robot example, for practical reasons it may be that the robots can only evaluate their own individual efficiency. Each robot therefore assigns a numerical score to each of the work teams it may belong to, where a higher score indicates that robot is more effective in that work team. 
+
+
+% As well as a fixed coalition size, most of the problem models we consider in this thesis have two other key attributes. 
+% First, each agent has a preference over the possible coalitions in which they may belong to. Usually in the problem a \emph{system of preference representation} is specified. For example, it may be that agents assign a numerical valuation to each other and compare two coalitions based on the sum of their valuations of the other agents in each coalition.
+
+% Our research focuses on the existence of matchings in which the agents are somehow satisfied. The precise definition of a satisfactory matching is known as the \emph{solution concept}. For example, for some specific set of students we could ask if there exists a matching of the students into pairs of partners in which each student's partner is, to some degree, a friend. Alternatively, we could ask if there exists a matching of the robots into work teams such that the total efficiency of the robot workforce is maximised. More generally, we might ask if there are restricted cases in which a satisfactory matching is bound to exist.
+
+% We might also ask if a satisfactory matching can be found by an efficient algorithm, or consider the problem of verifying that a given matching is satisfactory. The solutions to such problems can often be applied in practice, to assign agents into coalitions \cite{IJangHedonicGamesRobots2018}, or to predict the behaviour of autonomous agents in the real world \cite{LRRSS15}.

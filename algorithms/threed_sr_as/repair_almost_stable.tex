@@ -1,0 +1,134 @@
+\begin{algorithm}[b!]
+\textbf{Input:}\myhackyalgorithmbox{a triangle-free instance $(N, V)$ of 3DR-AS with binary and symmetric preferences and a repairable $P$-matching $M$ in $(N, V)$ (see Section~\ref{sec:threed_sr_as_symmetric_binary_repairing}) with some such $\alpha_i$}\\
+\textbf{Output:} a stable $P$-matching $M'$ in $(N, V)$
+\smallskip
+\begin{algorithmic}
+\caption{Subroutine~\algorithmfont{repair} (Phase 1) \label{alg:threed_sr_as_almostthere_algo_phase1}} 
+
+\State $\{ \alpha_{j_1}, \alpha_{j_2} \} \gets$ some $\alpha_{j_1}, \alpha_{j_2}\in N$ where $\{ \alpha_i, \alpha_{j_1}, \alpha_{j_2}\}$ blocks $M$ and $u_{\alpha_{j_1}}(M)=1$
+\State $\{ \alpha_{j_3}, \alpha_{j_4} \} \gets M(\alpha_{j_1}) \setminus \{ \alpha_{{j_1}} \}$ where $u_{\alpha_{{j_3}}}(M)=2$
+\State $S \gets \langle \alpha_{j_1}, \alpha_{j_3}, \alpha_{j_4} \rangle$
+\State $c \gets 1$
+\State $b \gets 0$
+\State $\alpha_{z_1}, \alpha_{z_2}, \alpha_{y_1}, \alpha_{y_2}, \alpha_{w_1} \gets \bot$
+
+\smallskip
+
+\WhileNoDo{\textbf{true}}
+
+\State $\alpha_{z_1} \gets$ some $\alpha_{z_1}\in N \setminus \{ \alpha_i \}$ where $v_{\alpha_{z_1}}(S_{3c-1})=1 $ and $u_{\alpha_{z_1}}(M)=0$, otherwise~$\bot$
+
+\vspace*{1.5pt}
+
+\State $\alpha_{z_2} \gets$ some $\alpha_{z_2}\in N \setminus \{ \alpha_i, \alpha_{j_2} \}$ where $v_{\alpha_{z_2}}(S_{3c})=1 $ and $ u_{\alpha_{z_2}}(M)=0$, otherwise~$\bot$
+
+\vspace*{1.5pt}
+
+\State $\alpha_{y_1} \gets$ some $\alpha_{y_1}\in N$ where $v_{S_{3c}}(\alpha_i)=v_{\alpha_{y_1}}(\alpha_i)=1 $ and $u_{\alpha_{y_1}}(M)=0$, otherwise~$\bot$
+
+\vspace*{1.5pt}
+
+\State $\alpha_{y_2} \gets$ some $\alpha_{y_2}\in N$ where $v_{S_{3c}}(\alpha_{j_2})=v_{\alpha_{y_2}}(\alpha_{j_2})=1 $ and $u_{\alpha_{y_2}}(M)=0$, otherwise~$\bot$
+
+\vspace*{1.5pt}
+
+\State $b \gets$ some $1 \leq b < c$ where $v_{S_{3b}}(\alpha_{j_2})=v_{S_{3c}}(S_{3b})=1$ else $0$
+
+\vspace*{1.5pt}
+
+\State $\alpha_{w_1} \gets$ \myhackyalgorithmbox{some $\alpha_{w_1}\in N$ where $v_{S_{3c}}(\alpha_{w_1})=1$, $u_{\alpha_{w_1}}(M)=1 $ and $\alpha_{w_1} \notin S$ and there exists some $\alpha_{z_3}\in N \setminus \{ \alpha_i \}$ where $v_{\alpha_{w_1}}(\alpha_{z_3})=1 $ and $ u_{\alpha_{z_3}}(M)=0$, otherwise~$\bot$}
+
+\vspace*{1.5pt}
+
+\If{$\alpha_{z_1} \neq \bot$ or $\alpha_{z_2} \neq \bot$ or $\alpha_{y_1} \neq \bot$ or $\alpha_{y_2} \neq \bot$ or $b>0$ or $\alpha_{w_1}=\bot$}
+
+    \State \textbf{break}
+
+\Else
+
+\State $\{ \alpha_{w_2}, \alpha_{w_3} \} \gets M(\alpha_{w_1}) \setminus \{ \alpha_{{w_1}} \}$ where $u_{\alpha_{{w_2}}}(M)=2$
+
+\State $S \gets S \cdot \langle \alpha_{{w_1}}, \alpha_{{w_2}}, \alpha_{{w_3}}  \rangle$
+\State $c \gets c + 1$
+
+\EndIf
+\State \textbf{end if}
+
+\EndWhile
+\State \textbf{end while}
+\smallskip
+
+\medskip
+\State \emph{(continued in Phase 2)}
+\medskip
+\algstore{alg:3dsrsasbin_almostthere_algo}
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[t!]
+\begin{algorithmic}
+\algrestore{alg:3dsrsasbin_almostthere_algo}
+% \addtocounter{algorithm}{-1} 
+\caption{Subroutine~\algorithmfont{repair} (Phase 2) \label{alg:threed_sr_as_almostthere_algo_phase2}}
+
+\medskip
+
+\State \emph{(continued from Phase 1)}
+\medskip
+
+\If{$\alpha_{z_1} \neq \bot $ and $ \alpha_{z_1} \neq \alpha_{j_2}$} %\Comment{Construction 1}
+\LineComment{Construction 1}
+\State $M_{S} \gets \{\{ \alpha_i, \alpha_{j_1}, \alpha_{j_2} \}\} \cup \bigcup\limits_{1 \leq d < c}\{ \{ S_{3d-1}, S_{3d}, S_{3d+1} \} \} \cup \{\{ \alpha_{z_1}, S_{3c-1}, S_{3c} \}\}$
+
+\vspace*{1.5pt}
+
+\ElsIf{$\alpha_{z_2} \neq \bot$} %\Comment{Construction 2}
+\LineComment{Construction 2}
+\State $M_{S} \gets \{\{ \alpha_i, \alpha_{j_1}, \alpha_{j_2} \}\} \cup \bigcup\limits_{1 \leq d < c}\{ \{ S_{3d-1}, S_{3d}, S_{3d+1} \} \} \cup \{\{ S_{3c-1}, S_{3c}, \alpha_{z_2} \}\}$
+
+\vspace*{2pt}
+
+\ElsIf{$\alpha_{z_1} \neq \bot $ and $\alpha_{z_1} = \alpha_{j_2}$} %
+%\Comment{Construction 3}
+\LineComment{Construction 3 (note that $\alpha_{z_4}$ must exist by Proposition~\ref{prop:threed_sr_as_symmetric_binary_az4exists})}
+\State $\alpha_{z_4} \gets$ some $\alpha_{z_4} \in N\setminus \{ \alpha_i, \alpha_{j_2} \}$ where $v_{S_{3c-2}}(\alpha_{z_4})=1 $ and $ u_{\alpha_{z_4}}(M)=0$
+\vspace*{1.5pt}
+\State $M_{S} \gets $\myhackyalgorithmbox{$\{\{ \alpha_i, \alpha_{j_1}, \alpha_{j_3} \}\} \cup \bigcup\limits_{1 \leq d < c - 1}\{ \{ S_{3d}, S_{3d+1}, S_{3d+2} \} \} \cup \{\{ S_{3c-3}, S_{3c-2}, \alpha_{z_4} \}\} \cup \{\{ S_{3c-1}, S_{3c}, \alpha_{j_2} \}\}$}
+
+\vspace*{1.5pt}
+
+\ElsIf{$\alpha_{y_1} \neq \bot$} %\Comment{Construction 4}
+\LineComment{Construction 4}
+\State $M_{S} \gets \{\{ \alpha_{j_2}, \alpha_{j_1}, \alpha_{j_3} \}\} \cup \bigcup\limits_{1 \leq d < c}\{ \{ S_{3d}, S_{3d+1}, S_{3d+2} \} \} \cup \{\{ S_{3c}, \alpha_i, \alpha_{y_1} \}\}$
+
+\vspace*{1.5pt}
+
+\ElsIf{$\alpha_{y_2} \neq \bot$} %\Comment{Construction 5}
+\LineComment{Construction 5}
+\State $M_{S} \gets \{\{ \alpha_{i}, \alpha_{j_1}, \alpha_{j_3} \}\} \cup \bigcup\limits_{1 \leq d < c}\{ \{ S_{3d}, S_{3d+1}, S_{3d+2} \} \} \cup \{\{ S_{3c}, \alpha_{j_2}, \alpha_{y_2} \}\}$
+
+\vspace*{1.5pt}
+
+\ElsIf{$b>0$} %\Comment{Construction 6}
+
+\LineComment{Construction 6 (note that $\alpha_{z_5}$ must exist by Proposition~\ref{prop:threed_sr_as_symmetric_binary_az5exists})}
+\State $\alpha_{z_5} \gets$ some $\alpha_{z_5} \in N\setminus \{ \alpha_i, \alpha_{j_2} \}$ where $v_{S_{3b+1}}(\alpha_{z_5})=1$ and $u_{\alpha_{z_5}}(M)=0$
+\vspace*{1.5pt}
+\State $M_{S} \gets$\myhackyalgorithmbox{$\{\{ \alpha_i, \alpha_{j_1}, \alpha_{j_3} \}\} 
+\cup \bigcup\limits_{1 \leq d < b}\{ \{ S_{3d}, S_{3d+1}, S_{3d+2} \} \}
+\cup \{\{ \alpha_{z_4}, S_{3b+1}, S_{3b+2} \}\} \cup \bigcup\limits_{b + 1 \leq d < c}\{ \{ S_{3d}, S_{3d+1}, S_{3d+2} \} \}
+\cup \{\{ S_{3c}, S_{3b}, \alpha_{j_2} \}\}$}
+
+\Else
+
+\LineComment{Construction 7 (note that $\alpha_{w_1}=\bot$)}
+\State $M_{S} \gets \{\{ \alpha_{i}, \alpha_{j_1}, \alpha_{j_3} \}\} \cup \bigcup\limits_{1 \leq d < c}\{ \{ S_{3d}, S_{3d+1}, S_{3d+2} \} \}$
+
+\EndIf
+\State \textbf{end if}
+\smallskip
+
+\State $M' \gets M_{S} \cup \{ r \in M \,:\, r \cap S = \varnothing \}$
+\State \Return $M'$
+\end{algorithmic}
+\end{algorithm}

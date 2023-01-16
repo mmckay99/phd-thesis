@@ -1,0 +1,23 @@
+\begin{algorithm}
+\textbf{Input:} an instance $(N, P)$ of 3-DSM-CYC\\
+\textbf{Output:} a matching $M$ in $(N, P)$
+\smallskip
+\begin{algorithmic}
+\caption{Algorithm~\algorithmfont{cyclicSerialDictatorship} \label{alg:threed_sr_b_threedsm_cyc_dictatorshipcyc}} 
+\State $V \gets N$
+\State $M \gets \varnothing$
+
+\While{$|V| > 0$}
+    \State $u_i \gets$ any agent in $U \cap V$
+    \State $w_j \gets$ the most-preferred agent in $W \cap V$ according to $P_{u_i}$
+    \State $d_k \gets$ the most-preferred agent in $D \cap V$ according to $P_{w_j}$
+    
+    \State $M \gets M \cup \{ ( u_i, w_j, d_k ) \}$
+    \State $V \gets V \setminus \{ u_i, w_j, d_k \}$
+\EndWhile
+\State \textbf{end while}
+\smallskip
+
+\State \Return $M$
+\end{algorithmic}
+\end{algorithm}

@@ -1,0 +1,39 @@
+\begin{algorithm}
+\textbf{Input:} a fixed $r\geq 3$, a simple undirected graph $G=(V, E)$ where $\Delta(G) < 3r/2 - 1$\\
+\textbf{Output:} a maximum $K_r$-packing $T$
+\smallskip
+\begin{algorithmic}
+\caption{Algorithm~\algorithmfont{greedyCliques}\label{alg:krpacking_r}} 
+\State $T\gets\varnothing$
+\While{$|V| > 0$}
+    \State $v\gets \text{any element of }V$
+    \If{$\deg_{G}(v) \geq r - 1$}
+        \State $K\gets \varnothing$
+        \For{each subset $W$ of $N_{G}(v)$ of size $r-1$}
+            \If{$G[W]$ has $\binom{r-1}{2}$ edges}
+                \LineComment{so $W$ is a clique of size $r-1$ in $G$}
+                \State $K \gets W \cup \{ v \}$
+            \EndIf
+            \State \textbf{end if}
+        \EndFor
+        \State \textbf{end for}
+        \smallskip
+        
+        \If{$K\neq\varnothing$}
+            \State $G \gets G[V \setminus K]$
+            \State $T \gets T \cup \{ \{ K \} \}$
+        \Else
+            \State $G \gets G[V \setminus \{ v \}]$
+        \EndIf
+        \State \textbf{end if}
+    \Else
+        \State $G \gets G[V \setminus \{ v \}]$
+    \EndIf
+    \State \textbf{end if}
+\EndWhile
+\State \textbf{end while}
+\smallskip
+
+\State \Return $T$
+\end{algorithmic}
+\end{algorithm}

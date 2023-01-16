@@ -1,0 +1,142 @@
+In this section we show that deciding if a given instance of 3DR-B contains a stable matching is $\NP$-complete. The reduction presented here is from the Three-Dimensional Stable Matching problem with Cyclic preferences (3-DSM-CYC, defined in Chapter~\ref{c:three_dsm_cyc}), which is $\NP$-complete~\cite{Plaxton3DSMCYCJournal}. 
+
+Our reduction is similar to the reduction from 3GSM to the Three-Person Stable Assignment problem (3PSA, defined in Chapter~\ref{c:lit_review}) used by Ng and Hirschberg \cite{NH91}. Our reduction, like Ng and Hirschberg's, is from a problem involving a multipartite set of agents (in their case, 3GSM) to a problem involving a homogenous set of agents (in their case, 3PSA). Informally, the idea is to use the same set of agents in both problem instances but to design the preference lists of the agents in the constructed instance in such a way that each triple in any stable matching in the constructed instance must contain exactly one agent of each type. It is then straightforward to show that a stable matching exists in the instance of the latter problem if and only if a stable matching exists in the instance of the former problem. In fact, a similar technique was also used to reduce from (two-dimensional) SM to (two-dimensional) SR by Gusfield and Irving in 1989 \cite[Lemma~4.1.1]{GI89}.
+
+% In Ng and Hirschberg's reduction, the set of agents in the constructed 3PSA instance is $A = U \cup W \cup D$. The new preference list of each agent in $U$ is the preference list of that agent in the 3GSM instance, which contains every pair of agents in $W \times D$, followed by every other possible pair of agents in $A$ in arbitrary order. The preference lists of each agent in $W$ and $D$ are constructed analogously. It is then straightforward to show that each triple in any stable matching in the 3PSA instance must contain one agent of each type and thus a stable matching exists in the 3PSA instance if and only if a stable matching exists in the 3GSM instance. In fact, a similar technique was also used to reduce from (two-dimensional) SM to (two-dimensional) SR by Gusfield and Irving in 1989 \cite[Lemma~4.1.1]{GI89}. % Here we add three additional ``sentinel'' agents to ensure that any stable matching in the 3D-SR-B instance either contains one agent of each type, or does after a small modification
+
+% To simplify the proof we introduce some new notation. From now on, in an instance $(A, Q)$ of 3-DSM-CYC, we will refer to $I\times\{0\}$ as $U_A$, $I\times\{1\}$ as $W_A$, and $I\times\{2\}$ as $D_A$. A family in $(A,Q$) is then a 3-tuple $(u_i, w_j, d_k)$ where $u_i\in U_A$, $w_j\in W_A$, $d_k\in D_A$.
+
+The reduction from 3-DSM-CYC to 3DR-B is as follows. Suppose $(N', P')$ is an arbitrary instance of 3-DSM-CYC, in which the sets of agents of each type are labelled $U$, $W$, and $D$. We shall construct an instance $(N, P)$ of 3DR-B. First construct three new `sentinel' agents $u_0, w_0, d_0$ in $N$ where:
+\begin{flalign*}
+\setlength\arraycolsep{2pt}
+\begin{array}{r l c l c l c l c l c l}
+P_{u_0} :& [& W\text{ in arbitrary order} &]\ &w_0\ &[& D\text{ in arbitrary order} &]\ &d_0\ &[& U\text{ in arbitrary order} &]\\
+P_{w_0} :& [& D\text{ in arbitrary order} &]\ &d_0\ &[& U\text{ in arbitrary order} &]\ &u_0\ &[& W\text{ in arbitrary order} &]\\
+P_{d_0} :& [& U\text{ in arbitrary order} &]\ &u_0\ &[& W\text{ in arbitrary order} &]\ &w_0\ &[& D\text{ in arbitrary order} &]
+\end{array}
+\end{flalign*}
+
+Next, add each agent in $N' = U\cup W\cup D$ to $N$ and for each $i$ where $1\leq i \leq n$ let:
+\begin{flalign*}
+\setlength\arraycolsep{2pt}
+\begin{array}{l l c l c l c l c l c l c}
+P_{u_i} :& [& P'_{u_i} &]\ &w_0\ &[& D\text{ in arbitrary order} &]\ &d_0\ &[& U\setminus \{ u_i \}\text{ in arbitrary order} &]\ &u_0\\
+P_{w_i} :& [& P'_{w_i} &]\ &d_0\ &[& U\text{ in arbitrary order} &]\ &u_0\ &[& W\setminus \{ w_i \}\text{ in arbitrary order} &]\ &w_0\\
+P_{d_i} :& [& P'_{d_i} &]\ &u_0\ &[& W\text{ in arbitrary order} &]\ &w_0\ &[& D\setminus \{ d_i \}\text{ in arbitrary order} &]\ &d_0
+\end{array}
+\end{flalign*}
+
+This completes the construction of $(N, P)$. Partition $N$ into three sets $U', W', D'$ where $U' = U \cup \{ u_0 \}$, $W' = W \cup \{ w_0 \}$, and $D' = D \cup \{ d_0 \}$. Note that in the constructed instance $(N, P)$ of 3DR-B:
+\begin{itemize}
+    \item Any agent in $U'$ prefers any agent in $U'$ to any agent in $W'$ and also prefers any agent in $W'$ to any agent in $D'$ (and similarly for any agent in $W'$ or $D'$).
+    \item For any agent in $N$, $u_0$ is the least-preferred agent in $U'$, $w_0$ is the least-preferred agent in $W'$ and $d_0$ is the least-preferred agent in $D'$.
+\end{itemize}
+
+It is straightforward to show that this reduction can be performed in polynomial time. To prove that the reduction is correct we show that the 3DR-B instance $(N, P)$ contains a stable matching if and only if the 3-DSM-CYC instance $(N', P')$ contains a stable matching.
+
+We first show that if the 3-DSM-CYC instance $(N', P')$ then the 3DR-B instance $(N, P)$ contains a stable matching.
+
+\begin{lem}
+\label{lem:threed_sr_b_stablematchinginaqimpliesstablematchinginnp}
+If $(N', P')$ contains a stable matching then $(N, P)$ contains a stable matching.
+\end{lem}
+\begin{proof}
+Suppose $M'$ is a stable matching in $(N', P')$. Let $M = \{ u_0, w_0, d_0 \} \cup \{\{ u_i, w_j, d_k \}\ : ( u_i, w_j, d_k )\in M'\}$.
+ 
+Towards a contradiction, suppose $M$ is not stable in $(N, P)$ and that $\{ \alpha_i, \alpha_j, \alpha_k \}$ blocks $M$ in $(N, P)$. It must be that either $\alpha_i \in U'$, $\alpha_i \in W'$, or $\alpha_i \in D'$. Assume without loss of generality that $\alpha_i \in U'$. It follows that $\mathscr{B}_{\alpha_i}(M)\in W'$ and thus either $\alpha_j \in W'$ or $\alpha_k \in W'$. Suppose without loss of generality that $\alpha_j \in W'$. A similar argument then shows that $\alpha_k \in D'$ so we relabel $\{ \alpha_i, \alpha_j, \alpha_k \}$ as $\{ u_{i'}, w_{j'}, d_{k'} \}$ where $u_{i'} \in U'$, $w_{j'} \in W'$, and $d_{k'} \in D'$. Since $w_{j'} \succ_{u_{i'}} \mathscr{B}_{u_{i'}}(M)$ and, by the construction of $M'$, $\mathscr{B}_{u_{i'}}(M) \in W'$, it must be that $j' \neq 0$. A similar argument shows that $k' \neq 0$ and $i' \neq 0$. It then follows that the family $( u_{i'}, w_{j'}, d_{k'} )$ blocks $M$ in $(N', P')$, which is a contradiction.
+\end{proof}
+
+We now show, using a sequence of lemmas, that if the 3DR-B instance $(N, P)$ contains a stable matching then the 3-DSM-CYC instance $(N', P')$ contains a stable matching. The complication here is that a triple in a stable matching in $(N, P)$ need not contain exactly one agent in each of $U'$, $W'$, and $D'$. Nevertheless, we show that an arbitrary stable matching in $(N, P)$ has a relatively constrained structure and can thus be modified such that each triple contains exactly one agent from each of $U$, $W$, $D$. It is then straightforward to construct a stable matching in the 3-DSM-CYC instance $(N', P')$.
+
+We say that a triple of three agents in $N$ is \emph{mixed} if it does not contain exactly one agent in each of $U'$, $W'$, and $D'$. Without loss of generality assume that the number of mixed triples in $M$ is minimal.
+
+Suppose $X$ is an arbitrary element of $\{ U', W', D' \}$. Note that by definition, the number of agents in $X$ in non-mixed triples in $M$ is $n - |X|$. It follows that the number of agents in $X$ in mixed triples in $M$ is $|X|$ and thus the average number of agents in $X$ in each mixed triple in $M$ is $|X|/|X| = 1$.
+
+\begin{lem}
+\label{lem:threed_sr_b_uuulemma}
+If $(N, P)$ contains a stable matching $M$ then no triple in $M$ contains three agents in exactly one of $U'$, $W'$, and $D'$.
+\end{lem}
+\begin{proof}
+Assume without loss of generality that $M$ contains some mixed triple $t_1 = \{ u_{i_1}, u_{i_2}, u_{i_3} \}$ where $u_{i_1}, u_{i_2}, u_{i_3} \in U'$. Since $t_1$ contains more agents in $U'$ than the average number of agents in $U'$ in each mixed triple in $M$, it follows that there exists some mixed triple $t_2 \in M$ that contains fewer than the average number of agents in $U'$ in each mixed triple in $M$. Since the average number of agents in $U'$ in each mixed triple in $M$ is $1$ it must be that $t_2$ contains no agent in $U'$. Consider the possible contents of $t_2$. If either $t_2 = \{ w_{j_1}, d_{k_1}, d_{k_2} \}$ where $w_{j_1} \in W'$ and $d_{k_1}, d_{k_2} \in D'$, $t_2 = \{ w_{j_1}, w_{j_2}, d_{k_1} \}$ where $w_{j_1}, w_{j_2} \in W'$ and $d_{k_1} \in D'$, or $t_2 = \{ d_{k_1}, d_{k_2}, d_{k_3} \}$ where $d_{k_1}, d_{k_2}, d_{k_3} \in D'$, then $\{ u_{i_1}, u_{i_2}, d_{k_1} \}$ blocks $M'$, which is a contradiction. If $t_2 = \{ w_{j_1}, w_{j_2}, w_{j_3} \}$ where $w_{j_1}, w_{j_2}, w_{j_3} \in W'$ then $\{ w_{j_1}, w_{j_2}, u_{i_1} \}$ blocks $M$, which is a contradiction.
+\end{proof}
+
+\begin{lem}
+\label{lem:threed_sr_b_uuw_implies_wdd}
+Arbitrarily label $U', W', D'$ as $X, Y, Z$. If $(N, P)$ contains a stable matching $M$ that contains a mixed triple $\{ x_{i_1}, x_{i_2}, y_{j_1} \}$ where $x_{i_1}, x_{i_2} \in X$ and $y_{j_1} \in Y$ then $M$ also contains some mixed triple $\{ y_{j_2}, z_{k_1}, z_{k_2} \}$ where $y_{j_2} \in Y$ and $z_{i_1}, z_{i_2} \in Z$.
+\end{lem}
+\begin{proof}
+Without loss of generality assume that $X = U'$, $Y = W'$, and $Z = D'$. Suppose for a contradiction that $M$ contains some mixed triple $\{ u_{i_1}, u_{i_2}, w_{j_1} \}$ where $u_{i_1}, u_{i_2} \in U'$ and $w_{j_1} \in W'$ and does not contain any triple $\{ w_{j_2}, d_{k_1}, d_{k_2} \}$ where $w_{j_2} \in W'$ and $d_{k_1}, d_{k_2} \in D'$. Observe that $\{ u_{i_1}, u_{i_2}, w_{j_1} \}$ contains more agents in $U'$ than the average number of agents in $U'$ in each mixed triple in $M$ and fewer agents in $D'$ than the average number of agents in $D'$ in each mixed triple in $M$. It follows that there exists some mixed triple $t_1 \in M$ in which the number of agents in $U'$ is $0$ and some mixed triple $t_2 \in M$ in which the number of agents in $D'$ is at least $2$. By Lemma~\ref{lem:threed_sr_b_uuulemma}, the number of agents in $t_2$ in $D'$ is exactly $2$. By assumption, no triple $\{ w_{j_2}, d_{k_1}, d_{k_2} \}$ exists in $M$ so the only possibility is that $t_1 \neq t_2$ and $t_1 = \{ w_{j_3}, w_{j_4}, d_{k_3} \}$ where $w_{j_3}, w_{j_4} \in W'$ and $d_{k_3} \in D'$ and $t_2 = \{ d_{k_4}, d_{k_5}, u_{i_3} \}$ where $d_{k_4}, d_{k_5} \in D'$ and $u_{i_3} \in U'$. Now $\{ u_{i_3}, w_{j_1}, d_{k_3} \}$ blocks $M'$, which is a contradiction.
+\end{proof}
+
+\begin{lem}
+\label{lem:threed_sr_b_ifmisstablemprimeprimeexistswhichisalltypet0}
+If $(N, P)$ contains a stable matching $M$ then no triple in $M$ is mixed.
+\end{lem}
+\begin{proof}
+Assume for a contradiction that $M$ contains at least one mixed triple. By Lemma~\ref{lem:threed_sr_b_uuulemma}, no triple contains three agents in any one of $U'$, $W'$, and $D'$. Assume then without loss of generality that $M$ contains some mixed triple $t_1 = \{ u_{i_1}, u_{i_2}, w_{j_1} \}$ where $u_{i_1}, u_{i_2} \in U'$ and $w_{j_1} \in W'$. By Lemma~\ref{lem:threed_sr_b_uuw_implies_wdd} it follows that there exists some other mixed triple $\{ w_{j_2}, d_{k_1}, d_{k_2} \}$ in $M$ where $w_{j_2} \in W'$ and $d_{k_1}, d_{k_2} \in D'$.
+
+We first claim that every mixed triple in $M$ either contains two agents in $U'$ and one agent in $W'$ or contains two agents in $D'$ and one agent in $W'$. If not, by Lemma~\ref{lem:threed_sr_b_uuw_implies_wdd} there are two possible cases: either $M$ contains two triples $\{ u_{i_3}, w_{j_3}, w_{j_4} \}, \{ u_{i_4}, d_{k_3}, d_{k_4} \}$ or $M$ contains two triples $\{ d_{k_3}, w_{j_3}, w_{j_4} \}, \{ u_{i_3}, u_{i_4}, d_{k_4} \}$, where in either case $u_{i_3}, u_{i_4} \in U'$, $w_{j_3}, w_{j_4} \in W'$, and $d_{k_3}, d_{k_4} \in D'$. In the former case, $\{ u_{i_4}, w_{j_3}, d_{k_1} \}$ blocks $M$. In the latter case, $\{ u_{i_4}, w_{j_1}, d_{k_3} \}$ blocks $M$.
+
+Now consider $w_0$. If $M(w_0)$ is not mixed then $M(w_0) = \{ u_{i_3}, w_0, d_{k_3} \}$ where $u_{i_3} \in U'$ and $d_{k_3} \in D'$ and thus $\{ u_{i_3}, w_{j_1}, d_{k_1} \}$ blocks $M$, which is a contradiction. It remains that $M(w_0)$ is mixed. Since every mixed triple either contains two agents in $U'$ and one agent in $W'$ or contains two agents in $D'$ and one agent in $W'$, without loss of generality assume that either $j_1 = 0$ or $j_2 = 0$. Suppose firstly that $j_2 = 0$. It follows that $\{ d_{k_1}, d_{k_2}, w_{j_1} \}$ blocks $M'$, which is a contradiction. It remains that $j_1 = 0$. To show a contradiction, we now construct a new matching $\hat{M}$ in which the number of mixed triples in $\hat{M}$ is strictly fewer than the number of mixed triples in $M$. Consider $P_{w_{j_2}}$. It must be that either $d_{k_1} \succ_{w_{j_2}} d_{k_2}$ or $d_{k_2} \succ_{w_{j_2}} d_{k_1}$. Suppose without loss of generality that $d_{k_1} \succ_{w_{j_2}} d_{k_2}$. Now consider
+\begin{align*}
+    \hat{M} = (M \setminus \{ \{ u_{i_1}, u_{i_2}, w_{j_1} \}, \{ d_{k_1}, d_{k_2}, w_{j_2} \} \}) \cup \{ \{ u_{i_1}, w_0, d_{k_1}\}, \{ u_{i_2}, w_{j_2}, d_{k_2} \} \}
+\end{align*}
+in which:
+\begin{itemize}
+    \item $\mathscr{B}_{u_{i_1}}(\hat{M}) = \mathscr{B}_{u_{i_1}}(M) = w_0$
+    \item $\mathscr{B}_{w_0}(\hat{M}) = d_{k_1}$ and $\mathscr{B}_{w_0}(M) \in U'$ and  so $\hat{M} \succ_{w_0} M$
+    \item $\mathscr{B}_{d_{k_1}}(\hat{M}) = u_{i_1}$ and $\mathscr{B}_{d_{k_1}}(M) \in W'$ and so $\hat{M} \succ_{d_{k_1}} M$
+    \item $\mathscr{B}_{u_{i_2}}(\hat{M}) = w_{j_2} \succ_{u_{i_2}} w_0 = \mathscr{B}_{u_{i_2}}(M)$
+    \item $\mathscr{B}_{w_{j_2}}(\hat{M}) = \mathscr{B}_{w_{j_2}}(M) = d_{k_1}$
+    \item $\mathscr{B}_{d_{k_2}}(\hat{M}) = \mathscr{B}_{d_{k_2}}(M) = w_{j_2}$.
+\end{itemize}
+It follows that any triple that blocks $\hat{M}$ in $(N, P)$ also blocks $M$ in $(N, P)$. Thus, since $M$ is stable, $\hat{M}$ is also stable. The number of mixed triples in $\hat{M}$ is exactly one fewer than in $M$, which contradicts our assumption that $M$ is a stable matching in $(N, P)$ with the minimal number of mixed triples.
+\end{proof}
+% \begin{lem}
+% Label $U', W', D'$ arbitrarily as $X, Y, Z$. If $M'$ contains some triple $\{ x \}$ \end{lem}
+
+\begin{lem}
+\label{lem:threed_sr_b_misstableexistsmprimeprimeprime}
+If $(N, P)$ contains a stable matching then $(N, P)$ contains a stable matching $\hat{M}$ such that $\hat{M}$ contains $\{ u_0, w_0, d_0 \}$ and no triple in $\hat{M}$ is mixed.
+\end{lem}
+\begin{proof}
+Let $S$ be the set of triples in $M$ that each contain at least one agent in $\{ u_0, w_0, d_0 \}$. By definition, $1 \leq |S| \leq 3$. If $|S| = 1$, then $\{ u_0, w_0, d_0 \} \in M$ so $\hat{M} = M$. If $|S| = 3$ then by Lemma~\ref{lem:threed_sr_b_ifmisstablemprimeprimeexistswhichisalltypet0} it must be that $S = \{ \{ u_0, w_{j_1}, d_{k_1} \}, \{ u_{i_2}, w_0, d_{k_2} \}, \{ u_{i_3}, w_{j_3}, d_0 \} \}$, where $u_{i_2}, u_{i_3} \in U'$, $w_{j_1}, w_{j_2} \in W'$ and $d_{k_1}, d_{k_2} \in D'$. Now $\{ u_{i_2}, w_{j_3}, d_{k_1}\}$ blocks $M$, which is a contradiction. It remains that $|S| = 2$. By Lemma~\ref{lem:threed_sr_b_ifmisstablemprimeprimeexistswhichisalltypet0}, no triple in $M$ is mixed, so there are three possible cases: either $S = \{ \{ u_0, w_0, d_k \}, \{ u_i, w_j, d_0 \} \}$, $S = \{ \{ u_0, w_j, d_0\}, \{ u_i, w_0, d_k\} \}$, or $S = \{ \{ u_0, w_j, d_k\}, \{ u_i, w_0, d_0\} \}$, where in any case $u_i \in U'$, $w_j\in W'$, and $d_j\in D'$. In any case, let:
+\begin{align*}
+    \hat{M} = (M \setminus S) \cup \{ \{ u_i, w_j, d_k \}, \{ u_0, w_0, d_0 \} \}\enspace.
+\end{align*}
+Now:
+\begin{itemize}
+    \item either $\mathscr{B}_{u_i}(\hat{M}) \succ_{u_i} \mathscr{B}_{u_i}(M)$ or $\mathscr{B}_{u_i}(\hat{M}) = \mathscr{B}_{u_i}(M)$
+    \item either $\mathscr{B}_{w_j}(\hat{M}) \succ_{w_j} \mathscr{B}_{w_j}(M)$ or $\mathscr{B}_{w_j}(\hat{M}) = \mathscr{B}_{w_j}(M)$
+    \item either $\mathscr{B}_{d_k}(\hat{M}) \succ_{d_k} \mathscr{B}_{d_k}(M)$ or $\mathscr{B}_{d_k}(\hat{M}) = \mathscr{B}_{d_k}(M)$.
+\end{itemize}
+It follows that any triple that blocks $\hat{M}$ in $(N, P)$ also blocks $M$ in $(N, P)$. Thus, since $M$ is stable, $\hat{M}$ is also stable.
+\end{proof}
+
+\begin{lem}
+\label{lem:threed_sr_b_stablematchinginnpimpliesstablematchinginaq}
+If $(N, P)$ contains a stable matching then $(N', P')$ contains a stable matching.
+\end{lem}
+\begin{proof}
+
+By Lemma~\ref{lem:threed_sr_b_misstableexistsmprimeprimeprime}, there exists a stable matching $\hat{M}$ that contains $\{ u_0, w_0, d_0 \}$ in which no triple is mixed. We claim that
+\begin{align*}
+    M' = \{ ( u_i, w_j, d_k ) : \{ u_i, w_j, d_k \} \in \hat{M} \}
+\end{align*}
+is a stable matching in $(N', P')$. Suppose for a contradiction that the family $( u_i, w_j, d_k )$ blocks $M'$ in $(N', P')$. It follows that the triple $\{ u_i, w_j, d_k \}$ blocks $\hat{M}$ in $(N, P)$, which is a contradiction.
+\end{proof}
+
+% \subsection{Correctness of the reduction: conclusion}
+% \label{sec:3dsrbconclusion}
+
+We have now shown that the 3DR-B instance $(N, P)$ contains a stable matching if and only if the 3-DSM-CYC instance $(N', P')$ contains a stable matching. This shows that the reduction is correct.
+
+\begin{thm}
+\label{thm:threed_sr_b_existence}
+Deciding if a given instance of 3DR-B contains a stable matching is $\NP$-complete.
+\end{thm}
+\begin{proof}
+This decision problem belongs to $\NP$ since the stability of a given matching $M$ can be verified in polynomial time, as follows. For each triple $r \in \binom{N}{3}$ consider each agent $\alpha_i$ in $r$ compare $\mathscr{B}_{\alpha_i}(r)$ and $\mathscr{B}_{\alpha_i}(M)$ using $P_{\alpha_i}$. If at least one agent $\alpha_i$ in each triple $r$ does not prefer $\mathscr{B}_{\alpha_i}(r)$ to  $\mathscr{B}_{\alpha_i}(M)$ then $M$ is stable.
+
+We have presented a polynomial-time reduction from 3-DSM-CYC, which is $\NP$-complete \cite{Plaxton3DSMCYCJournal}. Given an arbitrary instance $(N', P')$ of 3-DSM-CYC, the reduction constructs an instance $(N, P)$ of 3DR-B. By use the reduction described to construct $(N, P)$. In Lemmas~\ref{lem:threed_sr_b_stablematchinginaqimpliesstablematchinginnp} and~\ref{lem:threed_sr_b_stablematchinginnpimpliesstablematchinginaq} we showed that $(N, P)$ contains a stable matching if and only if $(N', P')$ contains a stable matching and thus that this decision problem is $\NP$-hard.
+\end{proof}

@@ -1,0 +1,22 @@
+\begin{tikzpicture}[thick, every edge/.style = {draw, -to}]
+% \node[draw=none] (casenumber) at (-1.5, 3.0) {\emph{Case 7}};
+% \draw[help lines,step=0.5] (0,0) grid (14,4);
+\begin{scope}[every node/.style={inner sep=8pt}, style={sibling distance=30mm, level distance=20mm}, every edge/.style = {darrow}]
+  \node {perfect}
+    child {node {Pareto optimal}}
+    child {node[yshift=-1.6cm] (cs) {core stable}
+      child {node[yshift=-0.8cm] {individually rational}}
+    }
+    child {node[xshift=1.4cm] {envy-free}
+        child {node[yshift=0.25cm] {weakly justified envy-free}
+            child {node (jef) {justified envy-free}}
+        }
+    };
+\end{scope}
+\draw[\solutionconceptsdiagramarrow] (cs) -- (jef);
+\begin{scope}
+
+\end{scope}
+\end{tikzpicture}
+
+% [edge from parent path={(\tikzparentnode.south west) -- (\tikzchildnode.west)}]

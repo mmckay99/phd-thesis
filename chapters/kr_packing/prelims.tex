@@ -1,0 +1,26 @@
+In this section we first clarify our terminology and notation and then make a preliminary observation on the coincidence of vertex- and edge-disjoint $K_r$-packings.
+
+Let $G = (V, E)$ be a simple undirected graph. We denote the \emph{closed neighbourhood} of some vertex $v \in V$ as $N_{G}[v] = N_{G}(v) \cup \{ v \}$. We denote by $\deg_{G}(v) = |N_{G}[v]| - 1$ the \emph{degree} of $v$ in $G$ and by $\Delta(G) = \max_{v\in V} \deg_{G}(v)$ the \emph{maximum degree} of $G$. If the graph in question is clear from context then we just write $\Delta$. If $\deg_{G}(v) = \delta$ for all $v \in V$ then we say that $G$ is \emph{$\delta$-regular}. For any subset of vertices $U \subseteq V$, we denote by $G[U]$ the subgraph of $G$ induced by $U$. 
+Let $K_r$ denote a clique of size $r$, for some integer $r \geq 1$, and $K_r^G$ be the set of $K_r$s in $G$. We say that $T$ is a \emph{$K_r$-packing} in $G$ if $T\subseteq K_r^G$. The \emph{cardinality} of a $K_r$-packing is the number of $K_r$s that it contains. We say that a $K_r$-packing $T$ is \emph{vertex disjoint} if any two $K_r$s in $T$ have no vertex in common and \emph{edge disjoint} if any two $K_r$s in $T$ intersect by at most one vertex. The \emph{Vertex-Disjoint $K_r$-Packing Problem} (\mysymbolfirstusedefinition{symboldef:vdkr}{\vdkr}) is the following optimisation problem: given a simple undirected graph $G$, find a vertex-disjoint $K_r$-packing of maximum cardinality. The \emph{Edge-Disjoint $K_r$-Packing Problem} (\mysymbolfirstusedefinition{symboldef:edkr}{\edkr}) is defined analogously.
+
+If $G$ contains four vertices $v_i, v_{j_1}, v_{j_2}, v_{j_3}$ where $\{ v_i, v_{j_a} \} \in E$ for each $a \in \{ 1, 2, 3 \}$, $\{ v_{j_1}, v_{j_2} \} \notin E$, $\{ v_{j_1}, v_{j_3} \} \notin E$, and $\{ v_{j_2}, v_{j_3} \} \notin E$, then we say that these four vertices form a \emph{claw}. Otherwise, we say that $G$ is \emph{claw-free}. For example, line graphs are claw-free \cite{MINTY1980284}. 
+
+% If $G$ contains four vertices $v_i, v_{j_1}, v_{j_2}, v_{j_3}$ where $\{ v_i, v_{j_a} \} \in E$ for each $a \in \{ 1, 2, 3 \}$, $\{ v_{j_1}, v_{j_2} \} \notin E$, $\{ v_{j_1}, v_{j_3} \} \notin E$, and $\{ v_{j_2}, v_{j_3} \} \notin E$, then we say that these four vertices form a \emph{claw} (shown in Figure~\ref{fig:krpacking_claw}). Otherwise, we say that $G$ is \emph{claw-free}. For example, line graphs are claw-free \cite{MINTY1980284}. 
+% \begin{wrapfigure}{r}{0.5\textwidth} 
+%     \centering
+%     \input{figures/kr_packing/claw.tikz}
+%     \caption{A claw}
+%     \label{fig:krpacking_claw}
+% \end{wrapfigure}
+
+For any maximisation problem $P$, instance $I$ of $P$, and feasible solution $S$ of $I$, let $\textrm{m}_{P}(I, S)$ denote the measure of $S$. Let $\textrm{opt}_{P}(I) = \max_{S \in \mathcal{F}(I)} \textrm{m}_{P}(I, S)$, where $\mathcal{F}(I)$ is the set of feasible solutions of $I$.
+
+For technical purposes we define the \emph{$K_r$-vertex intersection graph} $\mathcal{K}_r^G = (K_r^G, E_{\mathcal{K}_r^G})$ of $G$, in which $\{ U, W \} \in E_{\mathcal{K}_r^G}$ if $|U \cap W| \geq 1$ for any $U, W \in K_r^G$. Similarly, we define the \emph{$K_r$-edge intersection graph} ${\mathcal{K}'}_r^G = (K_r^G, E_{{\mathcal{K}'}_r^G})$ of $G$ in which $\{ U, W \} \in E_{{\mathcal{K}'}_r^G}$ if $|U \cap W| \geq 2$ for any $U, W \in K_r^G$. We now make a preliminary observation.
+
+\begin{observation}
+\label{obs:krpacking_edkr_is_also_vdkr}
+If $\Delta < 2r - 2$ then any edge-disjoint $K_r$-packing is also vertex disjoint.
+\end{observation}
+\begin{proof}
+Any two $K_r$s in $G$ that share at least one vertex must in fact share at least two vertices, otherwise that vertex has degree at least $2r - 2$ in $G$.
+\end{proof}

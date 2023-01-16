@@ -1,0 +1,147 @@
+In this section, we consider a situation in which the preference lists of all agents in at least one of the sets $U, W, D$ are in some way similar. Specifically, we consider a situation in which there exists a master preference list over all agents of one type, and quantify the similarity between the preference list of any agent of the previous type and that master list, in terms of a specific distance metric. We extend Algorithm~\algorithmfont{cyclicSerialDictatorship} for this problem and show that if this distance is sufficiently small then as the distance is reduced the approximation ratio of the algorithm decreases from $6/5$ to $1$.
+
+The assumption of a master list has been made in a number of problems involving matching under preferences \cite{AMUP}, including the multidimensional roommates problem \cite{Bre20}. In the setting of 3-DSM-CYC, Escamocher and O'Sullivan \cite{Escamocher2018} showed in 2018 that if all agents of one type have the same preference list then the number of stable matchings in that instance is exponential in $n$. In a paper on Constraint Programming models for 3-DSM-CYC, Cseh et al.\ \cite{Cseh2022} showed that the serial dictatorship-style algorithm that we present here can also be used to construct \emph{strongly stable} matchings in 3-DSM-CYC.
+
+% The existence of a master list is a situation might arise in a real-world problem of matching under preferences.  
+
+Suppose hereafter that all agents of at least one type have preferences derived from a master list. Without loss of generality, suppose the preference lists of all agents in $D$ are close to, relative to a measure that will be defined, some master list $\hat{P}$ over all agents in $U$.
+
+We quantify the similarity between the preference list of each agent in $D$ to the master list $\hat{P}$. Here we use the \emph{Kendall tau distance} \cite{KendallTauCitation} (also known as \emph{bubblesort distance} or \emph{Kemeny distance} \cite{HedonicGamesHOCSC}) two linear orders over some set $S$. For any two elements $s_i, s_j$ in $S$, we say that $(s_i, s_j)$ is a \emph{discordant pair} between $L_1$ and $L_2$ if $s_i \succ_{L_1} s_j$ and $s_j \succ_{L_2} s_i$. The Kendall tau distance $\tau(L_1, L_2)$ between $L_1$ and $L_2$ is the number of discordant pairs between $L_1$ and $L_2$. The Kendall tau distance can be equivalently defined as the number of swaps made by the bubblesort algorithm when sorting $L_1$ according to the order of the elements in $L_2$ (or vice-versa) \cite{KendallTauCitation}. By definition, $0 \leq \tau(L_1, L_2) \leq \binom{n}{2}$ for any $L_1$ and $L_2$.
+
+Suppose the maximum Kendall tau distance between $\hat{P}$ and the preference list $P_{d_i}$ of any agent $d_i \in D$ is $c$.  
+
+\begin{thm}
+\label{thm:three_dsm_cyc_ml}
+If $c \leq n$ then there exists a polynomial-time algorithm for 3-DSM-CYC-MSM with approximation ratio ${6}/{(6 - (3d^2 - 2d^3))}$, where $d = c/n$.
+\end{thm}
+\begin{proof}
+% If $n \leq 3$ then a stable matching must exist, and can be found in polynomial time \cite{BGJK04}. Suppose then that $n \geq 4$. 
+The algorithm is a variation of Algorithm~\algorithmfont{cyclicSerialDictatorship}. The only difference is that in each round, instead of selecting a dictator agent in $U$ arbitrarily, the most-preferred yet-unmatched agent in $U$ is selected according to the master list $\hat{P}$. Intuitively, it follows that $u_i$ is among the most-preferred agents in the preference list of $d_k$ and thus the number of blocking families that contain $d_k$ is minimised. 
+
+It is straightforward to show that this algorithm returns a matching $M$ in polynomial time. Without loss of generality, assume that $\hat{P} : u_1\ u_2\ \dots\ u_n$ and that $( u_1, w_1, d_1 )$ was the first family added to $M$, $( u_2, w_2, d_2 )$ was the second family added to $M$, and so on. 
+
+For an arbitrary $i$ where $1 \leq i \leq n - 1$, consider the $i\textsuperscript{th}$ iteration of the while loop. As before in the proof of Theorem~\ref{thm:three_dsm_cyc_unrestricted}, it must be that each family in $S_i$ contains $d_i$. Also as before, for any family $( u_j, w_k, d_i )$ in $S_i$ it must be that $i < j \leq n$ and $i < k < j$ so
+\begin{align}
+    |S_i| &\leq \sum\limits_{j=i+1}^{n} (j - i - 1)\nonumber\\
+    &= \frac{(n-i)(n-i-1)}{2}\label{eqn:three_dsm_cyc_sizeofsiml}\enspace.
+\end{align}
+We now show that because of the master list, if $i < n - c$ then the upper bound on $|S_{i}|$ shown in Inequality~\ref{eqn:three_dsm_cyc_sizeofsiml} can be improved. Consider an arbitrary $i$ where $1 \leq i < n - c$.
+
+Consider some family $( u_j, w_k, d_{i} )$ in $S_{i}$. As before in the proof of Theorem~\ref{thm:three_dsm_cyc_unrestricted} it must be that $i < j$ and $i < k < j$.
+
+Suppose for a contradiction that $j > i + c$ and thus that $j \geq i + c + 1$. We shall identify a number of discordant pairs between $P_{d_{i}}$ and the master list $\hat{P}$. By assumption, the position of $u_{i}$ in the master list $\hat{P}$ is exactly $i$. Suppose $\hat{i}$ is the position of $u_{i}$ in $P_{d_{i}}$. It follows that the number of discordant pairs between $P_{d_{i}}$ and $\hat{P}$ that contain $u_{i}$ is at least $|\hat{i} - i|$. Similarly, the number of discordant pairs between $P_{d_{i}}$ and $\hat{P}$ that contain $u_j$ is at least $|\hat{j} - j|$ where $\hat{j}$ is the position of $u_j$ in $P_{d_{i}}$. At most one discordant pair contains both $u_j$ and $u_{i}$ so the total number of discordant pairs containing either $u_j$ or $u_i$ is at least
+\begin{align*}
+    |\hat{i} - i| + |\hat{j} - j| - 1
+    &= |\hat{i} - i| + |j - \hat{j}| - 1\\
+    &\geq \hat{i} - i + j - \hat{j} - 1\\
+    &\geq \hat{i} + c - \hat{j} && \mbox{since $j \geq i + c + 1$}\\
+    &\geq c + 1 && \mbox{since $\hat{j} < \hat{i}$}
+\end{align*}
+which contradicts the definition of $c$ as the maximum number of discordant pairs between the preference list of any agent in $D$ and the master list $\hat{P}$. It follows that $j \leq i + c$. In conclusion, we have shown that $i < j \leq i + c$ and $i < k < j$.
+It follows that, for any $i$ where $1\leq i < n - c$,
+\begin{align}
+    |S_{i}| &\leq \sum\limits_{j={i}+1}^{i + c} (j - i - 1)\nonumber\\
+    &= \frac{c(c-1)}{2}\label{eqn:threedsm_cyc_si_ml}\enspace.
+\end{align}
+By Inequality~\ref{eqn:threedsm_cyc_si},
+\begin{align}
+    |\text{bf}(M)| &= \sum\limits_{i=1}^{n-1} |S_i| && \mbox{as before in the proof of Theorem~\ref{thm:three_dsm_cyc_unrestricted}}\nonumber\\
+    &\leq \sum\limits_{i=1}^{n-c-1} \frac{c(c - 1)}{2} + \sum\limits_{i = n - c}^{n - 1} \frac{(n - i)(n - i - 1)}{2} && \mbox{by Inequalities~\ref{eqn:three_dsm_cyc_sizeofsiml} and~\ref{eqn:threedsm_cyc_si_ml}}\nonumber\\
+    &= \frac{1}{2}c(n - c - 1)(c - 1) + \frac{1}{6}(c^3 - c) \label{eqn:threedsm_cyc_bf_ml}\enspace.
+\end{align}
+Suppose $M^*$ is a matching in $(N, P)$ with the maximum number of non-blocking families. By the definition of $\text{nbf}$,
+\begin{align}
+    |\text{nbf}(M)| &= n^3 - |\text{bf}(M)|\nonumber\\
+    &\geq n^3 - \frac{1}{2}c(n - c - 1)(c - 1) - \frac{1}{6}(c^3 - c) && \label{eqn:nbfsize}\mbox{by Inequality~\ref{eqn:threedsm_cyc_bf_ml}}
+\end{align}
+so the approximation ratio is
+\begin{align*}
+    \frac{|\textrm{nbf}(M^*)|}{|\textrm{nbf}(M)|} &\leq \frac{n^3}{|\textrm{nbf}(M)|}\\
+    &\leq \frac{6n^3}{6n^3 - 3nc^2  + 2c^3 + 3nc - 2c} && \mbox{by Inequality~\ref{eqn:nbfsize}}\\
+    &\leq \frac{6n^3}{6n^3- 3nc^2 + 2c^3} && \mbox{since $n \geq 1$}\\
+    &= \frac{6n^3}{6n^3 - c^2(3n - 2c)}\\
+    &= \frac{6}{6 - (3d^2 - 2d^3)} && \mbox{where $d = c/n$.}
+\end{align*}
+\end{proof}
+
+A consequence of Inequality~\ref{eqn:threedsm_cyc_bf_ml} in the proof of Theorem~\ref{thm:three_dsm_cyc_ml} is the following corollary. This corollary is also implied by Escamocher and O'Sullivan's \cite{Escamocher2018} result that the number of stable matchings in such an instance of 3-DSM-CYC is exponential in $n$.
+
+\begin{cor}
+\label{cor:three_dsm_cyc_ml_stab}
+Any instance of 3-DSM-CYC contains a stable matching, which can be found in polynomial time, if all agents of at least one type have the same preference list.
+\end{cor}
+\begin{proof}
+Assume without loss of generality that all agents in $D$ have the same preference list. Suppose $M$ is a matching returned by the variant of Algorithm~\algorithmfont{cyclicSerialDictatorship} described in Theorem~\ref{thm:three_dsm_cyc_ml}. By Inequality~\ref{eqn:threedsm_cyc_bf_ml} in the proof of Theorem~\ref{thm:three_dsm_cyc_ml}, since $c = 0$ it must be that $|\textrm{bf}(M)| = 0$ and thus that $M$ is stable.
+\end{proof}
+
+As before in the case of unrestricted preferences, we show that this analysis is tight asymptotically by constructing an instance $\mathcal{I}_n$ for some fixed $n \geq 1$ where for any fixed $c \leq n$ the approximation ratio obtained by the algorithm is $6 / (6 - (3d^2 - 2d^3)) - o(1)$, where $d = c/n$.
+
+For any fixed $n$, construct $\mathcal{I}_n$ as follows. Let $U = \{ u_1, u_2, \dots, u_n \}$, $W =  \{ w_1, w_2, \dots, w_n \}$, and $D = \{ d_1, d_2, \dots, d_n \}$, and for each $i$ where $1\leq i \leq n$ let
+\begin{align*}
+\setlength\arraycolsep{2pt}
+\begin{array}{r c c c c}
+% P_{u_i} :& w_1 & w_2 & \dots & w_{n}\\
+% P_{w_i} :& d_1 & d_2 & \dots & d_{n}\\
+\hat{P} :& u_1 & u_2 & \dots & u_n
+\end{array}
+\end{align*}
+and
+\begin{align*}
+\setlength\arraycolsep{2pt}
+\begin{array}{r c c c c}
+P_{u_i} :& w_1 & w_2 & \dots & w_{n}\\
+P_{w_i} :& d_1 & d_2 & \dots & d_{n}
+\end{array}
+\end{align*}
+To construct $P_{d_i}$ for each $d_i \in D$, first construct $P_{d_i} : u_1\hspace{2pt} u_2\hspace{2pt} \dots\hspace{2pt} u_n$. If $i \leq n - c$ then shift $u_i$ in $P_{d_i}$ to the right by $c$ places so that it appears just after $u_{i+c}$. If $i > n - c$ then shift $u_i$ in $P_{d_i}$ to the right by $n - i$ places so that it appears last. Note that now $d_i$ prefers to $u_i$ any agent $u_j$ where either $j < i$ or $i + 1 \leq j \leq i + c$.
+
+% P_{d_i} :& u_1 & u_2 & \dots & u_{i - 1} & u_{i + 1} & u_{i + 2} & \dots & u_{i + c} & u_i & u_{i + c + 1} & u_{i + c + 2} & \dots & u_n
+% \end{array}
+% \end{flalign*}
+Notice that for any $d_i \in D$ each discordant pair between $\hat{P}$ and $P_{d_i}$ comprises $(u_i, u_{i + j})$ where $j \leq c$. It follows that there are exactly $c$ discordant pairs between $\hat{P}$ and $P_{d_i}$ for each $d_i$.
+
+It is straightforward to show that the algorithm returns a matching $M = \{ (u_1, w_1, d_1), (u_2, w_2, d_2), \dots, (u_n, w_n, d_n) \}$. Let $F_i$ be the family $( u_i, w_i, d_i )$ selected in the $i\textsuperscript{th}$ iteration and let $S_i$ be the set of families that block $M$, have a non-empty intersection with $F_i$ and an empty intersection with $F_j$ for every $1\leq j < i$. Note that $S_n = \varnothing$. 
+
+As before in the proof of Theorem~\ref{thm:three_dsm_cyc_ml}, we consider two cases. First, suppose $i < n - c$. As before, it can be shown that no family in $S_i$ contains $u_i$ and no family in $S_i$ contains $w_i$. It follows that each family in $S_i$ contains $d_i$. As we noted, by the construction of $\mathcal{I}_n$ it must be that $d_i$ prefers to $u_i$ each agent $u_j$ where either $j < i$ or $i + 1 \leq j \leq i + c$. By the definition of $S_i$ no family in $S_i$ contains any agent $u_j$ where $j < i$ so it follows that any family in $S_i$ contains $d_i$ as well as some $u_j$ where $i + 1 \leq j \leq i + c$. Moreover, any such $u_j$ prefers to $w_j$ each agent $w_k$ where $k < j$, and any such $w_k$ prefers to $d_k$ each agent $d_i$ where $i < k$. It follows that $S_i$ contains the family $( u_j, w_k, d_i )$ for each $j$ where $i + 1 \leq j \leq i + c$ and each $k$ where $i < k < j$. By the proof of Theorem~\ref{thm:three_dsm_cyc_ml}, it is straightforward to show that no other families are contained in $S_i$. It follows that 
+\begin{align*}
+    S_i = \{ ( u_j, w_k, d_i ) : i + 1 \leq j \leq i + c, i < k < j \}
+\end{align*}
+and thus that
+\begin{align*}
+    |S_i| &= \sum\limits_{j = i + 1}^{i + c} (j - i - 1)\enspace.
+\end{align*}
+Second, suppose $i \geq n - c$. It follows in this case that
+\begin{align*}
+    |S_i| &= \sum\limits_{j = i + 1}^{n} (j - i - 1)\enspace.
+\end{align*}
+It follows, as in the proof of Theorem~\ref{thm:three_dsm_cyc_ml}, that
+\begin{align*}
+    |\textrm{bf}(M)| &= \sum\limits_{i=1}^{n - c - 1} \frac{c(c - 1)}{2} + \sum\limits_{i = n - c}^{n - 1} \frac{(n - i)(n - i - 1)}{2}\\
+    &= \frac{1}{2}c(n - c - 1)(c - 1) + \frac{1}{6}(c^3 - c)
+\end{align*}
+which shows that the upper bound on $|S_i|$ shown in Inequality~\ref{eqn:three_dsm_cyc_sizeofsi} in Theorem~\ref{thm:three_dsm_cyc_unrestricted} is tight. It then follows that
+\begin{align}
+    |\textrm{nbf}(M)| = n^3 - \frac{1}{2}c(n - c - 1)(c - 1) - \frac{1}{6}(c^3 - c) \label{eqn:three_dsm_cyc_ml_sizeofsiintight}\enspace.
+\end{align}
+To see that at least one stable matching $M^*$ exists in $\mathcal{I}_n$, consider a new instance $\mathcal{I}'_n$ with sets $U'$, $W'$, and $D'$ constructed as for $\mathcal{I}_n$ except permuting the types of the agents so that every agent in $D'$ has the same preference list. It follows by Corollary~\ref{cor:three_dsm_cyc_ml_stab} that $\mathcal{I}'_n$ contains a stable matching, which can be relabelled to reveal a stable matching $M^*$ in $\mathcal{I}_n$.
+
+Now
+\begingroup
+\allowdisplaybreaks
+\begin{align*}
+% \begin{split}
+\frac{|\textrm{nbf}(M^*)|}{|\textrm{nbf}(M)|} &= \frac{n^3}{|\textrm{nbf}(M)|} && \mbox{since $M^*$ is stable}\\
+    &= \frac{6n^3}{6n^3 - 3nc^2  + 2c^3 + 3nc - 2c} && \mbox{by Equation~\ref{eqn:three_dsm_cyc_ml_sizeofsiintight}}\\
+    % &= \frac{6n^3}{6n^3 - 3nc^2 + 2c^3} - \frac{18cn^4 - 12cn^3}{\splitfrac{36n^6 + (18c - 36c^2)n^4}{\splitfrac{+ (24c^3 - 12c)n^3}{\splitfrac{+ (9c^4 - 9c^3)n^2}{\splitfrac{+ (6c^4 - 12c^5 + 6c^3)n}{+ 4c^6 - 4c^4}}}}}\\
+    %  &= \frac{6n^3}{6n^3 - 3nc^2 + 2c^3} - \frac{18cn^4 - 12cn^3}{\begin{matrix*}[l]36n^6 + (18c - 36c^2)n^4\\\quad +\ (24c^3 - 12c)n^3\\\quad+\ (9c^4 - 9c^3)n^2\\\quad+\ (6c^3 - 12c^5 + 6c^4)n\\\quad+\ 4c^6 - 4c^4\end{matrix*}}\\
+    &= \frac{6n^3}{6n^3 - 3nc^2 + 2c^3} - \frac{18cn^4 - 12cn^3}{\begin{matrix*}[l]36n^6 + (18c - 36c^2)n^4\\\quad +\ (24c^3 - 12c)n^3\\\quad+\ (9c^4 - 9c^3)n^2\\\quad+\ (6c^3 - 12c^5 + 6c^4)n\\\quad+\ 4c^6 - 4c^4\end{matrix*}}\\
+    &= \frac{6n^3}{6n^3 - 3nc^2 + 2c^3} - o(1)\\
+    % &\leq \frac{6n^3}{6n^3 - 3nc^2 + 2c^3} && \mbox{since $c \geq 0$}\\
+    % &= \frac{6n^3}{6n^3 - c^2(3n - 2c)}\\
+    &= \frac{6}{6 - (3d^2 - 2d^3)} - o(1) && \mbox{where $d = c/n$}
+% \end{split}
+\end{align*}
+\endgroup
+which shows that the analysis is tight asymptotically.
+
+% Suppose then that $n$ is odd and thus that $n = 2l + 1$ where $l \geq 0$. In this case let $M^* = \{ ( u_n, w_n, d_n ) \} \cup \{ ( u_{2i}, w_{2i}, d_{2i - 1} ), ( u_{2i - 1}, w_{2i - 1}, d_{2i} ) : 1 \leq i \leq l \}$. Suppose for a contradiction that some family $( u_j, w_k, d_i )$ blocks $M^*$ in $(N, P)$. If $j < n$, $k < n$ and $i < n$ then, like the previous case in which we supposed $n$ is even, it must be that the agent in the agent in $M(w_k)$ in $D$ is either $d_{k + 1}$ or $d_{k - 1}$ and the agent in $M(d_k)$ in $U$ is either $u_{k + 1}$ or $u_{k - 1}$. It follows by the construction of $\mathcal{I}_n$ that $i \leq k$ and $j \leq i$ and thus that $j \leq k$, which is a contradiction since by the definition of a blocking family $u_j$ must prefer $w_k$ to its assigned partner of the next type, $w_j$. It remains that either $j = n$, $k = n$, or $i = n$. By the construction of the preference lists of the agents in $U$ and $W$ it must be that $w_n$ is the last agent in $P_{u_i}$ for any $u_i \in U$ and $d_n$ is the last agent in $P_{w_i}$ for any $w_i \in W$. It follows that neither $w_n$ nor $d_n$ belong to a family that blocks $M^*$ and thus the only possibility is that $j = n$. 

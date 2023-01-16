@@ -1,0 +1,37 @@
+\begin{algorithm}[t]
+\textbf{Input:} an instance $(N,V)$ of 3DR-AS with binary and symmetric preferences that is triangle-free\\
+\textbf{Output:} a stable $P$-matching $M'$ in $(N, V)$
+\smallskip
+\begin{algorithmic}
+\caption{Subroutine~\algorithmfont{findStableInTriangleFree} \label{alg:threed_sr_as_find_stable_pmatching_in_triangle_free_instance}} 
+\If{$|N|=2$}
+    \State \Return $\varnothing$
+\EndIf
+\State \textbf{end if}
+\smallskip
+
+\State $\alpha_i \gets$ an arbitrary agent in $N$
+\State $(N', V') \gets $ remove $\alpha_i$ from $(N, V)$
+\State $M \gets \algorithmfont{findStableInTriangleFree}((N', V'))$
+
+\If{some $\alpha_{l_1}, \alpha_{l_2}\in N$ exist where $u_{\alpha_{l_1}}(M)=u_{\alpha_{l_2}}(M)=0$ and $v_{\alpha_i}(\alpha_{l_1})=v_{\alpha_i}(\alpha_{l_2})=1$}
+    \State \Return $M \cup \{ \{ \alpha_{i}, \alpha_{l_1}, \alpha_{l_2} \} \}$
+\ElsIf{some $\alpha_{l_3}, \alpha_{l_4}\in N$ exist where $u_{\alpha_{l_3}}(M)=u_{\alpha_{l_4}}(M)=0$ and\\\hphantom{\textbf{else if}} $v_{\alpha_i}(\alpha_{l_3})=v_{\alpha_{l_3}}(\alpha_{l_4})=1$}
+    \State \Return $M \cup \{ \{ \alpha_{i}, \alpha_{l_3}, \alpha_{l_4} \} \}$
+\ElsIf{some $\alpha_{l_5}, \alpha_{l_6}\in N$ exist where $u_{\alpha_{l_5}}(M)=1$, $u_{\alpha_{l_6}}(M)=0$,\\\hphantom{\textbf{else if}} and $v_{\alpha_i}(\alpha_{l_5})=v_{\alpha_{l_5}}(\alpha_{l_6})=1$}
+
+\LineComment{$M$ is repairable in $(N, V)$ (see Section~\ref{sec:threed_sr_as_symmetric_binary_repairing}). Note that $\alpha_{j_1}=\alpha_{l_5}$ and $\alpha_{j_2}=\alpha_{l_6}$.}
+\State \Return $\algorithmfont{repair}((N, V), M, \alpha_i)$
+
+\Else
+
+    \State \Return $M$
+
+\EndIf
+\State \textbf{end if}
+
+% \State \Return $M'$
+
+\medskip
+\end{algorithmic}
+\end{algorithm}

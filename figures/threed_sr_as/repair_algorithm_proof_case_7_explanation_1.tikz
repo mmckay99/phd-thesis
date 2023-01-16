@@ -1,0 +1,47 @@
+
+\begin{tikzpicture}
+% \node[draw=none] (casenumber) at (-1.5, 3.0) {\emph{Case 7}};
+\begin{scope}[every node/.style={circle,draw, minimum size=2.4mm}, scale=1.2]
+    \node[rectangle, white, text=black, fill=white, minimum width=9mm, minimum height=12mm, inner sep=0.5mm] (dots1) at (0.16,2) {\hspace{2pt}$\dots$};
+    
+    \node[thick, circle, label={[label distance=0.6cm]270:$S_{3c-2}$}] (s3c2) at (1.05,2) {};
+    \node[thick, circle, label={[label distance=0.6cm]270:$S_{3c-1}$}] (s3c1) at (2.1,2) {};
+    \node[thick, circle, label={[label distance=0.6cm]270:$S_{3c}$}] (s3c) at (2.9,2) {};
+    
+    \node[thick, circle, label={[label distance=0.6cm]135:$\alpha_{k_1}$}] (ak1) at (4.6,2) {};
+    
+     \node[thick, circle] (ak12) at (5.232,1.367) {};
+     
+     \node[rectangle, white, text=black, fill=white, minimum width=9mm, minimum height=12mm, inner sep=0.5mm, rotate=-45] (ak13) at (5.864, 0.734) {\hspace{2pt}$\dots$};
+     
+    \node[thick, circle, label={[label distance=0.6cm]0:$\alpha_{k_2}$}] (ak2) at (5.6,3.6) {};
+    
+    % \node[circle, densely dashed, minimum size=8mm] at (s3c) {};
+    %  \node[circle, densely dashed, minimum size=8mm] at (ak2) {};
+    % \begin{scope}[rotate=-45]
+    %     \clip(0,1) rectangle (3.6, 6.0);
+    %     \node[rectangle, inner sep=0, minimum height=8mm, minimum width=27mm, rounded corners=4mm, densely dashed, transform shape] (triple1) at (ak12) {};
+    % \end{scope}
+    
+    % \begin{scope}
+    % % dots are -0.25 from left and +0.2 to right
+    %     \clip(0,1) rectangle (5.05, 4.0);
+    %     \node[rectangle, inner sep=0, minimum height=8mm, minimum width=30.67mm, rounded corners=4mm, densely dashed] (triple2) at ($(dots1)!0.5!(s3c2)$) {};
+    % \end{scope}
+    % \begin{scope}
+    %         \clip(5.5, 0.0) rectangle (5, 4.0);
+    %         \node[rectangle, inner sep=0, minimum height=8mm, minimum width=30.67mm, rounded corners=4mm, densely dashed] (triple3) at ($(dots1)!0.5!(s3c2)$) {};
+    % \end{scope}
+\end{scope}
+    
+\begin{scope}
+    \foreach \from/\to in {dots1/s3c2, s3c2/s3c1, s3c1/s3c, s3c/ak1, ak1/ak2, ak1/ak12, ak12/ak13}
+        \draw [thick] (\from) -- (\to);
+        
+    \dashedcontainerthing{ak2};
+    \dashedcontainerthing{ak1,ak12,ak13};
+    \dashedcontainerthing{s3c};
+    \dashedcontainerthing{dots1,s3c2,s3c1};
+    % \node[draw, thick, circle, densely dashed, minimum size=20pt] (anonymousnode) at (ak2) {};
+\end{scope}
+\end{tikzpicture}

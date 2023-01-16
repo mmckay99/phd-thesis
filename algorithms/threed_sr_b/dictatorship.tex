@@ -1,0 +1,24 @@
+\begin{algorithm}
+\textbf{Input:} an instance $(N, P)$ of 3DR-B\\
+\textbf{Output:} a matching $M$ in $(N, P)$
+\smallskip
+\begin{algorithmic}
+\caption{Algorithm~\algorithmfont{serialDictatorship} \label{alg:threed_sr_b_dictatorship}} 
+
+\State $U \gets N$
+\State $M \gets \varnothing$
+
+\While{$|U| > 0$}
+    \State $d_1 \gets$ an arbitrary agent in $U$
+    \State $d_2 \gets \mathscr{B}_{d_1}(U)$
+    \State $d_3 \gets \mathscr{B}_{d_2}(U \setminus \{ d_1 \})$
+    
+    \State $M \gets M \cup \{ \{ d_1, d_2, d_3 \} \}$
+    \State $U \gets U \setminus \{ d_1, d_2, d_3 \}$
+\EndWhile
+\State \textbf{end while}
+\smallskip
+
+\State \Return $M$
+\end{algorithmic}
+\end{algorithm}

@@ -1,0 +1,85 @@
+As in the case of 3-DSM-CYC, it seems difficult to characterise instances of 3DR-B that do not contain a stable matching. With respect to the respective existence problems, which are decision problems, we call such instances ``no'' instances. A significant open question for both 3-DSM-CYC and 3DR-B involves the minimal number of agents required to construct such an instance. The smallest such instance of 3-DSM-CYC uses $60$ agents ($n = 20$) \cite{Lerner22}. In this section, we show that the smallest such instance of 3DR-B contains at least $9$ and at most $15$ agents, but leave determining the precise number as an open problem.
+
+We first show, in Theorem~\ref{thm:threed_sr_b_ifnis6thensmexists}, that any instance of 3DR-B with at most $6$ agents must contain a stable matching. It follows that at least $9$ agents are required to construct an instance of 3DR-B that contains no stable matching.
+
+\begin{thm}
+\label{thm:threed_sr_b_ifnis6thensmexists}
+In any instance $(N, P)$ of 3DR-B, if $|N| \leq 6$ then $(N, P)$ contains a stable matching.
+\end{thm}
+\begin{proof}
+If $|N| = 3$ then any matching is stable so suppose $|N| = 6$. Consider the directed graph $G = (N, A)$ where $N$ is the set of agents and $( \alpha_i, \alpha_j ) \in A$ if $\mathscr{B}_{\alpha_i}(N) = \alpha_j$. We shall analyse the structure of $G$ in a case analysis, and in each case identify a stable matching $M$. Since the out-degree of each agent in $G$ is $1$, and by definition $G$ contains no self-loops, it must be that each weakly connected component of $G$ contains at least two agents and at least one directed cycle. If $G$ contains:
+\begin{itemize}
+    \item Three components $\{ \alpha_1, \alpha_2 \}$, $\{ \alpha_3, \alpha_4 \}$, $\{ \alpha_5, \alpha_6 \}$, each of size two, then $M = \{ \{ \alpha_1, \alpha_2, \alpha_3 \}, \{ \alpha_4, \alpha_5, \alpha_6 \} \}$ is stable since $\mathscr{B}_{\alpha_i}(M) = \mathscr{B}_{\alpha_i}(N)$ for each $i$ where $i \in \{ 1, 2, 4, 5 \}$.
+    
+    \item Two components $\{ \alpha_1, \alpha_2, \alpha_3 \}, \{ \alpha_4, \alpha_5, \alpha_6 \}$ each of size three, then $M = \{ \{ \alpha_1, \alpha_2, \alpha_3 \}, \{ \alpha_4, \alpha_5, \alpha_6 \} \}$ is stable since $\mathscr{B}_{\alpha_i}(M) = \mathscr{B}_{\alpha_i}(N)$ for each $\alpha_i \in N$.
+    
+    \item Two components $\{ \alpha_1, \alpha_2, \alpha_3, \alpha_4 \},\{ \alpha_5, \alpha_6 \}$ then there are two possible cases. In the first, the longest directed cycle among $\{ \alpha_1, \alpha_2, \alpha_3, \alpha_4 \}$ contains two agents. In this case, assume without loss of generality that this cycle is $\{ \alpha_1, \alpha_2 \}$ and that $( \alpha_3, \alpha_1 ) \in A$. Now $M = \{ \{ \alpha_1, \alpha_2, \alpha_3 \}, \{ \alpha_4, \alpha_5, \alpha_6 \} \}$ is stable since $\mathscr{B}_{\alpha_i}(M) = \mathscr{B}_{\alpha_i}(N)$ for each $i$ where $i \in \{ 1, 2, 5, 6 \}$. In the second, the longest directed cycle among $\{ \alpha_1, \alpha_2, \alpha_3, \alpha_4 \}$ contains three or more agents. In this case, we may assume without loss of generality that $( \alpha_1, \alpha_2 ) \in A$ and $( \alpha_2, \alpha_3 ) \in A$. Now $M = \{ \{ \alpha_1, \alpha_2, \alpha_3 \}, \{ \alpha_4, \alpha_5, \alpha_6 \} \}$ is stable since $\mathscr{B}_{\alpha_i}(M) = \mathscr{B}_{\alpha_i}(N)$ for each $i$ where $i \in \{ 1, 2, 5, 6 \}$.
+    
+    \item One component $\{ \alpha_1, \alpha_2, \alpha_3, \alpha_4, \alpha_5, \alpha_6 \}$. If the longest directed cycle contains:
+    \begin{itemize}
+        \item Six agents then $M = \{ \{ \alpha_1, \alpha_2, \alpha_3 \}, \{ \alpha_4, \alpha_5, \alpha_6 \} \}$ is stable since $\mathscr{B}_{\alpha_i}(M) = \mathscr{B}_{\alpha_i}(N)$ for each $i$ where $i \in \{ 1, 2, 4, 5 \}$.
+        
+        \item Five agents then assume without loss of generality that this cycle is $\{ \alpha_1, \alpha_2, \dots, \alpha_5 \}$. Now $M = \{ \{ \alpha_1, \alpha_2, \alpha_3 \}, \{ \alpha_4, \alpha_5, \alpha_6 \} \}$ is stable since $\mathscr{B}_{\alpha_i}(M) = \mathscr{B}_{\alpha_i}(N)$ for each $i$ where $i \in \{ 1, 2, 4, 5\}$.
+        
+        \item Four agents then assume without loss of generality that this cycle is $\{ \alpha_1, \alpha_2, \alpha_3, \alpha_4 \}$ and that $( \alpha_5, \alpha_1 ) \in A$. Consider $\mathscr{B}_{\alpha_6}(N)$. If $( \alpha_6, \alpha_1 ) \in A$ then $M = \{ \{ \alpha_1, \alpha_5, \alpha_6 \}, \{ \alpha_2, \alpha_3, \alpha_4 \} \}$ is stable since $\mathscr{B}_{\alpha_i}(M) = \mathscr{B}_{\alpha_i}(N)$ for each $i$ where $i \in \{ 2, 3, 5, 6 \}$. If either $( \alpha_6, \alpha_2 ) \in A$ or $( \alpha_6, \alpha_3 ) \in A$ then $M = \{ \{ \alpha_1, \alpha_4, \alpha_5 \}, \{ \alpha_2, \alpha_3, \alpha_6 \} \}$ is stable since $\mathscr{B}_{\alpha_i}(M) = \mathscr{B}_{\alpha_i}(N)$ for each $i$ where $i \in \{ 2, 4, 5, 6 \}$. If $( \alpha_6, \alpha_4 ) \in A$ then $M = \{ \{ \alpha_1, \alpha_2, \alpha_5 \}, \{ \alpha_3, \alpha_4, \alpha_6 \} \}$ is stable since $\mathscr{B}_{\alpha_i}(M) = \mathscr{B}_{\alpha_i}(N)$ for each $i$ where $i \in \{ 1, 3, 5, 6 \}$.
+        
+        \item Three agents then assume without loss of generality that this cycle is $\{ \alpha_1, \alpha_2, \alpha_3 \}$. Now $M = \{ \{ \alpha_1, \alpha_2, \alpha_3 \}, \{ \alpha_4, \alpha_5, \alpha_6 \} \}$ is stable since $\mathscr{B}_{\alpha_i}(M) = \mathscr{B}_{\alpha_i}(N)$ for each $i$ where $i \in \{ 1, 2, 3 \}$ and $\{ \alpha_1, \alpha_2, \alpha_3 \} \in M$.
+        
+        \item Two agents then assume without loss of generality that this cycle is $\{ \alpha_1, \alpha_2 \}$ and also that $( \alpha_3, \alpha_1 ) \in A$. Now $M = \{ \{ \alpha_1, \alpha_2, \alpha_3 \}, \{ \alpha_4, \alpha_5, \alpha_6 \} \}$ is stable since $\mathscr{B}_{\alpha_i}(M) = \mathscr{B}_{\alpha_i}(N)$ for each $i$ where $i \in \{ 1, 2, 3 \}$ and $\{ \alpha_1, \alpha_2, \alpha_3 \} \in M$.
+        % \item Length two. Assume that the cycle is $\{ \alpha_1, \alpha_2 \}$. There must exist $\alpha_i$ where $\mathit{top}(\alpha_i) \in \{ \alpha_1, \alpha_2 \}$ otherwise a four-cycle must exist. Assume that $\alpha_i=\alpha_3$. If $M = \{ \{ \alpha_1, \alpha_2, \alpha_3 \}, \{ \alpha_4, \alpha_5, \alpha_6 \} \}$ then $\mathit{top}(\alpha_i) \in M(\alpha_i)$ for $1 \leq i \leq 3$ so $M$ is stable. 
+    \end{itemize}
+\end{itemize}
+\end{proof}
+
+We now show, in Theorem~\ref{thm:threed_sr_b_ifnis15thensmdoesnotexist}, that there exists an instance of 3DR-B with $15$ agents that contains no stable matching. That instance, which we denote by $(N', P')$, is illustrated in Figure~\ref{fig:threed_sr_b_ifnis15example_no_instance} and can be constructed as follows. First, for each $r$ where $1 \leq r \leq 3$ construct a set of five agents in $N'$ labelled $Q_r = \{ q_r^1, q_r^2, \dots, q_r^5 \}$, which we refer to as a \emph{pentagadget}. To simplify the description of the valuations in each pentagadget, in what follows we write $i \oplus y$ to denote $((i + y - 1) \bmod 5) + 1$. For each $r$ where $1 \leq r \leq 3$ and each $i$ where $1 \leq i \leq 5$ let
+\begin{flalign*}
+\setlength\arraycolsep{2pt}
+\begin{array}{r l l l l l c r}
+P_{q_r^i} :& q_r^{i \oplus 1} & q_r^{i \oplus 2} & q_r^{i \oplus 3} & q_r^{i \oplus 4} &[& N' \setminus Q_r\text{ in arbitrary order} &]
+% [& W\text{ in arbitrary order} &]\ &w_0\ &[& D\text{ in arbitrary order} &]\ &d_0\ &[& U\text{ in arbitrary order} &]
+\end{array}
+\end{flalign*}
+
+\begin{figure}
+\centering\input{figures/threed_sr_b/example_no_instance.tikz}\caption[A representation of the instance $(N', P')$ of 3DR-B that contains no stable matching]{A representation of the instance $(N', P')$ of 3DR-B that contains no stable matching. An arrow exists from $q_r^i$ to $q_r^j$ if $\mathscr{B}_{q_r^i}(N') = q_r^j$.} 
+    \label{fig:threed_sr_b_ifnis15example_no_instance}
+\end{figure}
+
+Suppose $M$ is an arbitrary matching in $(N', P')$. We shall eventually show that $M$ is not stable. For any agent $q_r^i \in N'$, we say that $q_r^i$ is \emph{external} if $\mathscr{B}_{q_r^i}(M) \notin Q_r$.
+% Since $|Q_r| = 5$ it follows trivially that each set in $\{ Q_1, Q_2, Q_3 \}$ contains at least one external agent. We show in Lemma~\ref{lem:threed_sr_b_ifnis15example_lemma} that at least one such set contains at least two external agents.
+
+\begin{lem}
+\label{lem:threed_sr_b_ifnis15example_lemma}
+At least one pentagadget contains at least two external agents.
+\end{lem}
+\begin{proof}
+Since each pentagadget contains five agents it must be that $Q_1$ contains at least one external agent. Without loss of generality assume that $q_1^1$ is external. If $Q_1$ contains two external agents, including $q_1^1$, then the lemma statement holds, so suppose $q_1^1$ is the only external agent in $Q_1$. It follows that $\{ q_1^{i_1}, q_1^{i_2}, q_r^{j_1} \}, \{ q_1^{i_3}, q_1^{i_4}, q_s^{k_1} \} \in M$ where $\{ i_1, i_2, i_3, i_4 \} = \{ 2, 3, 4, 5 \}$, $r, s \in \{ 2, 3 \}$, and $1\leq {j_1}, {k_1}\leq 5$. If $r = s$ then $Q_r$ contains two external agents, namely $q_r^{j_1}$ and $q_r^{k_1}$, and thus the lemma statement holds, so suppose $r \neq s$. Assume without loss of generality that $q_r^{j_1} = q_2^1$ and $q_s^{k_1} = q_3^1$.
+
+By definition, $q_2^1$ is external. If $Q_2$ contains two external agents, including $q_2^1$, then the lemma statement holds, so suppose $q_2^1$ is the only external agent in $Q_2$. 
+It follows that $\{ q_2^{l_2}, q_2^{l_3}, q_t^{j_2} \}, \{ q_2^{l_4}, q_2^{l_5}, q_u^{k_2} \} \in M$, where $\{ l_2, l_3, l_4, l_5 \} = \{ 2, 3, 4, 5 \}$, $t, u \in \{ 1, 3 \}$, and $1\leq {j_2}, {k_2} \leq 5$. If $t = u$ then $Q_t$ contains two external agents, namely $q_t^{j_2}$ and $q_t^{k_2}$, and thus the lemma statement holds, so it must be that $t \neq u$. Assume without loss of generality that $t=1$ and $u=3$. Now $Q_3$ contains two external agents, namely $q_3^1$ and $q_3^{k_2}$, and thus the lemma statement holds.
+% where $r, s \in \{ 1, 3 \}$ and $1\leq i, j \leq 5$.
+% Since each set in $\{ Q_1, Q_2, Q_3 \}$ contains five agents, it must be that each such set contains at least one external agent and thus the total number of external agents is at least three. If the total number of external agents is four or more then by the pigeonhole principle at least one set in $\{ Q_1, Q_2, Q_3 \}$ contains at least two external agents, and thus the lemma statement holds. The only remaining possibility is that each set in $\{ Q_1, Q_2, Q_3 \}$ contains exactly one external agent. Consider $Q_1$. 
+% Since $|N'|=15$ it must be that the total number of internal agents is exactly $12$. 
+% Since each set in $\{ Q_1, Q_2, Q_3 \}$ contains five agents it must be that each such set contains at least one external agent, and thus the total number of internal agents is at most $12$. 
+% Each triple in $M$ contains either three internal agents, two internal agents and one external agent, or three external agents. Let $T(y)$ be the triples in $M$ that contain exactly $y$ internal agents. It follows that the total number of internal agents is $3|T(3)| + 2|T(2)| = 12$, and thus that 
+% By definition, the number of internal agents in any triple in $M$ is either $0$, $2$, or $3$. Suppose $k$ triples in $M$ contain exactly $3$ internal agents and $l$ triples in $M$ contain exactly $2$ internal agents. It follows that the total number of internal agents is $3k + 2l$. If the 
+\end{proof}
+
+% We now show, in Lemma~\ref{lem:threed_sr_b_ifnis15example_lemma2}, that there must exist some triple that blocks $M$. 
+
+% \begin{lem}
+% \label{lem:threed_sr_b_ifnis15example_lemma2}
+% $M$ is not stable.
+% \end{lem}
+% \begin{proof}
+% By Lemma~\ref{lem:threed_sr_b_ifnis15example_lemma}, assume without loss of generality that $Q_1$ contains at least two external agents, which we label $q_1^{i_1}$ and $q_1^{i_2}$. By the symmetry of each pentagadget, without loss of generality assume that $i_1 = 1$ and either $i_2 = 2$ or $i_2 = 3$. In the former case, $\{ q_1^1, q_1^2, q_1^5 \}$ blocks $M$, since $q_1^2 \succ_{q_1^1} \mathscr{B}_{q_1^1}(M)$, $\mathscr{B}_{q_1^2}(\{ q_1^1, q_1^5 \}) \succ_{q_1^2} \mathscr{B}_{q_1^2}(M)$, and $q_1^1 \succ_{q_1^5} \mathscr{B}_{q_1^5}(M)$. In the latter case, $\{ q_1^1, q_1^2, q_1^3 \}$ blocks $M$, since $q_1^2 \succ_{q_1^1} \mathscr{B}_{q_1^1}(M)$, $q_1^3 \succ_{q_1^2} \mathscr{B}_{q_1^2}(M)$, and $\mathscr{B}_{q_1^3}(\{ q_1^1, q_1^2 \}) \succ_{q_1^3} \mathscr{B}_{q_1^3}(M)$.
+% \end{proof}
+
+\begin{thm}
+\label{thm:threed_sr_b_ifnis15thensmdoesnotexist}
+There exists an instance of 3DR-B with $15$ agents that contains no stable matching.
+\end{thm}
+\begin{proof}
+Namely the instance $(N', P')$. Recall that $M$ is an arbitrary matching in $(N', P')$. By Lemma~\ref{lem:threed_sr_b_ifnis15example_lemma}, assume without loss of generality that $Q_1$ contains at least two external agents, which we label $q_1^{i_1}$ and $q_1^{i_2}$. By the symmetry of each pentagadget, without loss of generality assume that $i_1 = 1$ and either $i_2 = 2$ or $i_2 = 3$. In the former case, $\{ q_1^1, q_1^2, q_1^5 \}$ blocks $M$, since $q_1^2 \succ_{q_1^1} \mathscr{B}_{q_1^1}(M)$, $\mathscr{B}_{q_1^2}(\{ q_1^1, q_1^5 \}) \succ_{q_1^2} \mathscr{B}_{q_1^2}(M)$, and $q_1^1 \succ_{q_1^5} \mathscr{B}_{q_1^5}(M)$. In the latter case, $\{ q_1^1, q_1^2, q_1^3 \}$ blocks $M$, since $q_1^2 \succ_{q_1^1} \mathscr{B}_{q_1^1}(M)$, $q_1^3 \succ_{q_1^2} \mathscr{B}_{q_1^2}(M)$, and $\mathscr{B}_{q_1^3}(\{ q_1^1, q_1^2 \}) \succ_{q_1^3} \mathscr{B}_{q_1^3}(M)$.
+% We considered an arbitrary matching $M$ in the example instance $(\hat{N}, P')$. By Lemma~\ref{lem:threed_sr_b_ifnis15example_lemma2}, $M$ is not stable in $(\hat{N}, P')$. It follows that $|N'| \leq |\hat{N}| = 15$.
+\end{proof}

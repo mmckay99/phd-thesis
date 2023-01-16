@@ -1,0 +1,57 @@
+\begin{tikzpicture}
+% \draw[help lines] (0,0) grid (5,2);
+% \definecolor{enclosure_color}{rgb}{0.0,0.0,0.0}
+
+\begin{scope}[every node/.style={circle,draw, minimum size=2.4mm}]
+    \begin{scope}
+        \begin{scope}[shift={(0.0, {2.3})}]
+            \def\hlabeldist{0.4cm}
+            \begin{scope}[every node/.style={circle,thick,draw,minimum size=2.4mm}, scale=1.15]
+            % \filldraw[color=enclosure_color, fill=white](0, {-3.6180+tan(54)*1.1756}) circle ({1.4*1.1756/cos(54)});
+                % https://www.mathopenref.com/coordpolycalc.html
+                \node[label={[label distance=\hlabeldist]90:$h_2$}] (h2) at (0,0) {};
+                \node[label={[label distance=\hlabeldist]18:$h_3$}] (h3) at (1.9021,-1.3820) {};
+                \node[label={[label distance=\hlabeldist]306:$h_4$}] (h4) at (1.1756,-3.6180) {};
+                \node[label={[label distance=\hlabeldist]234:$h_5$}] (h5) at (-1.1756,-3.6180) {};
+                \node[label={[label distance=\hlabeldist]162:$h_1$}] (h1) at (-1.9021,-1.3820) {};
+            \end{scope}
+            \begin{scope}
+                \foreach \from/\to in {h1/h2, h2/h3, h3/h4, h4/h5, h5/h1}
+                    \draw [thick, darrow] (\from) -- (\to);
+                    
+                \foreach \from/\to in {h1/h3, h2/h4, h3/h5, h4/h1, h5/h2}
+                    \draw [thick, darrow12] (\from) -- (\to);
+            \end{scope}
+        \end{scope}
+        
+        
+        \begin{scope}[every node/.style={circle,draw, minimum size=2.4mm}, shift={(5.5, 0.0)}]
+            \def\scalefactorl{2.7}
+            % \filldraw[color=enclosure_color, fill=white, rounded corners=0.5cm] (\scalefactorl*-1.1,\scalefactorl*-0.75) rectangle (\scalefactorl*1.1,\scalefactorl*0.75) {};
+            \begin{scope}[yscale=1.1]
+                \node[thick, circle, label={[label distance=0.4cm]90:$l_1$}] (l1) at (\scalefactorl*-0.5,\scalefactorl*0.5) {};
+                \node[thick, circle, label={[label distance=0.4cm]90:$l_3$}] (l3) at (\scalefactorl*0.5,\scalefactorl*0.5) {};
+                \node[thick, circle, label={[label distance=0.4cm]-90:$l_2$}] (l2) at (\scalefactorl*-0.5,\scalefactorl*-0.5) {};
+                \node[thick, circle, label={[label distance=0.4cm]-90:$l_4$}] (l4) at (\scalefactorl*0.5,\scalefactorl*-0.5) {};
+            \end{scope}
+            
+            \foreach \from/\to in {l1/l4, l2/l3, l1/l3, l2/l4}
+                    \draw [thick, darrow] (\from) -- (\to);
+            \foreach \from/\to in {l1/l2, l3/l4}
+                    \draw [thick, darrow22] (\from) -- (\to);
+        \end{scope}
+        
+        \begin{scope}[shift={(9.6, 0.0)}]
+            \draw[darrow, thick] (-1.6, {1.1 * sin(150)}) -- (l3);
+            % \draw (-0.25,-1.5) -- (-0.25, 2.0);
+            % \draw[color=figurecolourschemewt3] (0.25,-2.0) -- (0.25, 2.0);
+            % \node[draw=none] (dots1) at (0.13, 0.0) {$\dots$};
+            \draw[darrow12, thick] (-1.6, {1.1 * sin(210)}) -- (l4);
+            
+            \filldraw[color=enclosure_color, fill=white, rounded corners=0.5cm] (-1.7, -0.7) rectangle (1.7, 0.7) {};
+            \node[draw=none] (clabel) at (0.0, -0.05) {$c_1, c_2, \dots, c_{3q}$};
+        \end{scope}
+        
+    \end{scope}
+\end{scope}
+\end{tikzpicture}

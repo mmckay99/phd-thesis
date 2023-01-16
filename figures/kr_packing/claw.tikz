@@ -1,0 +1,16 @@
+\begin{tikzpicture}
+\def\clawsize{1.6}
+% \node[draw=none] (casenumber) at (-1.5, 3.0) {\emph{Case 7}};
+% \draw[help lines,step=0.5] (0,0) grid (14,4);
+\begin{scope}[every node/.style={circle,draw, minimum size=2.4mm}, scale=1.0]
+\node[label={[label distance=0.4cm]30:$v_i$}] (vi) at (0.0, 0.0) {};
+
+\node[label={[label distance=0.4cm]90:$v_{j_1}$}] (vj1) at ({90:\clawsize}) {};
+\node[label={[label distance=0.4cm]270:$v_{j_2}$}] (vj2) at ({210:\clawsize}) {};
+\node[label={[label distance=0.4cm]270:$v_{j_3}$}] (vj3) at ({330:\clawsize}) {};
+
+\foreach \from/\to in {vi/vj1, vi/vj2, vi/vj3}
+    \draw [thick] (\from) -- (\to);
+
+\end{scope}
+\end{tikzpicture}

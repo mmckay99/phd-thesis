@@ -1,0 +1,53 @@
+\subsection{Background}
+\label{sec:krpacking_background}
+
+In this chapter we consider two problems related to clique packings in undirected graphs. In particular, finding a maximum-cardinality set of $r$-cliques, for some fixed $r \geq 3$, subject to the cliques in that set being either vertex disjoint or edge disjoint. We refer to such a set as a \emph{$K_r$-packing}, and to the two problems as the \emph{Vertex-Disjoint $K_r$-Packing Problem} (\vdkr) and the \emph{Edge-Disjoint $K_r$-Packing Problem} (\edkr). Note that $r$ is a fixed constant and does not form part of the problem input. If $r$ is not fixed then both problems generalise the well-studied problem of finding a clique of a given size \cite{GJ79}.
+
+Most existing research relating to either vertex- or edge-disjoint $K_r$-packings covers either more restricted or more general cases. Two well-known special cases of $K_r$-packing are \vdktwo, also known as two-dimensional matching; and \vdkthree, for which an associated decision problem is known as \emph{Partition Into Triangles} (PIT, Problem~\ref{prob:pit}). 
+
+\vdktwo is a central problem of graph theory and algorithmics. A classical result is that a maximum-cardinality two-dimensional matching can be found in polynomial time \cite{Edm65, MV80}. \vdkthree and its associated decision problem have also been the subject of much research. In 1975, Karp \cite{Karp75} noted that PIT, i.e.\ deciding if a give graph contains a $K_3$-packing of cardinality $|V|/3$, was $\NP$-complete. In this chapter we call such a $K_r$-packing, with cardinality $|V|/r$, \emph{perfect}, although it is sometimes known as a \emph{$K_r$-factor} \cite{guruswami_k_2001}.
+
+In 2002, Caprara and Rizzi \cite{caprara_packing_2002} considered \vdkthree and \edkthree in the setting of a fixed maximum degree $\Delta$. They showed that \vdkthree is solvable in polynomial time if $\Delta = 3$ and $\APX$-hard even when $\Delta = 4$, and \edkthree is solvable in polynomial time if $\Delta = 4$ and $\APX$-hard even when $\Delta = 5$. They also showed that \vdkthree is $\NP$-hard for planar graphs even when $\Delta = 4$ and \edkthree is $\NP$-hard for planar graphs with $\Delta = 5$. In 2013, van Rooij et al.\ \cite{van_rooij_partition_2013} established an equivalence between \vdkthree when $\Delta = 4$ and \emph{Exact 3-Satisfiability} (X3SAT). They then used this equivalence to devise an $O(1.02220^n)$-time algorithm for PIT (i.e.\ the perfect \vdkthree decision problem) when $\Delta = 4$.
+
+The approximability of \vdkthree and \edkthree has also been of interest. In 1989, Hurkens and Schrijver \cite{hs89} presented a new result relating to \emph{Systems of Distinct Representatives}, which they used to construct an algorithm, based on ``local improvement'', for a class of packing problems that includes \vdkr and \edkr. Specifically, for either \vdkr or \edkr and for any fixed constant $\varepsilon > 0$, Hurkens and Schrijver identify a polynomial-time $(r/2 + \varepsilon)$-approximation algorithm. In 1995, Halld\'{o}rsson \cite{Hal95} presented an alternative proof of this result and considered algorithms based on local improvement for other types of packing problems. In 2005, Mani\'c and Wakabayashi \cite{Eurocomb05} described approximation algorithms that improve on this approximation ratio for the restricted cases of \vdkthree in which $\Delta=4$, and \edkthree in which $\Delta=5$. They also presented a linear-time algorithm for \vdkthree on so-called indifference graphs.
+
+A generalisation of \vdkr is \emph{Vertex-Disjoint $H$-Packing} (also called \emph{Vertex-Disjoint $G$-Packing}), where $H$ is an arbitrary but fixed undirected graph. In 1982, Takamizawa et al.\ \cite{takamizawa1982linear} showed that an optimisation problem related to Vertex-Disjoint $H$-Packing is solvable in polynomial time on a subclass of planar graphs known as \emph{series-parallel} graphs. In 1983, Kirkpatrick and Hell \cite{KH83} reviewed the literature of Vertex-Disjoint $H$-Packing and classify the complexity of an array of packing problems, some of which generalise \vdkr. In particular, they showed that if $H$ contain any connected component with three vertices then the perfect vertex-disjoint $H$-packing decision problem is $\NP$-complete. Pantel's 1999 thesis provides a comprehensive survey of $H$-packing \cite{Pantel99}.
+
+The restriction of $H$-packing to $K_r$-packing has received comparatively less attention in the literature. In 1998, Dahlhaus and Karpinski \cite{DAHLHAUS199879} proved that a perfect vertex-disjoint $K_r$-packing can be found in polynomial time, if it exists, in chordal and strongly chordal graphs. In 2001, Guruswami et al.\ \cite{guruswami_k_2001} showed that, for any $r \geq 3$, the \vdkr decision problem is $\NP$-complete for chordal graphs, planar graphs (assuming $r<5$), line graphs, and total graphs. Their $\NP$-completeness result involving $K_r$-packing on chordal graphs, for any $r \geq 3$, resolved an open question of Dahlhaus and Karpinski. Guruswami et al.\ also described polynomial-time algorithms for \vdkthree and the perfect \vdkr decision problem on split graphs, and \vdkr on cographs. Their result for cographs was later extended by Pedrotti and de Mello \cite{KrPackingP4sparse} for so-called $P_4$-sparse graphs.
+
+From the converse perspective of graphs with a fixed minimum degree, Hajnal and Szemer\`edi \cite{hajnal_szemeredi} proved in 1970 that if the minimum degree of a graph is greater than or equal to $(1 - 1/r)|V|$ then a perfect vertex-disjoint $K_r$-packing must exist. Kierstead and Kostochka \cite{KIERSTEAD2008226} later generalised this result to show that, in this case, such a packing can be constructed in polynomial time. A growing area of research work studies the existence of perfect $K_r$- and $H$-packings with respect to conditions involving vertex degree \cite{TreglownThesis, KD09}.
+
+\subsection{Our contribution}
+
+In 2002, Caprara and Rizzi \cite{caprara_packing_2002} showed that \vdkthree is solvable in polynomial time if $\Delta=3$ and $\APX$-hard if $\Delta=4$; and \edkthree is solvable in polynomial time if $\Delta=4$ and $\APX$-hard if $\Delta=5$. In this chapter we extend some of their techniques in order to generalise their results and fully classify the complexity of both \vdkr and \edkr for any $\Delta \geq 1$ and any fixed $r \geq 3$. We summarise this classification in Table~\ref{tab:krpacking_results}.
+
+\begin{table}[h]
+\centering
+% \def\arraystretch{1.4}
+\begin{tabular}{clp{0.0cm}lp{0.0cm}l}\noalign{\hrule}
+\Tstrut\vspace*{0.2em}
+& \multicolumn{3}{c}{is solvable in} & \\
+& \multicolumn{1}{c}{linear time if} & \multicolumn{2}{c}{polynomial time if} & \multicolumn{2}{c}{is $\APX$-hard if} \\
+\hline \vdkr & $\Delta < 3r/2 - 1$ & & $\Delta < 5r/3 - 1$ & & $\Delta \geq \lceil 5r/3 \rceil - 1$\Tstrut\\[0.4em]
+\multirow{2}{*}{\edkr} & \multirow{2}{*}{$\Delta < 3r/2 - 1$} & \ldelim\{{2}{*} & $\Delta \leq 2r - 2$ if $r \leq 5$ &  \ldelim\{{2}{*} &  $\Delta > 2r - 2$ if $r \leq 5$\\
+& & & $\Delta < 5r/3 - 1$ otherwise & & $\Delta \geq \lceil 5r/3 \rceil - 1$ otherwise
+\vspace*{0.3em}
+\Bstrut\\\noalign{\hrule}
+\end{tabular}
+\caption{Our complexity results for \vdkr and \edkr}
+\label{tab:krpacking_results}
+\end{table}
+
+In the next section, Section~\ref{sec:krpacking_prelims}, we define some additional notation and make an observation on the coincidence of vertex- and edge-disjoint $K_r$-packings.
+
+In Section~\ref{sec:krpacking_lineartime}, we consider the case when $\Delta < 3r/2 - 1$. We show that in this case, any maximal vertex- or edge-disjoint $K_r$-packing is also maximum (Theorem~\ref{thm:krpacking_r_maximal_is_maximum}), and devise a linear-time algorithm for \vdkr and \edkr in this setting (Theorem~\ref{thm:krpacking_vdkr_3r2minus1} and Corollary~\ref{cor:krpacking_edkr_3r2minus2}). 
+
+In Section~\ref{sec:krpacking_ptime}, we present our solvability results, showing that \vdkr can be solved in polynomial time if $\Delta < 5r/3 - 1$ (Theorem~\ref{thm:krpacking_vdkr_polytime_5r3minus1}); and \edkr can be solved in polynomial time if either $r\leq 5$ and $\Delta \leq 2r - 2$ (Theorem~\ref{thm:krpacking_edkr345_polytime}), or $r\geq 6$ and $\Delta < 5r/3 - 1$ (Theorem~\ref{thm:krpacking_edkrgeq6_polytime}). Our proof uses a similar technique to that of Caprara and Rizzi's \cite{caprara_packing_2002}, which involves finding a maximum independent set in a graph that represents the intersection of $K_r$s.
+
+In Section~\ref{sec:krpacking_apxhardness}, we show that our solvability results are in a sense best possible, unless $\P \neq \NP$. Specifically, we show that \vdkr is $\APX$-hard if $\Delta \geq \lceil 5r/3 \rceil - 1$ (Theorem~\ref{thm:krpacking_vdkr_apxhard}); and \edkr is $\APX$-hard if either $r \leq 5$ and $\Delta > 2r - 2$ (Theorem~\ref{thm:krpacking_edkr345apxhard}), or $r \geq 6$ and $\Delta \geq \lceil 5r/3 \rceil - 1$ (Theorem~\ref{thm:krpacking_edkr_rgeq6_apxhard}). In other words, we prove that there exists some fixed constants $\varepsilon > 1$ and $\varepsilon' > 1$ such that no polynomial-time $\varepsilon$-approximation algorithm exists for \vdkr if $\Delta \geq \lceil 5r/3 \rceil - 1$; and no polynomial-time $\varepsilon'$-approximation algorithm exists for \edkr if either $r \leq 5$ and $\Delta > 2r - 2$, or $r \geq 6$ and $\Delta \geq \lceil 5r/3 \rceil - 1$. 
+
+In Section~\ref{sec:krpacking_conclusion} we recap on our results and consider directions for future work.
+
+\subsection{Preliminaries}
+\label{sec:krpacking_prelims}
+\input{chapters/kr_packing/prelims}

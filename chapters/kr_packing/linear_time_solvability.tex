@@ -1,0 +1,58 @@
+In this section we present Algorithm~\algorithmfont{greedyCliques}, which can solve \vdkr and \edkr in linear time if $\Delta < 3r/2 - 1$. This algorithm generalises an algorithm of van Rooij et al.\ \cite{van_rooij_partition_2013} that can solve \vdkthree in linear time.
+
+The key insight is that if $\Delta < 3r/2 - 1$ then any maximal vertex-disjoint $K_r$-packing is also a maximum vertex-disjoint $K_r$-packing. The proof of this is stated in Theorem~\ref{thm:krpacking_r_maximal_is_maximum}, which we prove using a sequence of lemmas. In what follows, suppose $G$ is a simple undirected graph in which $\Delta(G) < 3r/2 - 1$.
+
+\begin{lem}
+\label{lem:krpacking_r_lem1}
+For any $U_1,U_2\in K_r^G$, if $\{ U_1, U_2 \} \in E_{\mathcal{K}_r^G}$ then $|U_1 \cap U_2| > r/2$.
+\end{lem}
+\begin{proof}
+Consider any $U_1,U_2\in K_r^G$ where $\{ U_1, U_2 \} \in E_{\mathcal{K}_r^G}$. By definition of $\mathcal{K}_r^G$, there exists at least one $u\in V$ where $u\in U_1 \cap U_2$. Since $3r/2 - 1 > \Delta \geq \deg_{G}(u) \geq |U_1 \cup U_2| - 1 = |U_1| + |U_2| - |U_1 \cap U_2| - 1 = 2r - |U_1 \cap U_2| - 1$ it follows that $|U_1 \cap U_2| > 2r - 3r/2 = r/2$.
+\end{proof}
+
+\begin{lem}
+\label{lem:krpacking_r_lem3}
+$\mathcal{K}_r^G$ is a disjoint union of cliques (i.e.\ a cluster graph \cite{clustergraphcitation}).
+\end{lem}
+\begin{proof}
+It suffices to show that for any three vertices $U_i, U_j, U_k \in K_r^G$, if $\{ U_i, U_j \} \in E_{\mathcal{K}_r^G}$ and $\{ U_j, U_k \} \in E_{\mathcal{K}_r^G}$ then $\{ U_i, U_k \} \in E_{\mathcal{K}_r^G}$. Consider some such $U_i, U_j, U_k$. If $\{ U_i, U_j \} \in E_{\mathcal{K}_r^G}$ and $\{ U_j, U_k \} \in E_{\mathcal{K}_r^G}$ then by Lemma~\ref{lem:krpacking_r_lem1} it must be that $|U_i \cap U_j| > r/2$ and $|U_j \cap U_k|>r/2$. Since $|U_j|=r$ it follows that $|U_i \cap U_k| > 0$ and thus that $\{ U_i, U_k \} \in E_{\mathcal{K}_r^G}$.
+\end{proof}
+
+\begin{thm}
+\label{thm:krpacking_r_maximal_is_maximum}
+If $T$ is a maximal vertex-disjoint $K_r$-packing then $T$ is a maximum vertex-disjoint $K_r$-packing.
+\end{thm}
+\begin{proof}
+Suppose $T$ is a maximal vertex-disjoint $K_r$-packing in $G$, which by definition corresponds to a maximal independent set in $\mathcal{K}_r^G$. Since $\mathcal{K}_r^G$ is the disjoint union of cliques (by Lemma~\ref{lem:krpacking_r_lem3}), any two maximal independent sets in $\mathcal{K}_r^G$ have the same cardinality so $T$ is also maximum.
+\end{proof}
+
+We have shown in Theorem~\ref{thm:krpacking_r_maximal_is_maximum} that any maximal vertex-disjoint $K_r$-packing is also a maximum vertex-disjoint $K_r$-packing. It follows immediately that \vdkr can be solved in $O(|V|^r)$ time by constructing the $K_r$-vertex intersection graph $\mathcal{K}_r^G$ and greedily selecting an independent set. In fact, the explicit construction of $\mathcal{K}_r^G$ can be avoided by exploring $G$ and greedily selecting $K_r$s. We present Algorithm~\algorithmfont{greedyCliques}, shown in Algorithm \ref{alg:krpacking_r}, and show that it requires $O(|V|)$ time.
+
+\input{algorithms/kr_packing/greedycliques}
+
+\begin{lem}
+\label{lem:krpacking_lineartimealgorunningtime}
+Algorithm~\algorithmfont{greedyCliques} requires $O(|V|)$ time.
+\end{lem}
+\begin{proof}
+In any iteration of the outermost while loop, either $v$ and its incident edges are removed from $G$ or a set of vertices $K$ where $v\in K$ and incident edges are removed. It follows that the algorithm terminates after at most $|V|$ iterations of this loop. It remains to show that one iteration of the loop can be performed in constant time.
+
+In each iteration, either $\deg_{G}(v) \geq r-1$ or $\deg_{G}(v) < r - 1$. Computing $\deg_{G}(v)$ requires $O(r)$ time, since $\Delta < 3r/2 - 1$.  
+Consider the first branch of the outermost if statement. There are $\binom{\Delta}{r-1} < \binom{3r/2-1}{r-1}=O(2^r)$ iterations of the for loop. In each iteration, the algorithm tests if $G[W]$ contains $\binom{r-1}{2}$ edges. This can be performed in $O(r^2)$ time. Removing $K$ from $G$ and adding $K$ to $T$, if $K\neq \varnothing$, can be done in $O(r^2)$ time. In both the else branch in which $K=\varnothing$ and the second branch of the outermost if statement, $v$ can be removed from $G$ in $O(r)$ time.
+\end{proof}
+
+\begin{thm}
+\label{thm:krpacking_vdkr_3r2minus1}
+If $\Delta < 3r/2 - 1$ then \vdkr can be solved in linear time.
+\end{thm}
+\begin{proof}
+By Lemma~\ref{lem:krpacking_lineartimealgorunningtime}, Algorithm~\algorithmfont{greedyCliques} terminates in $O(2^r |V|)$ time. By Theorem~\ref{thm:krpacking_r_maximal_is_maximum}, it suffices to show that it returns a maximal vertex-disjoint $K_r$-packing $T$ in $G$. Suppose $K'$ is an arbitrary $K_r$ in $G$. We show that either $K'$ is added to $T$ or at least one vertex in $K'$ belongs to some other $K_r$ in $T$. By the pseudocode, the algorithm removes at least one vertex in each iteration of the while loop, which ends once there are no remaining vertices. Consider the first iteration of the while loop in which a vertex $v$ in $K'$ is removed. Let $G'$ be the subgraph of $G$ at the beginning of this iteration. It must be that every vertex of $K'$ is present in $G'$, including $v$. Moreover, it must be that $\deg_{G'}(v) \geq r - 1$. It follows that $v$ was not deleted from $G'$ by the second branch of the outermost if statement. Similarly, $v$ cannot have been deleted from $G'$ by the second branch of the innermost if statement, since $v$ belongs to $K'$, which is a clique of size $r$ in $G'$. The only possibility is thus that $v$ was deleted from $G'$ as a result of $v$ being part of a clique $K''$ of size $r$ in $G'$, where $K''$ was then added to $T$.
+\end{proof}
+
+\begin{cor}
+\label{cor:krpacking_edkr_3r2minus2}
+If $\Delta < 3r/2 - 1$ then Algorithm~\algorithmfont{greedyCliques} can solve \edkr in linear time.
+\end{cor}
+\begin{proof}
+Since $\Delta < 3r/2 - 1 < 2r - 2$, by Observation~\ref{obs:krpacking_edkr_is_also_vdkr} any edge-disjoint $K_r$-packing is also vertex-disjoint. It follows that any vertex-disjoint $K_r$-packing by Algorithm~\algorithmfont{greedyCliques}is also a maximum edge-disjoint $K_r$-packing.
+\end{proof}

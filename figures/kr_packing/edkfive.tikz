@@ -1,0 +1,191 @@
+\tikzset{
+  laser beam action/.style={
+    line width=\pgflinewidth+1.0pt,draw opacity=.12,draw=#1,
+  },
+  laser beam recurs/.code 2 args={%
+    \pgfmathtruncatemacro{\level}{#1-1}%
+    \ifthenelse{\equal{\level}{0}}%
+    {\tikzset{preaction={laser beam action=#2}}}%
+    {\tikzset{preaction={laser beam action=#2,laser beam recurs={\level}{#2}}}}
+  },
+  laser beam/.style={preaction={laser beam recurs={30}{#1}},draw opacity=1,draw=#1},
+}
+
+\newcommand\Kfivedraw[5]{%
+    \draw (#1) -- (#2) -- (#3) -- (#4) -- (#5) -- (#1);
+    \draw (#1) -- (#3);
+    \draw (#1) -- (#4);
+    \draw (#2) -- (#4);
+    \draw (#2) -- (#5);
+    \draw (#3) -- (#5);
+}
+
+\tikzset{gradientpath/.style n args={3}{
+    postaction={
+    decorate,
+    decoration={
+    markings,
+    mark=between positions 0 and \pgfdecoratedpathlength step 0.2pt with {
+    \pgfmathsetmacro\myval{multiply(
+        divide(
+        \pgfkeysvalueof{/pgf/decoration/mark info/distance from start}, 
+        \pgfdecoratedpathlength
+        ),
+        100
+    )};
+    \pgfsetfillcolor{#3!\myval!#2};
+    \pgfpathcircle{\pgfpointorigin}{#1};
+    \pgfusepath{fill};}
+}}}}
+
+% fpu reciprocal from https://tex.stackexchange.com/a/537016, seemingly helps avoid 'dimension too large' errors
+\begin{tikzpicture}[use fpu reciprocal]
+
+\begin{scope}[shift={(-4.0, 0.0)}, every node/.style={thick, circle, draw, minimum size=2.4mm, fill=white}]
+
+% \def\innerradius{4.4}
+% \def\middleradius{5.4}
+% \def\outerradius{6.4}
+
+\begin{scope}[scale=2.4]
+
+\node[draw=none, label={[label distance=0.4cm]197.5:$v_i^j$}] (vij) at (0.0, 0.0) {};
+\node[draw=none, label={[label distance=0.4cm]0:$c_i^j$}] (cij) at (1.0, 0.0) {};
+\node[label={[label distance=0.4cm]180:$u_i^{j+1}$}] (uij1) at (0.0, -1.0) {};
+\node[label={[label distance=0.4cm]0:$h_i^j$}] (hij) at (0.5, -0.5) {};
+\node[draw=none, label={[label distance=0.4cm]0:$d_i^j$}] (dij) at (1.0, -1.0) {};
+
+\begin{scope}[rotate=35]
+\node[draw=none, label={[label distance=0.4cm]35:$b_i^j$}] (bij) at (1.0, 0.0) {};
+\node[draw=none, label={[label distance=0.4cm]215:$u_i^j$}] (uij) at (0.0, 1.0) {};
+\node[label={[label distance=0.4cm]35:$e_i^j$}] (eij) at (0.5, 0.5) {};
+\node[draw=none, label={[label distance=0.4cm]35:$a_i^j$}] (aij) at (1.0, 1.0) {};
+\begin{scope}[shift={(0.0, 1.0)}]
+\begin{scope}[rotate=35]
+\node[draw=none] (vijminus1) at (0.0, 1.0) {};
+\node[draw=none] (hijminus1) at (0.5, 0.5) {};
+\node[draw=none] (dijminus1) at (1.0, 0.0) {};
+\node[draw=none] (cijminus1) at (1.0, 1.0) {};
+\end{scope}
+\end{scope}
+\end{scope}
+
+\begin{scope}[shift={(0.0, -1.0)}]
+\begin{scope}[rotate=-35]
+\node[draw=none, label={[label distance=0.4cm]-35:$a_i^{j+1}$}] (aij1) at (1.0, 0.0) {};
+\node (vij1) at (0.0, -1.0) {};
+\node[label={[label distance=0.4cm]-35:$e_i^{j+1}$}] (eij1) at (0.5, -0.5) {};
+\node[label={[label distance=0.4cm]-35:$b_i^{j+1}$}] (bij1) at (1.0, -1.0) {};
+
+\begin{scope}[shift={(0.0, -1.0)}]
+\begin{scope}[rotate=-35]
+\node[draw=none] (cij1) at (1.0, 0.0) {};
+% \node (uij2) at (0.0, -1.0) {};
+\node[draw=none] (hij1) at (0.5, -0.5) {};
+% \node (bij12) at (1.0, -1.0) {};
+\end{scope}
+\end{scope}
+\end{scope}
+\end{scope}
+
+
+\draw (aij) -- (bij) -- (vij) -- (uij) -- (aij);
+\draw (vij) -- (cij) -- (dij) -- (hij);
+\draw (aij) -- (eij) -- (bij);
+\draw (uij) -- (eij) -- (vij);
+
+\draw (vij) -- (hij) -- (cij);
+\draw (eij) -- (hij);
+\draw (bij) -- (cij);
+
+\draw (bij) -- (hij);
+\draw (eij) -- (cij);
+
+\draw plot [smooth] coordinates {(aij) ($ (eij) !.4! (uij) $) (vij)};
+\draw plot [smooth] coordinates {(bij) ($ (eij) !.4! (vij) $) (uij)};
+
+\draw (aij) -- (hijminus1);
+
+\draw (vij) -- (uij1);
+\draw (dij) -- (aij1);
+\draw (hij) -- (uij1);
+\draw (dij) -- (uij1);
+\draw (vij1) -- (uij1) -- (eij1) -- (vij1) -- (bij1) -- (eij1) -- (aij1) -- (bij1);
+
+\draw plot [smooth] coordinates {(aij1) ($ (eij1) !.4! (uij1) $) (vij1)};
+\draw plot [smooth] coordinates {(bij1) ($ (eij1) !.4! (vij1) $) (uij1)};
+
+\draw (eij) -- (hijminus1);
+\draw (eij) -- (dijminus1);
+
+\draw (aij) -- (dijminus1);
+\draw (uij) -- (vijminus1);
+\draw (uij) -- (vijminus1);
+\draw (uij) -- (dijminus1);
+\draw (uij) -- (hijminus1);
+
+\draw (hij) -- (eij1);
+\draw (dij) -- (eij1);
+\draw (hij) -- (aij1);
+\draw (uij1) -- (aij1);
+
+\draw (eij1) -- (hij1);
+\draw (eij1) -- (cij1);
+
+\draw (bij1) -- (hij1);
+\draw (bij1) -- (cij1);
+
+\draw [smooth] plot coordinates {(cij) ($ (hij) !.4! (vij) $) (uij1)};
+\draw [smooth] plot coordinates {(dij) ($ (hij) !.4! (uij1) $) (vij)};
+\draw [smooth] plot coordinates {(uij) ($ (hijminus1) !.4! (vijminus1) $) (cijminus1)};
+
+\node (aijfake) at (aij) {};
+\node (bijfake) at (bij) {};
+\node (cijfake) at (cij) {};
+\node (dijfake) at (dij) {};
+\node (uijfake) at (uij) {};
+\node (vijfake) at (vij) {};
+\node (uij1fake) at (uij1) {};
+\node (aij1fake) at (aij1) {};
+\node (bij1fake) at (bij1) {};
+\node (vij1fake) at (vij1) {};
+\node (dijminus1fake) at (dijminus1) {};
+
+\begin{scope}[rotate=17.5]
+\begin{scope}[shift={(1.9, 0.0)}]
+\node[label={[label distance=0.4cm]-72.5:$s_r^1$}] (sr1) at (0.0, -0.3) {};
+\node[label={[label distance=0.4cm]107.5:$t_r^1$}] (tr1) at (0.0, 0.3) {};
+
+\node[label={[label distance=0.4cm]107.5:$w_r^1$}] (wr1) at (0.4, 0.7) {};
+
+\node[label={[label distance=0.4cm]-72.5:$w_r^2$}] (wr2) at (0.8, -0.3) {};
+\node[label={[label distance=0.4cm]107.5:$w_r^3$}] (wr3) at (0.8, 0.3) {};
+
+\node[label={[label distance=0.4cm]107.5:$w_r^4$}] (wr4) at (1.2, 0.7) {};
+
+\node[label={[label distance=0.4cm]-72.5:$s_r^2$}] (sr2) at (1.6, -0.3) {};
+\node[label={[label distance=0.4cm]107.5:$t_r^2$}] (tr2) at (1.6, 0.3) {};
+
+\Kfivedraw{sr1}{tr1}{wr1}{wr2}{wr3}
+\draw (wr3) -- (wr4) -- (sr2) -- (tr2) -- (wr2) -- (sr2) -- (wr3) -- (tr2) -- (wr4) -- (wr2);
+
+
+% \shade[top color=red, path fading=we] (aij.center) -- ($(aij.center) + (-0.15, 0.7)$) -- ($(uij.center) + (-0.6, 0.3)$) -- (uij.center) -- cycle;
+
+\end{scope}
+\end{scope}
+\end{scope}
+
+\end{scope}
+
+
+% do the shading nonsense
+\begin{scope}
+\path [laser beam=white] ($(aij.center) + (-0.2, 1.0)$) -- ($(uij.center) + (-2.0, -0.3)$);
+\fill [white] ($(aij.center) + (-0.2, 1.0)$) -- ($(uij.center) + (-2.0, -0.3)$) -- ($(uij.center) + (-2.5, -0.0)$) -- ($(aij.center) + (-4.0, 2.0)$);
+
+\path [laser beam=white] ($(uij1.center) + (-1.0, -0.4)$) -- ($(bij1.center) + (-0.9, -0.9)$);
+\fill [white] ($(uij1.center) + (-1.0, -0.4)$) -- ($(uij1.center) + (-2.0, -0.5)$) -- ($(bij1.center) + (-3.0, -0.9)$) -- ($(bij1.center) + (-1.0, -1.0)$);
+\end{scope}
+
+\end{tikzpicture}

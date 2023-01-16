@@ -1,0 +1,21 @@
+\begin{algorithm}
+\textbf{Input:}\myhackyalgorithmbox{a set $\mathcal{R}$ of $4$-cycles in $(N, E)$, where $|\mathcal{R}|=3q$, labelled $R_1, R_2, \dots, R_{3q}$ where $R_i = ( r_i^1, r_i^2, r_i^3, r_i^4 )$}\\
+\textbf{Output:} a set $T$ of $4q$ triples
+\smallskip
+\begin{algorithmic}
+\caption{Subroutine~\algorithmfont{multipleOfThreeC4s} \label{alg:3defr_wje_subroutine_multipleOfThreeC4s}}
+\State $T\gets \varnothing$
+    \For{$d = 1$ to $q$}
+     \State $T \gets T \cup \{ \{ r_{3d-2}^1, r_{3d-2}^2, r_{3d-1}^1 \}, \{ r_{3d-2}^3, r_{3d-2}^4, r_{3d-1}^4 \}$,\\
+     \hphantom{$T \gets T \cup \{\ \ $} $\{ r_{3d-1}^2, r_{3d}^1, r_{3d}^2 \}, \{ r_{3d-1}^3, r_{3d}^3, r_{3d}^4 \} \}$
+    \EndFor
+\State \textbf{end for}
+\smallskip
+\State \Return $T$
+\end{algorithmic}
+\end{algorithm}
+
+ 
+
+
+

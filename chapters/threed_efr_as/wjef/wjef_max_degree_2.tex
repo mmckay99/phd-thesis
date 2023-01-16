@@ -1,0 +1,312 @@
+We begin by defining a class of instances of 3DR-AS, \iwjnomaxdegreetwofamily/, such that membership in the class is a necessary and sufficient condition for the non-existence of a wj-envy-free matching, among instances of 3DR-AS with binary and symmetric preferences and maximum degree $2$.
+
+\begin{mydefinition}[\iwjnomaxdegreetwofamily/]
+\label{def:threed_efr_as_wjef_max_deg_2_ino}
+\begin{adjustwidth}{8pt}{8pt}
+    An instance of 3DR-AS belongs to \iwjnomaxdegreetwofamily/ if and only if the underlying graph comprises a set of disjoint $4$-cycles and a single isolated agent.
+    \end{adjustwidth}
+\end{mydefinition}
+
+We now show, using a sequence of lemmas, that any instance of 3DR-AS that belongs to \iwjnomaxdegreetwofamily/ does not contain a wj-envy-free matching. Consider an instance of 3DR-AS with binary and symmetric preferences that belongs to \iwjnomaxdegreetwofamily/ and label the underlying graph $(\hat{N}, \hat{E})$. Suppose $\hat{M}$ is an arbitrary matching in $(\hat{N}, \hat{E})$.
+
+\begin{lem}
+\label{lem:threed_efr_as_wjenvy_maxdeg2_no3plus1c4s}
+For any $4$-cycle $R$ in $(\hat{N}, \hat{E})$, if some triple in $\hat{M}$ contains three agents in $R$ then $\hat{M}$ is not wj-envy-free.
+\end{lem}
+\begin{proof}
+Suppose $R=(r_1, r_2, r_3, r_4)$. By definition, $\{ r_1, r_2 \}, \{ r_2, r_3 \}, \{ r_3, r_4 \}, \{ r_4, r_1 \} \in E$. Without loss of generality we need only consider the case when $\{ r_1, r_2, r_3 \} \in \hat{M}$. In this case it must be that $r_4$ has wj-envy for $r_2$ since $u_{r_4}(\hat{M}) = 0 < 2 = u_{r_4}(\{ r_1, r_3 \})$, $v_{r_1}(r_2) = 1 \leq 1 = v_{r_1}(r_4)$, and $v_{r_3}(r_2) = 1 \leq 1 = v_{r_3}(r_4)$.
+\end{proof}
+
+\begin{lem}
+\label{lem:threed_efr_as_wjenvy_maxdeg2_notriplespreadacross3}
+For any three distinct connected components $C_1, C_2, C_3$ in $(\hat{N}, \hat{E})$, if some triple in $\hat{M}$ contains one agent in each of $C_1$, $C_2$, and $C_3$ then $\hat{M}$ is not wj-envy-free.
+\end{lem}
+\begin{proof}
+Suppose some such triple in $\hat{M}$ exists. By the construction of $(\hat{N}, \hat{E})$, it must be that at least two of $C_1$, $C_2$, and $C_3$ are $4$-cycles. Assume without loss of generality that $C_1$ and $C_2$ are $4$-cycles, so label $C_1$ as $R_1 = ( r_1^1, r_1^2, r_1^3, r_1^4 )$ and $C_2$ as $R_2 = ( r_2^1, r_2^2, r_2^3, r_3^4 )$. We may further assume that this triple is $\{ r_1^1, r_2^1, c_3^1 \}$ where $r_1^1 \in C_1$, $r_2^1 \in C_2$, and $c_3^1 \in C_3$. Note that $\{ r_1^1, c_3^1 \} \notin E$ and $\{ r_2^1, c_3^1 \} \notin E$. Now consider $R_1$. If $u_{r_1^2}(\hat{M}) = 0$ then $r_1^2$ has wj-envy for $c_3^1$ since $u_{r_1^2}(\hat{M}) = 0 < 1 = u_{r_1^2}(\{ r_1^1, r_2^1 \})$, $v_{r_1^1}(c_3^1) = 0 \leq 1 = v_{r_1^1}(r_1^2)$, and $v_{r_2^1}(c_3^1) = 0 \leq 0 = v_{r_2^1}(r_1^2)$. It follows that $u_{r_1^2}(\hat{M}) \geq 1$ so it must be that $\hat{M}(r_1^2)$ contains $r_1^3$. A symmetric argument shows that $u_{r_1^4}(\hat{M}) \geq 1$ and thus that $\hat{M}(r_1^2)$ must also contain $r_1^3$. Now $\hat{M}(r_1^2) = \{ r_1^2, r_1^3, r_1^4 \}$ so by Lemma~\ref{lem:threed_efr_as_wjenvy_maxdeg2_no3plus1c4s} it follows that $\hat{M}$ is not wj-envy-free. 
+\end{proof}
+
+\begin{lem}
+\label{lem:threed_efr_as_wjenvy_maxdeg2_tripletouches2components}
+For any triple $t \in \hat{M}$, if $\hat{M}$ is wj-envy-free then the agents in $t$ belong to exactly two connected components in $(\hat{N}, \hat{E})$.
+\end{lem}
+\begin{proof}
+Since $t$ is a triple, the agents in $t$ belong to either 1, 2, or 3 connected components. If $\hat{M}$ is wj-envy-free, then by Lemmas~\ref{lem:threed_efr_as_wjenvy_maxdeg2_no3plus1c4s} and~\ref{lem:threed_efr_as_wjenvy_maxdeg2_notriplespreadacross3} the agents in $t$ do not belong to either 1 or 3 connected components in $(\hat{N}, \hat{E})$.
+\end{proof}
+
+Recall that for any set of agents $S \subseteq N$, $\sigma(S, N)$ denotes the number of triples in $N$ that each contain at least one agent in $S$.
+
+\begin{lem}
+\label{lem:threed_efr_as_wjenvy_maxdeg2_c4splits2or4}
+For any $4$-cycle $R$ in $(\hat{N}, \hat{E})$, if $\hat{M}$ is wj-envy-free then $\sigma(R, \hat{M}) \in \{ 2, 4 \}$.
+\end{lem}
+\begin{proof}
+By definition, $2 \leq \sigma(R, \hat{M}) \leq 4$ for any $4$-cycle $R$ in $(\hat{N}, \hat{E})$. It suffices to show that if $\hat{M}$ is wj-envy-free then $\sigma(R, \hat{M}) \neq 3$ for any such $R$. Suppose then, for a contradiction, that $\hat{M}$ is wj-envy-free and there exists some $4$-cycle $R$ in $(\hat{N}, \hat{E})$ where $\sigma(R, \hat{M}) = 3$. Label $R = ( r_1, r_2, r_3, r_4 )$. Since $\sigma(R, \hat{M}) = 3$ there must exist one triple in $\hat{M}$ that contains exactly two agents in $R$ and two triples in $\hat{M}$ that each contain exactly one agent in $R$. Label the former triple $\{ r_{i_1}, r_{i_2}, \alpha_{j_1} \}$ and the latter two triples $\{ r_{i_3}, \alpha_{j_2}, \alpha_{j_3} \}$ and $\{ r_{i_4}, \alpha_{j_4}, \alpha_{j_5} \}$, where $\alpha_{j_1}, \alpha_{j_2}, \dots, \alpha_{j_5} \in N \setminus R$. Since $R$ is a $4$-cycle it must be that $\{ r_{i_1}, \alpha_{j_1} \} \notin E$ and $\{ r_{i_2}, \alpha_{j_1} \} \notin E$. Similarly, $\{ r_{i_3}, \alpha_{j_2} \} \notin E$ and $\{ r_{i_3}, \alpha_{j_3} \} \notin E$. It must also be that either $\{ r_{i_3}, r_{i_1} \} \in E$ or $\{ r_{i_3}, r_{i_2} \} \in E$. We can now see that $r_{i_3}$ has wj-envy for $\alpha_{j_1}$ since $u_{r_{i_3}}(\hat{M}) = 0 < 1 \leq u_{r_{i_3}}(\{ r_{i_1}, r_{i_2} \})$, $v_{r_{i_1}}(\alpha_{j_1}) = 0 \leq v_{r_{i_1}}(r_{i_3})$, and $v_{r_{i_2}}(\alpha_{j_1}) = 0 \leq v_{r_{i_2}}(r_{i_3})$.
+\end{proof}
+
+\begin{lem}
+\label{lem:threed_efr_as_wjef_maxdeg2_ino}
+If an instance of 3DR-AS belongs to \iwjnomaxdegreetwofamily/ then it does not contain a wj-envy-free matching.
+\end{lem}
+\begin{proof}
+We considered an arbitrary instance of 3DR-AS that belongs to \iwjnomaxdegreetwofamily/ in which the preferences are binary and symmetric and its underlying graph $(\hat{N}, \hat{E})$. We also supposed $\hat{M}$ is an arbitrary matching of $(\hat{N}, \hat{E})$.
+
+Suppose for a contradiction that $\hat{M}$ is wj-envy-free. Construct a graph $(\mathcal{C}, \Gamma)$ where $\mathcal{C}$ is the set of connected components in $(\hat{N}, \hat{E})$ and $\Gamma$ is constructed as follows. For any triple $t \in \hat{M}$, it must be that the agents in $t$ belong to exactly two connected components in $(\hat{N}, \hat{E})$ (Lemma~\ref{lem:threed_efr_as_wjenvy_maxdeg2_tripletouches2components}). For each triple $t \in \hat{M}$ identify the two such connected components $C_i, C_j$ in $(\hat{N}, \hat{E})$ and add the edge $\{ C_i, C_j \}$ to $\Gamma$. By the design of $(\hat{N}, \hat{E})$, there exists exactly one connected component in $(\hat{N}, \hat{E})$ that is not a $4$-cycle, which contains exactly one agent. Label this component $C_1$. Label the remaining connected components in $(\hat{N}, \hat{E})$, which are all $4$-cycles, as $C_2, C_3, \dots, C_{|\mathcal{C}|}$. Since $|C_1|=1$ it must be that exactly one triple in $\hat{M}$ contains the agent in $C_1$ so the degree of vertex $C_1$ in the graph $(\mathcal{C}, \Gamma)$ is 1. Consider the $4$-cycles $C_2, C_3, \dots, C_{|\mathcal{C}|}$. By Lemma~\ref{lem:threed_efr_as_wjenvy_maxdeg2_c4splits2or4}, it must be that $\sigma(C_i, \hat{M}) \in \{ 2, 4 \}$ for each such $4$-cycle $C_i$ (where $2\leq i\leq |\mathcal{C}|$). It follows that the degree of each vertex $C_i$ in $\mathcal{C}$ where $2\leq i\leq |\mathcal{C}|$ is either 2 or 4. It follows that the sum of the degrees of all vertices in $\mathcal{C}$ is odd, which is impossible.
+\end{proof}
+
+Building on Lemma~\ref{lem:threed_efr_as_wjef_maxdeg2_ino}, we present Algorithm~\algorithmfont{wjPathsCycles}, shown in Algorithm~\ref{alg:3defr_wje_paths_cycles}. Given an instance of 3DR-AS with binary and symmetric preferences and maximum degree $2$, this algorithm either returns a wj-envy-free matching $M$ or reports that $(N, E)$ belongs to \iwjnomaxdegreetwofamily/. With Lemma~\ref{lem:threed_efr_as_wjef_maxdeg2_ino}, this establishes the fact that \iwjnomaxdegreetwofamily/ is a necessary and sufficient condition for the non-existence of a wj-envy-free matching in instances of 3DR-AS with with binary and symmetric preferences and maximum degree $2$.
+
+In some respects the approach taken by Algorithm~\algorithmfont{wjPathsCycles} is straightforward. For example, paths or cycles that contain a number of agents divisible by $3$ are broken up into triples of three successively adjacent agents. Other paths and cycles, except $4$-cycles, are broken up in a similar fashion leaving one or two surplus agents per connected component. More care is required in the assignment of the agents in $4$-cycles to triples. The $12$ agents in three $4$-cycles can be assigned to four triples in a relatively straightforward way that ensures no agent is wj-envied in some resulting matching. The main complexity of Algorithm~\algorithmfont{wjPathsCycles} stems from the case when the number of $4$-cycles is not divisible by $3$.
+
+Algorithm~\algorithmfont{wjPathsCycles} contains calls to five subroutines, which are presented separately in order to simplify the overall presentation. Four of the subroutines take as input some agents in $(N, E)$ and constructs a set of triples containing some or all of the agents in that set. The final subroutine is a helper function used to shorten the pseudocode of the main algorithm.
+
+The first subroutine is Subroutine~\algorithmfont{nonC4Components}, shown in Algorithm~\ref{alg:3defr_wje_subroutine_nonC4s}. This subroutine takes as input a set of connected components $\mathcal{C}$ in $(N, E)$, none of which are $4$-cycles. It returns a pair $(T, S)$ where $T$ is a set of triples of agents and $S$ is a set of agents. For each component in $\mathcal{C}$, the corresponding set of triples in $T$ is constructed in a straightforward way by breaking up the component into triples of three successively adjacent agents. This procedure leaves remaining at most two agents from each component, which are then added to $S$. It follows that the maximum degree of the subgraph induced by $S$ in $(N, E)$ is $1$.
+
+\input{algorithms/threed_efr_as/wj_max_degree_two_nonC4s}
+
+
+\begin{lem}
+\label{lem:threed_efr_as_max_degree_2_subgraph_nonC4s_part0}
+Suppose $\mathcal{C}$ is some set of connected components in $(N, E)$ that are not $4$-cycles. Suppose $(T, S)$ is returned by a call $\algorithmfont{nonC4Components}(\mathcal{C})$ and $M$ is a matching in $(N, E)$. For any agent $c_i \in \bigcup T$, if $M(c_i) \in T$ then $c_i$ is not wj-envious in $M$.
+\end{lem}
+\begin{proof}
+Suppose $c_i \in \bigcup T$ belongs to some connected component $C \in \mathcal{C}$, which must not be a $4$-cycle. By the construction of $T$ in Subroutine~\algorithmfont{nonC4Components}, it must be that the triple in $T$ that contains $c_i$ either contains $c_{i-1}$ or $c_{i+1}$. Since $M(c_i) \in T$ by assumption, it follows that $u_{c_i}(M) \geq 1$. If $c_i$ has wj-envy in $M$ then it must be that two agents not in $M(c_i)$ are adjacent to $c_i$ in $(N, E)$. Since $u_{c_i}(M) \geq 1$ it follows that $c_i$ has degree $3$ in $(N, E)$, which is a contradiction.
+\end{proof}
+
+\begin{lem}
+\label{lem:threed_efr_as_max_degree_2_subgraph_nonC4s}
+Suppose $\mathcal{C}$ is a set of connected components in $(N, E)$ that are not $4$-cycles. Suppose $(T, S)$ is returned by a call $\algorithmfont{nonC4Components}(\mathcal{C})$ and $M$ is a matching in $(N, E)$. For any agent $c_j \in \bigcup T$, if $M(c_j) \in T$ then $c_j$ is not wj-envied in $M$.
+\end{lem}
+\begin{proof}
+Suppose for a contradiction that some $c_j \in \bigcup T$ where $M(c_j) \in T$ is wj-envied in $M$. Consider the pseudocode of Subroutine~\algorithmfont{nonC4Components}. Let $i = \lceil j/3 \rceil$. It must be that the triple $t = \{ c_{3i-2}, c_{3i-1}, c_{3i} \}$, which contains $c_j$, was added to $T$ in the $i\textsuperscript{th}$ iteration of the inner for loop, in the particular iteration of the outer for loop in which component $C$ was identified. Note that $\{ c_{3i-2}, c_{3i-1} \} \in E$ and $\{ c_{3i-1}, c_{3i} \} \in E$, by definition. There are now three possibilities: $j = 3i-2$, $j=3i-1$, and $j=3i$.
+
+Suppose either $j = 3i-2$ or $j=3i$. Since $\alpha_k$ has wj-envy for $c_j$ it must be that $v_{c_{3i-1}}(\alpha_k) \geq v_{c_{3i-1}}(c_j) = 1$. It follows that $v_{c_{3i-1}}(\alpha_k) = v_{c_{3i-1}}(c_{3i-2}) = v_{c_{3i-1}}(c_{3i}) = 1$ and thus that $c_{3i-1}$ has degree $3$ in $(N, E)$, which is a contradiction.
+
+Suppose then that $j=3i-1$. Since $\alpha_k$ has wj-envy for $c_j$ it must be that $v_{c_{3i-2}}(\alpha_k) \geq v_{c_{3i-2}}(c_{3i-1}) = 1$ and $v_{c_{3i}}(\alpha_k) \geq v_{c_{3i}}(c_{3i-1}) = 1$. It follows that $v_{c_{3i-2}}(\alpha_k) = v_{c_{3i}}(\alpha_k) = 1$. The only possibility is that $C$ is a $4$-cycle comprising $( c_{3i-2}, c_{3i-1}, c_{3i}, \alpha_k )$, which contradicts the statement of the lemma.
+\end{proof}
+
+\begin{lem}
+\label{lem:threed_efr_as_wjenvy_max_degree_2_nonC4s}
+Subroutine~\algorithmfont{nonC4Components} terminates in $O(|\bigcup \mathcal{C}|)$ time and returns a pair $(T, S)$ where $\bigcup \mathcal{C} = S \cup \bigcup T$.
+\end{lem}
+\begin{proof}
+There are $|\mathcal{C}|$ iterations of the outer for loop. In each iteration of the outer loop, some connected component $C$ is identified, and the number of iterations of the inner for loop is $O(|C|)$. It follows that the total number of iterations of the inner for loop is $O(|\bigcup \mathcal{C}|)$. In each iteration of the inner loop, a set of three agents is added to a set $T$, which can be performed in constant time, using an appropriate data structure for $T$. In each iteration of the outer loop, at most two agents are added to $S$, which can also be performed in constant time. It follows that the running time of Subroutine~\algorithmfont{nonC4Components} is $O(|\bigcup \mathcal{C}|)$.
+
+By the pseudocode, it is straightforward to show that $\bigcup \mathcal{C} = S \cup \bigcup T$.
+\end{proof}
+
+The second subroutine is Subroutine~\algorithmfont{oneC4TwoSingles}, shown in Algorithm~\ref{alg:3defr_wje_subroutine_oneC4TwoSingles}. This subroutine takes as input three connected components in $(N, E)$. The first, $R$, is a $4$-cycle in $(N, E)$. The second and third, $w_1$ and $w_2$, are other agents in $(N, E)$. It returns two triples in $C$, each of which contains two agents in $R$ and either $w_1$ or $w_2$.
+
+\input{algorithms/threed_efr_as/wj_max_degree_two_oneC4TwoSingles}
+
+\begin{lem}
+\label{lem:threed_efr_as_max_degree_2_subgraph_oneC4TwoSingles}
+Consider an arbitrary $4$-cycle $R$ and two other arbitrary agents $w_1, w_2$ in $(N, E)$. Suppose $T$ is returned by a call $\algorithmfont{oneC4TwoSingles}(R, w_1, w_2)$. If $M$ is a matching in $(N, E)$ where $T \subseteq M$ then no agent in $R \cup \{ w_1, w_2 \}$ is wj-envied in $M$.
+\end{lem}
+\begin{proof}
+By the design of Subroutine~\algorithmfont{oneC4TwoSingles}, it must be that $T = \{ \{ w_1, r_1, r_2  \}, \{ w_2, r_3, r_4 \} \}$, for some labelling of $R$ where $R= ( r_1, r_2, r_3, r_4 )$. Suppose for a contradiction that some agent $\alpha_k \in N$ has wj-envy for some agent in $R \cup \{ w_1, w_2 \}$. By symmetry, we need only consider two cases: either $\alpha_k$ has wj-envy for $r_1$ or $\alpha_k$ has wj-envy for $w_1$. 
+
+If $\alpha_k$ has wj-envy for $r_1$ then consider $r_2$. Since $r_2 \in M(r_1)$ it must be that $v_{r_2}(\alpha_k) \geq v_{r_2}(r_1) = 1$ and thus that $v_{r_2}(\alpha_k)=1$. The only possibility is that $\alpha_k = r_3$. This is a contradiction since $u_{r_3}(M) = 1 = u_{r_3}(\{ r_1, w_2 \})$, so $r_3$ does not have wj-envy for $r_1$. 
+
+If $\alpha_k$ has wj-envy for $w_1$ then it must be that $u_{\alpha_k}(\{ r_1, r_2 \}) \geq 1$. The only possibility is that either $\alpha_k = r_3$ or $\alpha_k = r_4$. Since $u_{r_3}(M) = 1 = u_{r_3}(\{ r_1, r_2 \})$ and $u_{r_4}(M) = 1 = u_{r_4}(\{ r_1, r_2 \})$ it follows that neither $r_3$ nor $r_4$ have wj-envy for $w_1$, which is a contradiction.
+\end{proof}
+
+\begin{lem}
+\label{lem:threed_efr_as_wjenvy_max_degree_2_subroutine_oneC4TwoSingles_running_times}
+Subroutine~\algorithmfont{oneC4TwoSingles} terminates in constant time.
+\end{lem}
+\begin{proof}
+A suitable choice of data structure for $M$ allows the asymptotic running time of this subroutine to be $O(1)$.
+\end{proof}
+
+The third subroutine is Subroutine~\algorithmfont{multipleOfThreeC4s}, shown in Algorithm~\ref{alg:3defr_wje_subroutine_multipleOfThreeC4s}. It takes as input a set $\mathcal{R}$ of $4$-cycles in $(N, E)$, where the number of $4$-cycles is $3q$ for some integer $q \geq 1$. It returns $4q$ triples, each of which contains two agents in one $4$-cycle and one agent in a different $4$-cycle. The agents in each $4$-cycle are assigned to either two or four triples.
+
+\input{algorithms/threed_efr_as/wj_max_degree_two_multipleOfThreeC4s}
+
+\begin{lem}
+\label{lem:threed_efr_as_max_degree_2_subgraph_multipleOfThreeC4s}
+Consider an arbitrary set $\mathcal{R}$ of $4$-cycles in $(N, E)$ where $|\mathcal{R}|=3q$ for some $q\geq 1$. Suppose $T$ is returned by a call $\algorithmfont{multipleOfThreeC4s}(\mathcal{R})$. If $M$ is a matching in $(N, E)$ where $T \subseteq M$ then no agent in $\bigcup \mathcal{R}$ is wj-envied in $M$.
+\end{lem}
+\begin{proof}
+Suppose to the contrary that some agent in $\bigcup \mathcal{R}$ is wj-envied in $M$. By the design of Subroutine~\algorithmfont{multipleOfThreeC4s} it must be that some such agent was labelled $r_j^i$ for some $i$ where $1\leq i \leq 4$ and $j$ where $1\leq j \leq 3q$. By the pseudocode of this subroutine, it must be that some triple containing $r_i^j$ was added to $T$ in the $d'\textsuperscript{th}$ iteration of the for loop, where $d' = \lceil j / 3 \rceil$. We show that no agent in any of the four triples added to $T$ in this iteration is wj-envied.
+
+In fact, by the symmetric construction of the four triples in $T$ in this $d'\textsuperscript{th}$ iteration of the loop, it suffices to consider only the triple $\{ r_{3d'-2}^1, r_{3d'-2}^2, r_{3d'-1}^1 \}$. 
+
+Suppose first that some agent $\alpha_k \in N$ has wj-envy for $r_{3d'-2}^1$. Since $v_{r_{3d'-2}^2}(r_{3d'-2}^1) = 1$ it must be that $v_{r_{3d'-2}^2}(\alpha_k) = 1$. The only possibility is that $\alpha_k = r_{3d'-2}^3$. This is a contradiction since, by construction, $M(r_{3d'-2}^3) = \{ r_{3d'-2}^3, r_{3d'-2}^4, r_{3d'-1}^4 \}$ so $u_{r_{3d'-2}^3}(M) = 1 = u_{r_{3d'-2}^3}(\{ r_{3d'-2}^2, r_{3d'-1}^1 \})$ and thus $r_{3d'-2}^3$ does not have wj-envy for $r_{3d'-2}^1$. A symmetric argument shows that if some $\alpha_k$ has wj-envy for $r_{3d'-2}^2$ then it must be that $\alpha_k = r_{3d'-2}^4$, which leads to a contradiction since $u_{r_{3d'-2}^4}(M)=1$.
+
+Suppose finally that that some agent $\alpha_k \in N$ has wj-envy for $r_{3d'-1}^1$. It follows that $u_{\alpha_k}(\{ r_{3d'-2}^1, r_{3d'-2}^2 \}) \geq 1$ so either $\alpha_k = r_{3d'-2}^3$ or $\alpha_k = r_{3d'-2}^4$. If $\alpha_k = r_{3d'-2}^3$ then by construction $M(r_{3d'-2}^3) = \{ r_{3d'-2}^3, r_{3d'-2}^4, r_{3d'-1}^4 \}$ and thus $u_{r_{3d'-2}^3}(M) = 1$. Since $u_{r_{3d'-2}^3}(M) = 1 = u_{r_{3d'-2}^3}(\{ r_{3d'-2}^1, r_{3d'-2}^2 \})$ it follows that $r_{3d'-2}^3$ does not in fact wj-envy $r_{3d'-1}^1$, which is a contradiction. A similar argument applies if $\alpha_k = r_{3d'-2}^4$.
+\end{proof}
+
+\begin{lem}
+\label{lem:threed_efr_as_wjenvy_max_degree_2_subroutine_oneC4TwoSingles_running_time}
+Subroutine~\algorithmfont{multipleOfThreeC4s} terminates in $O(|\mathcal{R}|)$ time.
+\end{lem}
+\begin{proof}
+Consider the for loop in the subroutine. In each iteration, four triples are added to $T$, which can be performed in constant time. Since there are exactly $q$ iterations it follows that the running time of this subroutine is $O(|\mathcal{R}|)$.
+\end{proof}
+
+The fourth subroutine is Subroutine~\algorithmfont{configureSurplusAgents}, shown in Algorithm~\ref{alg:3defr_wje_subroutine_configureSurplusAgents}. It takes as input a set of agents $\hat{S} \subseteq N$ of agents where $|\hat{S}|$ is divisible by three and the subgraph induced by $\hat{S}$ in $(N, E)$ has maximum degree $1$. It returns a set $T$ of $|\hat{S}|/3$ triples. In the context of Algorithm~\algorithmfont{wjPathsCycles}, this subroutine will be called with a subset of the surplus agents in the second element of the tuple returned by Subroutine~\algorithmfont{nonC4Components}. We remark that Subroutine~\algorithmfont{configureSurplusAgents} is essentially the same procedure as one used in Algorithm~\algorithmfont{findStableUW}, shown in Algorithm~\ref{alg:threed_sr_as_approximationalgo} in Chapter~\ref{c:threed_sr_as}.
+
+\input{algorithms/threed_efr_as/wj_max_degree_two_configureSurplusAgents}
+
+\begin{lem}
+\label{lem:threed_efr_as_max_degree_2_subgraph_configureSurplusAgents}
+Consider an arbitrary set $\hat{S}\subseteq N$ where $3$ divides $\hat{S}$ and the maximum degree of the subgraph induced by $\hat{S}$ in $(N, E)$ is $1$. Suppose $T$ is returned by a call $\algorithmfont{configureSurplusAgents}(\hat{S})$. If $M$ is a matching in $(N, E)$ where $T \subseteq M$ then no agent in $\hat{S}$ has wj-envy in $M$ for any other agent in $\hat{S}$.
+\end{lem}
+\begin{proof}
+From the pseudocode, it is straightforward to show that Subroutine~\algorithmfont{configureSurplusAgents} is bound to terminate and must return a set $T$ of disjoint triples where $\bigcup T = \hat{S}$.
+
+Suppose for a contradiction that some agent $\alpha_{j_1} \in \hat{S}$ has wj-envy for an agent $\alpha_{k_1} \in \hat{S}$ where $M(\alpha_{j_1}) = \{ \alpha_{j_1}, \alpha_{j_2}, \alpha_{j_3} \}$ and $M(\alpha_{k_1}) = \{ \alpha_{k_1}, \alpha_{k_2}, \alpha_{k_3} \}$. It follows that $u_{\alpha_{j_1}}(\{  \alpha_{k_2}, \alpha_{k_3} \}) \geq 1$. Without loss of generality assume that $v_{\alpha_{j_1}}(\alpha_{k_2})=1$, or equivalently that $\{ \alpha_{j_1}, \alpha_{k_2} \} \in E$. By the definition of $\mathcal{Q}$, it must be that $\{ \alpha_{j_1}, \alpha_{k_2} \} \in \mathcal{Q}$.
+
+Note that if $|\mathcal{Q}| < |\hat{S}|/3$ then, by the pseudocode, for every $\{ q_a, q_b \} \in \mathcal{Q}$ it must be that $q_a \in M(q_b)$. Since $\{ \alpha_{j_1}, \alpha_{k_2} \} \in \mathcal{Q}$ and $\alpha_{j_1} \notin M(\alpha_{k_2})$ it follows that $|\mathcal{Q}| \geq |\hat{S}|/3$. 
+
+By the pseudocode, for each triple $r \in T$ there exists some pair $\{ q_a, q_b \} \in \mathcal{Q}$ where $\{ q_a, q_b \} \subset r$. Since $\mathcal{Q}$ is agent-disjoint (and we established that $\{ \alpha_{j_1}, \alpha_{k_2} \} \in \mathcal{Q}$) the only possibility is that $\{ \alpha_{k_1}, \alpha_{k_3} \} \in \mathcal{Q}$. By the definition of $\mathcal{Q}$ it must be that $v_{\alpha_{k_1}}(\alpha_{k_3})=1$. Since $\alpha_{j_1}$ has wj-envy for $\alpha_{k_1}$ it must be that $v_{\alpha_{k_3}}(\alpha_{j_1}) \geq v_{\alpha_{k_3}}(\alpha_{k_1})$ so it follows that $v_{\alpha_{k_3}}(\alpha_{j_1}) = 1$. Now $\{ \alpha_{k_3}, \alpha_{k_1} \} \in E$ and $\{ \alpha_{k_3}, \alpha_{j_1} \} \in E$ so $\alpha_{k_3}$ has degree $2$ in the subgraph induced by $\hat{S}$ in $(N, E)$, which is a contradiction.
+\end{proof}
+
+\begin{lem}
+\label{lem:threed_efr_as_wjenvy_max_degree_2_subroutine_configureSurplusAgents_running_time}
+Subroutine~\algorithmfont{configureSurplusAgents} terminates in $O(|\hat{S}|)$ time.
+\end{lem}
+\begin{proof}
+The sets of pairs $\mathcal{X}$ and $\mathcal{W}$, the set of agents $Y$, and the returned set of triples $T$ can all be constructed in $O(|\hat{S}|)$ time.
+\end{proof}
+
+The fifth subroutine is Subroutine~\algorithmfont{pickLowDegree}. This subroutine takes as input a set $S$ and integer $k\geq 1$, such that the maximum degree of the subgraph induced by $S$ in $(N, E)$ is $1$. It returns a set of $k$ agents in $S$ such that the sum of the degrees of the agents returned in the subgraph induced by $S$ in $(N, E)$ is minimised. Since the maximum degree of the subgraph induced by $S$ in $(N, E)$ is $1$, this subroutine can be implemented to run in $O(|N|)$ time.
+
+We now present Algorithm~\algorithmfont{wjPathsCycles}, shown in Algorithm~\ref{alg:3defr_wje_paths_cycles}. The overall strategy of this algorithm is as follows. First Subroutine~\algorithmfont{nonC4Components} is used to break up connected components that are not $4$-cycles into a set of triples $T$, in which each triple contains three successively adjacent agents, and a set $S$ of surplus agents. 
+The algorithm then constructs a set $\mathcal{R}$ of all $4$-cycles in $(N, E)$. If $|\mathcal{R}|$ is divisible by three, Subroutine~\algorithmfont{multipleOfThreeC4s} is called and all agents in $\bigcup \mathcal{R}$, i.e.\ all agents belonging to $4$-cycles, are assigned to triples in $M$. If $|\mathcal{R}|$ is not divisible by three then there are two cases. In the first, the instance is identified as belonging to \iwjnomaxdegreetwofamily/. In the second, a set of surplus agents in $S$ are used to assign the agents belonging to either one or two $4$-cycles to triples in $M$. This set is chosen using Subroutine~\algorithmfont{pickLowDegree}, which (as we shall see later) ensures that no agent in this set will be wj-envious in $M$. Next, the remaining $4$-cycles (the number of which is divisible by three) are then added to triples in $M$ using Subroutine~\algorithmfont{multipleOfThreeC4s}.
+The final step (in the case in which the instance does not belong to \iwjnomaxdegreetwofamily/) is a call to Subroutine~\algorithmfont{configureSurplusAgents} and the assignment of all remaining agents in $S$ to triples in $M$.
+
+\input{algorithms/threed_efr_as/wj_max_degree_two_wjPathsCycles}
+
+\begin{prop}
+\label{prop:threed_efr_as_wjenvy_maxdeg2_algo_ucupbigcuppi}
+In Algorithm~\algorithmfont{wjPathsCycles}, $S \cup \bigcup T$ is the set of agents that do not belong to $4$-cycles in $(N, E)$.
+\end{prop}
+\begin{proof}
+This follows immediately by Lemma~\ref{lem:threed_efr_as_wjenvy_max_degree_2_nonC4s}.
+\end{proof}
+
+We first prove two propositions that show that, in two specific cases, $S$ is large enough to extract the number of agents required.
+
+\begin{prop}
+\label{prop:threed_efr_as_wjenvy_maxdeg2_algo_rmod3is2_specialcase}
+In Algorithm~\algorithmfont{wjPathsCycles}, after initialising $\mathcal{R}$, if $|\mathcal{R}| \bmod 3 = 2$ and $|S| < 4$ then $|S| = 1$.
+\end{prop}
+\begin{proof}
+Suppose $|\mathcal{R}| \bmod 3 = 2$ and $|S| < 4$ after initialising $\mathcal{R}$. Then there exists some constant $k_1 \geq 0$ such that $|\mathcal{R}| = 3{k_1} + 2$, so the number of agents in $N$ that belong to $4$-cycles is $4|\mathcal{R}| = 12{k_1} + 8$. It follows that the number of agents in $N$ that do not belong to $4$-cycles is $3n - 12{k_1} - 8$. Since $(3n - 12{k_1} - 8) \bmod 3 = 1$ there exists some constant $k_2 \geq 0$ such that the number of agents in $N$ that do not belong to $4$-cycles is $3{k_2} + 1$. By Proposition~\ref{prop:threed_efr_as_wjenvy_maxdeg2_algo_ucupbigcuppi}, $S \cup \bigcup T$ is the set of agents that do not belong to $4$-cycles. Since $|S \cup \bigcup T| = 3{k_2} + 1$, $T$ is a set of disjoint triples, and $|S| < 4$, it must be that ${k_2}=0$ and $|S|=1$.
+\end{proof}
+
+\begin{prop}
+\label{prop:threed_efr_as_wjenvy_maxdeg2_algo_mod3is1}
+In Algorithm~\algorithmfont{wjPathsCycles}, after initialising $\mathcal{R}$, if $|\mathcal{R}| \bmod 3 = 1$ then $|S| \geq 2$.
+\end{prop}
+\begin{proof}
+Suppose $|\mathcal{R}| \bmod 3 = 1$ after initialising $\mathcal{R}$. Then there exists some constant ${k_1} \geq 0$ such that $|\mathcal{R}| = 3{k_1} + 1$, so the number of agents in $N$ that belong to $4$-cycles is $4|\mathcal{R}| = 12{k_1} + 4$. It follows that the number of agents in $N$ that do not belong to $4$-cycles is $3n - 12{k_1} - 4$. Since $(3n - 12{k_1} - 4) \bmod 3 = 2$ there exists some constant ${k_2} \geq 0$ where the number of agents in $N$ that do not belong to $4$-cycles is $3{k_2} + 2$. By Proposition~\ref{prop:threed_efr_as_wjenvy_maxdeg2_algo_ucupbigcuppi}, $S \cup \bigcup T$ is the set of agents that do not belong to $4$-cycles. Since $|S \cup \bigcup T| = 3{k_2} + 2$ and $T$ is a set of disjoint triples it must be that $|S| \geq 2$.
+\end{proof}
+
+We now show that Algorithm~\algorithmfont{wjPathsCycles} is bound to terminate and has a linear running time with respect to the number of agents.
+
+\begin{lem}
+\label{lem:threed_efr_as_wjenvy_max_degree_2_algo_valid_runningtime}
+Algorithm~\algorithmfont{wjPathsCycles} terminates in $O(|N|)$ time.
+\end{lem}
+\begin{proof}
+The pseudocode describes the algorithm at a high level. To analyse the worst-case asymptotic time complexity we describe one possible system of data structures and analyse the algorithm with respect to the number of basic operations on these data structures. We begin the analysis at the start of the pseudocode.
+
+The initialisation of $M$, $\hat{T}$ and $\hat{S}$ can be performed in constant time. The set of connected components $\mathcal{C}$ that are not $4$-cycles can be identified in $O(|N|)$ time using breadth-first search, since the maximum degree of $(N, E)$ is two.
+
+By Lemma~\ref{lem:threed_efr_as_wjenvy_max_degree_2_nonC4s}, the call to Subroutine~\algorithmfont{nonC4Components} takes $O(|\bigcup \mathcal{C}|) = O(|N|)$ time.
+
+Like $\mathcal{C}$, the set of connected components $\mathcal{R}$ that are $4$-cycles can be constructed in $O(|N|)$ time. Each nested branch of the if/else statement involves removing a constant number of elements from $S$, at most two calls to Subroutine~\algorithmfont{oneC4TwoSingles} (which has constant running time by Lemma~\ref{lem:threed_efr_as_wjenvy_max_degree_2_subroutine_oneC4TwoSingles_running_time}), and an assignment to $\hat{T}$ and $\hat{S}$ (which can be performed in $O(|N|)$ time). It follows that the total running time of the if/else statement is $O(|N|)$.
+
+By Lemma~\ref{lem:threed_efr_as_wjenvy_max_degree_2_subroutine_oneC4TwoSingles_running_time}, Subroutine~\algorithmfont{multipleOfThreeC4s} has $O(|\mathcal{R}|) = O(|N|)$ running time. By Lemma~\ref{lem:threed_efr_as_wjenvy_max_degree_2_subroutine_configureSurplusAgents_running_time}, Subroutine~\algorithmfont{configureSurplusAgents} has $O(|S|) = O(|N|)$ running time. It follows that the asymptotic worst-case running time of Algorithm~\algorithmfont{wjPathsCycles} is $O(|N|)$.
+\end{proof}
+
+Having established that Algorithm~\algorithmfont{wjPathsCycles} is bound to terminate, we prove its correctness using a sequence of lemmas. First we show that if $(N, E)$ belongs to \iwjnomaxdegreetwofamily/ then the algorithm correctly identifies it as such.
+
+\begin{lem}
+\label{lem:threed_efr_as_wjenvy_max_degree_2_algo_valid_part1_ino}
+If $(N, E)$ belongs to \iwjnomaxdegreetwofamily/ then Algorithm~\algorithmfont{wjPathsCycles} returns ``$(N, E)$ belongs to \iwjnomaxdegreetwofamily/''.
+\end{lem}
+\begin{proof}
+Suppose $(N, E)$ belongs to \iwjnomaxdegreetwofamily/. In the algorithm, the set of connected components $\mathcal{C}$ that are not $4$-cycles contains exactly one element $C_1$ where $C_1$ contains a single agent $c_1$ in $(N, E)$. By Lemma~\ref{lem:threed_efr_as_wjenvy_max_degree_2_nonC4s}, Subroutine~\algorithmfont{nonC4Components} must return $(\varnothing, \{ c_1 \})$ so $T = \varnothing$ and $S = \{ c_1 \}$. Consider the outermost if/else statement in the algorithm. By Definition~\ref{def:threed_efr_as_wjef_max_deg_2_ino}, it must be that $3n = 4|\mathcal{R}| + 1$ so $4|\mathcal{R}| + 1 \bmod 3 = 0$. This implies that $4|\mathcal{R}| + 4 \bmod 3 = 0$ so $4(|\mathcal{R}| + 1) \bmod 3 = 0$. It follows that that $|\mathcal{R}| + 1 \bmod 3 = 0$ and thus that $|\mathcal{R}| \bmod 3 = 2$. It follows that the algorithm enters the first branch of the outermost \algorithmfont{if/else} statement. Since $|S| = 1 < 4$ and $T = \varnothing$ the algorithm must then return ``$(N, E)$ belongs to \iwjnomaxdegreetwofamily/''.
+\end{proof}
+
+We now consider the case in which $(N, E)$ does not belong to \iwjnomaxdegreetwofamily/. We first show that in this case Algorithm~\algorithmfont{wjPathsCycles} returns a matching.
+
+\begin{lem}
+\label{lem:threed_efr_as_wjenvy_max_degree_2_algo_valid_part1pointfive_pit}
+If $(N, E)$ does not belong to \iwjnomaxdegreetwofamily/ then Algorithm~\algorithmfont{wjPathsCycles} returns a matching $M$.
+\end{lem}
+\begin{proof}
+Consider an arbitrary connected component $C$ in $(N, E)$. We show that each agent in $C$ is added to exactly one triple in $M$. 
+
+Suppose $C$ is not a $4$-cycle. By the design of Algorithm~\algorithmfont{wjPathsCycles}, exactly one call is made to Subroutine~\algorithmfont{nonC4} with argument $C$. Consider an arbitrary agent $c_i \in C$. There are two cases: either $i \leq \lfloor |C|/3 \rfloor$ or $i > \lfloor |C|/3 \rfloor$. In the former case, exactly one triple containing $c_i$ is added to $T$ in Subroutine~\algorithmfont{nonC4}, which is then added to $M$ in the main algorithm. In the latter case, $c_i$ is eventually added to $S$. We can see from the pseudocode of Subroutine~\algorithmfont{configureSurplusAgents} that $c_i$ is therefore eventually added to exactly one triple in $M$.
+
+Suppose $C$ is a $4$-cycle, so by definition $C \in \mathcal{R}$. If $C \in \mathcal{R}'$ then each agent in $C$ is added to exactly one triple in $M$ in some call to Subroutine~\algorithmfont{multipleOfThreeC4s}. If $C \notin \mathcal{R}'$ then some call to Subroutine~\algorithmfont{oneC4TwoSingles} was made with the first argument equal to $C$ and the returned set of two triples was then added to $M$. It follows that each agent in each $4$-cycle is added to exactly one triple in $M$.
+\end{proof} 
+
+We now show that if $(N, E)$ does not belong to \iwjnomaxdegreetwofamily/ then the algorithm returns a matching $M$ that is wj-envy-free. In the next four lemmas we consider subsets of $N$ and show that in each subset no agent is wj-envied in $M$. The results of these lemmas are then combined in Lemma~\ref{lem:threed_efr_as_wjenvy_max_degree_2_algo_valid_part2_EF}, in which we show that if the algorithm returns a matching $M$ then $M$ is wj-envy-free.
+
+\begin{lem}
+\label{lem:threed_efr_as_wjenvy_max_deg_2_no_agent_in_bigcupT_is_wjenvied}
+If Algorithm~\algorithmfont{wjPathsCycles} returns a matching $M$ then no agent in $\bigcup T$ is wj-envied in $M$.
+\end{lem}
+\begin{proof}
+Suppose Algorithm~\algorithmfont{wjPathsCycles} has returned some matching~$M$. Consider an arbitrary triple $t \in T$. By the pseudocode of Algorithm~\algorithmfont{wjPathsCycles} there are two possibilities: either $t \in \hat{T}$ or $t$ was labelled $\hat{t}$. If $t \in \hat{T}$ then by Lemma~\ref{lem:threed_efr_as_max_degree_2_subgraph_nonC4s} no agent in $t$ is wj-envied in $M$. Suppose then that $t$ was labelled $\hat{t}$. By the pseudocode of Algorithm~\algorithmfont{wjPathsCycles}, for any agent $c_i$ in $\hat{t}$ it must be that some call was made to Subroutine~\algorithmfont{oneC4TwoSingles} in which the second or third argument was equal to $c_i$ and then the two triples returned by the subroutine were added to $M$. By Lemma~\ref{lem:threed_efr_as_max_degree_2_subgraph_oneC4TwoSingles}, it follows that no agent in $\hat{t}$ is wj-envied in $M$.
+\end{proof}
+
+\begin{lem}
+\label{lem:threed_efr_as_wjenvy_max_deg_2_no_agent_in_Uhat_is_wjenvied}
+If Algorithm~\algorithmfont{wjPathsCycles} returns a matching $M$ then no agent in $\hat{S}$ is wj-envied in $M$.
+\end{lem}
+\begin{proof}
+Suppose Algorithm~\algorithmfont{wjPathsCycles} has returned some matching $M$ in which some agent $\alpha_i \in N$ has wj-envy for some $\hat{s}_{j_1} \in \hat{S}$. By the pseudocode, it must be that $M(\hat{s}_{j_1})$ contains three agents in $\hat{S}$ so we label $M(\hat{s}_{j_1}) = \{ \hat{s}_{j_1}, \hat{s}_{j_2}, \hat{s}_{j_3} \}$. Note that since $|\hat{S}| > 0$ it must be that $\hat{T} = T$.
+
+Since $\alpha_i$ has wj-envy for $\hat{s}_{j_1}$ it must be that $u_{\alpha_i}(\{ \hat{s}_{j_2}, \hat{s}_{j_3} \}) \geq 1$ so without loss of generality assume that $\{ \alpha_i, \hat{s}_{j_2} \} \in E$.  We now consider two possibilities: $\alpha_i \in S$ and $\alpha_i \notin S$.
+
+First, suppose $\alpha_i \in S$. If $\alpha_i \in \hat{S}$ then Lemma~\ref{lem:threed_efr_as_max_degree_2_subgraph_configureSurplusAgents} is contradicted, so it must be that $\alpha_i \in S \setminus \hat{S}$. By the pseudocode, $\alpha_i$ was labelled either $w_1$, $w_2$, $w_3$ or $w_4$ during algorithm execution and must belong to some set of agents returned by a call to Subroutine~\algorithmfont{pickLowDegree}. Since $\{ \alpha_i, \hat{s}_{j_2}  \} \subset S$ the degree of $\alpha_i$ in the subgraph induced by $S$ in $(N, E)$ is $1$. By the definition of Subroutine~\algorithmfont{pickLowDegree} it must be that the degree of each agent in $\hat{S}$ is also $1$. With this in mind, consider the call $\algorithmfont{configureSurplusAgents}(\hat{S})$. It must be that $|\mathcal{Q}| = |\hat{S}|/2$. It follows that $\mathcal{X} \subset \mathcal{Q}$. By the pseudocode of Subroutine~\algorithmfont{configureSurplusAgents}, We shall consider the values of the variables in Subroutine~\algorithmfont{configureRemainingAgents} inside this call. It must be that for each triple in the set of triples returned by this subroutine contains two agents that are adjacent in $(N, E)$. If $\{ \hat{s}_{j_2}, \hat{s}_{j_1} \} \in E$ or $\{ \hat{s}_{j_2}, \hat{s}_{j_3} \} \in E$ then the degree of $\hat{s}_{j_2}$ in the subgraph induced by $S$ in $(N, E)$ is $2$, which is a contradiction. It remains that $\{ \hat{s}_{j_1}, \hat{s}_{j_3} \} \in E$. Since $w_k$ has wj-envy for $\hat{s}_{j_1}$ it must be that $v_{\hat{s}_{j_3}}(\hat{s}_{k_1}) \geq v_{\hat{s}_{j_3}}(\hat{s}_{j_1}) = 1$. It follows that $\hat{s}_{j_3}$ has degree $2$ in the subgraph induced by $S$ in $(N, E)$, which is a contradiction.
+
+Second, suppose $\alpha_i \notin S$. Since $\{ \alpha_i, \hat{s}_{j_2} \} \in E$, by the pseudocode of Algorithm~\algorithmfont{wjPathsCycles} it must be that $\alpha_i$ belongs to the same connected component in $(N, E)$ as $\hat{s}_{j_2}$. Since $\hat{s}_{j_2}\in S$ it must be that the connected component that contains $\alpha_i$ and $\hat{s}_{j_2}$ is not a $4$-cycle and belongs to $\mathcal{C}$. Since $\alpha_i \notin S$ it must also be that $M(\alpha_i) \in T$. Since $\hat{T} = T$ it follows that $M(\alpha_i) \in \hat{T}$. Lemma~\ref{lem:threed_efr_as_max_degree_2_subgraph_nonC4s_part0} now implies that $\alpha_i$ is not wj-envious in $M$, which is a contradiction.
+\end{proof}
+
+\begin{lem}
+\label{lem:threed_efr_as_wjenvy_max_deg_2_no_agent_in_U_is_wjenvied}
+If Algorithm~\algorithmfont{wjPathsCycles} returns a matching $M$ then no agent in $S$ is wj-envied in $M$.
+\end{lem}
+\begin{proof}
+Suppose Algorithm~\algorithmfont{wjPathsCycles} has returned some matching $M$. Consider an arbitrary agent $s_i \in S$. If $s_i \in \hat{S}$ then by Lemma~\ref{lem:threed_efr_as_wjenvy_max_deg_2_no_agent_in_Uhat_is_wjenvied} it must be that $s_i$ is not wj-envied in $M$. 
+
+Suppose then that $s_i \notin \hat{S}$. There are three cases: either $|\mathcal{R}|\bmod 3 = 2$, $|S|\geq 4$, and $s_i$ was labelled $w_1$, $w_2$, $w_3$, or $w_4$; $|\mathcal{R}|\bmod 3 = 2$, $|T| \geq 1$, and $s_i$ was labelled $w_1$; or $|\mathcal{R}|\bmod 3 = 1$ and $s_i$ was labelled either $w_1$ or $w_2$. In each of the three cases, some call was then made to Subroutine~\algorithmfont{oneC4TwoSingles} in which the second or third argument was equal to $s_i$ and then two triples returned by the subroutine were added to $M$. By Lemma~\ref{lem:threed_efr_as_max_degree_2_subgraph_oneC4TwoSingles} it follows that $s_i$ is not wj-envied in $M$.
+\end{proof}
+
+\begin{lem}
+\label{lem:threed_efr_as_wjenvy_max_deg_2_no_agent_in_bigcupR_is_wjenvied}
+If Algorithm~\algorithmfont{wjPathsCycles} returns a matching $M$ then no agent in $\bigcup \mathcal{R}$, i.e.\ in some $4$-cycle in $(N, E)$, is wj-envied in $M$.
+\end{lem}
+\begin{proof}
+Consider an arbitrary $R_j \in \mathcal{R}$ where $1\leq j \leq |\mathcal{R}|$. We show that no agent in $R_j$ is wj-envied in $M$. In this case, let $l'$ be the final value assigned to the variable $l$ before the algorithm terminated. There are two possibilities: either $j>l'$ or $j\leq l'$.
+
+Suppose $j>l'$. It must be that $R_j \in \mathcal{R}'$, by the construction of $\mathcal{R}'$ in Algorithm~\algorithmfont{wjPathsCycles}. By Lemma~\ref{lem:threed_efr_as_max_degree_2_subgraph_multipleOfThreeC4s} it follows that no agent in $R_j$ is wj-envied in $M$.
+
+Suppose $j\leq l'$. By the design of Algorithm~\algorithmfont{wjPathsCycles} there are two possibilities: either $|\mathcal{R}| \bmod 3 = 2$ and $l'=2$, or $|\mathcal{R}| \bmod 3 = 1$ and $l'=1$. In either case, by the pseudocode of Algorithm~\algorithmfont{wjPathsCycles} it must be that some call to Subroutine~\algorithmfont{oneC4TwoSingles} was made with the first argument equal to $R_j$ and the returned set of two triples was then added to $M$. It follows by Lemma~\ref{lem:threed_efr_as_max_degree_2_subgraph_oneC4TwoSingles} that no agent in $R_j$ is wj-envied in $M$.
+\end{proof}
+
+\begin{lem}
+\label{lem:threed_efr_as_wjenvy_max_degree_2_algo_valid_part2_EF}
+If $(N, E)$ does not belong to \iwjnomaxdegreetwofamily/ then Algorithm~\algorithmfont{wjPathsCycles} returns a matching $M$ that is wj-envy-free.
+\end{lem}
+\begin{proof}
+By definition, $\mathcal{C} \cup \mathcal{R}$ is the set of all connected components in $(N, E)$. By Lemma~\ref{lem:threed_efr_as_wjenvy_max_degree_2_algo_valid_part1pointfive_pit}, Algorithm~\algorithmfont{wjPathsCycles} returns a matching $M$ in $N$. By Proposition~\ref{prop:threed_efr_as_wjenvy_maxdeg2_algo_ucupbigcuppi}, the set of agents $\bigcup \mathcal{C} = S \cup \bigcup T$. By Lemma~\ref{lem:threed_efr_as_wjenvy_max_deg_2_no_agent_in_bigcupT_is_wjenvied}, no agent in $\bigcup T$ is wj-envied in $M$. By Lemma~\ref{lem:threed_efr_as_wjenvy_max_deg_2_no_agent_in_U_is_wjenvied}, no agent in $S$ is wj-envied in $M$. By Lemma~\ref{lem:threed_efr_as_wjenvy_max_deg_2_no_agent_in_bigcupR_is_wjenvied}, no agent in $\bigcup \mathcal{R}$ is wj-envied in $M$.
+\end{proof}
+
+We now prove our main theorem on wj-envy-free matchings and instances with binary and symmetric preferences and maximum degree $2$.
+
+\begin{thm}
+\label{thm:threed_efr_as_wjef_algowjpathscycles}
+Consider an instance of 3DR-AS with binary and symmetric preferences and maximum degree $2$. There exists an $O(|N|)$-time algorithm that can either find a wj-envy-free matching in the instance or report that the instance belongs to \iwjnomaxdegreetwofamily/, and thus contains no wj-envy-free matching.
+\end{thm}
+\begin{proof}
+Lemma~\ref{lem:threed_efr_as_wjenvy_max_degree_2_algo_valid_runningtime} shows that Algorithm~\algorithmfont{wjPathsCycles} terminates in $O(|N|)$ time. Lemmas~\ref{lem:threed_efr_as_wjenvy_max_degree_2_algo_valid_part1_ino} and~\ref{lem:threed_efr_as_wjenvy_max_degree_2_algo_valid_part2_EF} establish the correctness of this algorithm and show that the algorithm either returns a wj-envy-free matching or reports that ``$(N, E)$ belongs to \iwjnomaxdegreetwofamily/''. In the latter case, Lemma~\ref{lem:threed_efr_as_wjef_maxdeg2_ino} shows that the supplied instance contains no wj-envy-free matching.
+\end{proof}
+

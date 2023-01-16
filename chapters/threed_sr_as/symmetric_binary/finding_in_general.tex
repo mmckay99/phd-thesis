@@ -1,0 +1,39 @@
+\subsubsection{Finding a stable \texorpdfstring{$P$}{P}-matching in an arbitrary instance}
+\label{sec:threed_sr_as_symmetric_binary_finding_in_general}
+
+In the previous section, we presented Subroutine~\algorithmfont{findStableInTriangleFree}, which given a triangle-free instance can construct a $P$\nobreakdash-matching in that instance that is stable. In this section we present Algorithm~\algorithmfont{findStable}, which given an arbitrary instance of 3DR-AS can construct a $P$\nobreakdash-matching that is stable in that instance.
+
+Algorithm~\algorithmfont{findStable} involves two steps, as follows. In the first step, it constructs a $P$\nobreakdash-matching $M_{\triangle}$ in $(N, V)$ and a triangle-free instance $(N', V')$ where $|N'| \leq |N|$ and if $M$ is a stable $P$\nobreakdash-matching in $(N', V')$ then $M_{\triangle} \cup M$ is a stable $P$\nobreakdash-matching in $(N, V)$. By Lemma~\ref{lem:threed_sr_as_symmetric_binary_trianglefree}, this can be done in $O(|N|^3)$ time. In the second step, it calls Subroutine~\algorithmfont{findStableInTriangleFree} on $(N', V')$ to construct a $P$\nobreakdash-matching $M'$ that is stable in $(N', V')$. It then returns $M' = M \cup M_{\triangle}$.
+
+% Using the results in Sections~\ref{sec:threed_sr_as_removingtriangles}, \ref{sec:threed_sr_as_symmetric_binary_repairing}, and \ref{sec:threed_sr_as_symmetric_binary_finding_in_triangle_free}, we show in Theorem~\ref{thm:threed_sr_as_symmetric_binary_construction} that Algorithm~\algorithmfont{findStable} must return a stable $P$\nobreakdash-matching in $O(|N|^3)$ time.
+
+% In the previous section we considered instances of 3DR-AS with binary and symmetric preferences that are triangle-free. We showed that, given such an instance, Subroutine~\algorithmfont{findStableInTriangleFree} can be used to find a stable $P$\nobreakdash-matching in $O(|N|^3)$ time (Lemma~\ref{lem:threed_sr_as_symmetric_binary_algfindsstablepmatching}). In Section~\ref{sec:threed_sr_as_symmetric_binary_prelims}, we showed that an arbitrary instance can be reduced in $O(|N|^3)$ time to construct a corresponding triangle-free instance (Lemma~\ref{lem:threed_sr_as_symmetric_binary_trianglefree}). We define a subroutine, \algorithmfont{eliminateTriangles}, which reduces an arbitrary instance in this way, and returns a pair containing the reduced instance and a set of triangles $M_{\triangle}$. Algorithm~\algorithmfont{findStable} therefore comprises two steps. First, the instance is reduced with a call to \algorithmfont{eliminateTriangles}. Then, Subroutine~\algorithmfont{findStableInTriangleFree} is called to construct a $P$\nobreakdash-matching $M'$ that is stable in the reduced, triangle-free instance.
+
+% \input{algorithms/threed_sr_as/overall}
+
+% \begin{lem}
+% \label{lem:threed_sr_as_symmetric_binary_construction_norunningtime}
+% Given an instance $(N, V)$ of 3DR-AS with binary and symmetric preferences, Algorithm~\algorithmfont{findStable} returns a stable $P$\nobreakdash-matching.
+% \end{lem}
+% \begin{proof} 
+% A suitable implementation of Subroutine~\algorithmfont{eliminateTriangles} returns a pair $((N', V'), M_{\triangle})$ where $|N'|\leq |N|$ and if $M$ is a stable $P$\nobreakdash-matching in $(N', V')$ then $M' = M \cup M_{\triangle}$ is a stable $P$\nobreakdash-matching in $(N, V)$ (Lemma~\ref{lem:threed_sr_as_symmetric_binary_trianglefree}). By Lemma~\ref{lem:threed_sr_as_symmetric_binary_algfindsstablepmatching}, Subroutine~\algorithmfont{findStableInTriangleFree} returns $P$\nobreakdash-matching $M'$ that is stable in in $(N', V')$. It follows that $M' \cup M_{\triangle}$ is a $P$\nobreakdash-matching that is stable in $(N, V)$.
+% \end{proof}
+
+% \begin{lem}
+% \label{lem:threed_sr_as_symmetric_binary_construction_runningtime}
+% Algorithm~\algorithmfont{findStable} has running time $O(|N|^3)$.
+% \end{lem}
+% \begin{proof}
+% By definition, Subroutine~\algorithmfont{eliminateTriangles} has running time $O(|N|^3)$ (Lemma~\ref{lem:threed_sr_as_symmetric_binary_trianglefree}). By Lemma~\ref{lem:threed_sr_as_symmetric_binary_algfindstablepmatchingrunningtime}, Subroutine~\algorithmfont{findStableInTriangleFree} also has running time $O(|N|^3)$. It follows that Algorithm~\algorithmfont{findStable} has total running time $O(|N|^3)$.
+% \end{proof}
+
+\begin{thm}
+\label{thm:threed_sr_as_symmetric_binary_construction}
+Given an instance $(N, V)$ of 3DR-AS with binary and symmetric preferences, a stable $P$\nobreakdash-matching, and hence a stable matching, must exist and can be found in $O(|N|^3)$~time.
+\end{thm}
+\begin{proof}
+By Lemma~\ref{lem:threed_sr_as_symmetric_binary_trianglefree}, the first step of the algorithm takes $O(|N|^3)$ time and $(N', V')$ is a triangle-free instance where $|N'| \leq |N|$ and if $M$ is a stable $P$\nobreakdash-matching in $(N', V')$ then $M_{\triangle} \cup M$ is a stable $P$\nobreakdash-matching in $(N, V)$.
+
+By Lemma~\ref{lem:threed_sr_as_symmetric_binary_algfindsstablepmatching_notimecomplex}, the $P$\nobreakdash-matching $M$ returned by the call to Subroutine~\algorithmfont{findStableInTriangleFree} is stable in $(N', V')$. By Lemma~\ref{lem:threed_sr_as_symmetric_binary_algfindstablepmatchingrunningtime}, this call, which constitutes the second step of Algorithm~\algorithmfont{findStable}, takes $O(|N|^3)$ time. It follows that $M' = M_{\triangle} \cup M$ is a stable $P$\nobreakdash-matching in $(N, V)$ and the worst-case time complexity of Algorithm~\algorithmfont{findStable} is $O(|N|^3)$.
+% By Lemmas~\ref{lem:threed_sr_as_symmetric_binary_construction_norunningtime} and~\ref{lem:threed_sr_as_symmetric_binary_construction_runningtime}. If $|N|$ is a multiple of three, then if required the agents unmatched in $M' \cup M_{\triangle}$ can be arbitrarily matched into triples. By Lemma~\ref{lem:threed_sr_as_blockerimprovement}, the resulting matching is still stable in $(N, V)$. 
+\end{proof}

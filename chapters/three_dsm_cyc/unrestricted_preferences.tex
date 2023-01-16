@@ -1,0 +1,105 @@
+In this section we consider the approximability of 3-DSM-CYC-MSM in the general case. We first apply an existing polynomial-time approximation algorithm for a related problem and construct a polynomial-time $9/4$-approximation algorithm. We then improve on this result and show that a polynomial-time algorithm based on serial dictatorship constitutes a $6/5$-approximation algorithm.
+
+There is a close relationship between 3-DSM-CYC and the \emph{Three-Gender Stable Marriage Problem} (3GSM, introduced in Chapter~\ref{c:lit_review}). Recall that in 3-DSM-CYC, each agent has a strict preference list over all agents of the next type, and compares two families based on the relative rank of the two agents of the next type in each family. In 3GSM, each agent has a strict preference list over all possible families that they belong to, and compares any two families using on this preference list. Although neither problem is a strict generalisation of the other, we show that, given an instance $(N, P)$ of 3-DSM-CYC, it is possible to construct an instance $(N, P')$ of 3GSM with the same set of agents such that for any matching $M$, if a family blocks $M$ in $(N, P)$ then it also blocks $M$ in $(N, P')$. From this result it follows that an existing $9/4$-approximation algorithm for 3GSM-MSM, which is defined analogously to 3-DSM-CYC-MSM, can be applied to construct a $9/4$-approximation algorithm for 3-DSM-CYC-MSM. The existing $9/4$-approximation algorithm for 3GSM-MSM was presented by Rosenbaum in 2016 \cite{rosenbaum16} and is called Algorithm~\algorithmfont{AMSM}. It is an iterative greedy algorithm which involves, in each iteration, selecting a family that once added to the matching, intersects the maximum number of non-blocking families.
+
+\begin{thm}
+\label{thm:three_dsm_cyc_ninefour}
+There exists a polynomial-time $9/4$-approximation algorithm for 3-DSM-CYC-MSM.
+\end{thm}
+\begin{proof}
+The approximation algorithm for 3-DSM-CYC-MSM involves constructing a corresponding instance of 3GSM-MSM, which has the same set of agents, and running Algorithm~\algorithmfont{AMSM} \cite{rosenbaum16}.
+
+We first describe how to construct, in polynomial time, a corresponding instance $(N, P')$ of 3GSM such that $|\textrm{nbf}(M, (N, P))| \geq |\textrm{nbf}(M, (N, P'))|$ for any matching $M$. For each agent $u_i$ in $U$ let $P'_{u_i}$ be the ordered list of tuples in $W \times D$ such that if $w_j$ precedes $w_i$ in $P_{u_i}$ then every family containing $w_j$ appears before every family containing $w_i$. The relative order of the families in $P'_{u_i}$ that contain the same agent in $W$ is arbitrary. Construct the preferences of each agent in $W$ and $D$ symmetrically. Now, suppose $M$ is an arbitrary matching in $(N, P)$ and $(u_i, w_j, d_k)$ is a family that blocks $M$ in $(N, P)$. We claim that this family also blocks $M$ in $(N, P')$. First, assume without loss of generality that $M(u_i) = (u_i, w_i, d_i)$. By definition, it must be that $w_j$ appears before $w_i$ in $P_{u_i}$. It follows by the construction of $P'$ that $(u_i, w_j, d_k)$ appears before $(u_i, w_i, d_i)$ in $P'_{u_i}$ and thus that $(u_i, w_j, d_k)$ also blocks $M$ in $(N, P')$. It follows immediately that $|\textrm{bf}(M, (N, P'))| \geq |\textrm{bf}(M, (N, P))|$ and thus that $|\textrm{nbf}(M, (N, P))| \geq |\textrm{nbf}(M, (N, P'))|$, as required.
+
+Since Rosenbaum's~\cite{rosenbaum16} analysis of  Algorithm~\algorithmfont{AMSM} shows that $|\textrm{nbf}(M, (N, P'))| \geq 4n^3/9$, we can conclude that $|\textrm{nbf}(M, (N, P))| \geq 4n^3/9$.
+\end{proof}
+
+We now consider an algorithm for 3-DSM-CYC-MSM based on serial dictatorship, which we call Algorithm~\algorithmfont{cyclicSerialDictatorship}, shown in Algorithm~\ref{alg:threed_sr_b_threedsm_cyc_dictatorshipcyc}. In the context of computational social choice, serial dictatorship refers to a type of iterative algorithm used to assign resources to agents. Typically, in each iteration a dictator is selected who is then assigned their most-preferred resource that is still available. The classical application of serial dictatorship is for the problem of \emph{House allocation} \cite{HedonicGamesHOCSC} but it has also been applied to hedonic games \cite{ABS11} and problems involving coalitions of fixed size \cite{CSEH2019}.
+
+The algorithm we present here for 3-DSM-CYC-MSM follows the pattern of serial dictatorship. First, an arbitrary yet-unmatched agent agent in $U$ is selected and labelled $u_i$. Next, $u_i$ selects their most-preferred yet-unmatched agent in $W$ which is labelled $w_j$. Finally, $w_j$ selects their most-preferred yet-unmatched agent in $D$ which is labelled $d_k$. The family $( u_i, w_j, d_k )$ is then added to the matching. A similar algorithm was in fact used by Hofbauer \cite{HOFBAUER201672} in order to construct stable matchings in the setting of $k$-DSM-CYC where $n \leq k + 1$.
+
+\input{algorithms/three_dsm_cyc/dictatorship_cyc}
+
+It is straightforward to show that Algorithm~\algorithmfont{cyclicSerialDictatorship} returns a matching $M$ in polynomial time. We now analyse its approximation ratio and show that our analysis is tight. This involves placing an upper bound on the number of blocking families in a matching $M$ returned by the algorithm. To do this, we consider each family in $M$ in the order that they were added to $M$ in the algorithm and count only the blocking families that intersect that family and do not intersect any previous family. To simplify the analysis, without loss of generality suppose the $( u_1, w_1, d_1 )$ was the first family added to $M$, $( u_2, w_2, d_2 )$ was the second family added to $M$, and so on.
+
+\begin{thm}
+\label{thm:three_dsm_cyc_unrestricted}
+There exists a polynomial-time $6/5$-approximation algorithm for 3-DSM-CYC-MSM.
+\end{thm}
+\begin{proof}
+There are exactly $n$ iterations of the while loop so it is straightforward to show that the algorithm runs in polynomial time. For each $i$ where $1\leq i \leq n$, let $F_i = ( u_i, w_i, d_i )$ be the family added to $M$ in the $i\textsuperscript{th}$ iteration. Let $U_i$, $W_i$, and $D_i$ be the set of agents in of $U \cap V$, $W \cap V$, and $D \cap V$ respectively at the start of the $i\textsuperscript{th}$ iteration. It follows that $U_i = \{ u_i, u_{i+1}, \dots, u_n \}$, $W_i = \{ w_i, w_{i+1}, \dots, w_n \}$, and $D_i = \{ d_i, d_{i+1}, \dots, d_n \}$.
+
+For each $i$ where $1\leq i \leq n$, let $S_i$ be the set of families that block $M$, have a non-empty intersection with $F_i$, and have an empty intersection with $F_j$ for every $1 \leq j < i$. It follows that $S_n = \varnothing$ since any family that blocks $M$ and intersects the final family $F_n$ must contain some agent not in $F_n$, which must belong to some previous family $F_j$ where $1 \leq j < n$. 
+We can now define $\text{bf}(M)$ in terms of $S_i$:
+\begin{align*}
+    \text{bf}(M) = \bigcup\limits_{i=1}^{n-1} S_i\enspace.
+\end{align*}
+By definition, the sets $S_i$ are pairwise disjoint so it follows that
+\begin{align}
+    |\text{bf}(M)| = \sum\limits_{i=1}^{n-1} |S_i|\enspace. \label{eqn:threedsm_cyc_si}
+\end{align}
+We now place an upper bound on $|S_i|$ for any $i$ where $1\leq i \leq n - 1$. For any such $i$, consider the $i\textsuperscript{th}$ iteration of the while loop. By the algorithm, $w_i$ is the most-preferred agent in $W_i$ according to $P_{u_i}$. It follows that any family that blocks $M$ and contains $u_i$ must also contain some agent in $W$ that has already been added to a family $F_j$ in $M$ where $j < i$. By the definition of $S_i$, it follows that no family in $S_i$ contains $u_i$. Similarly, since $d_i$ is the most-preferred agent in $D_i$ according to $P_{w_i}$, any family in $S_i$ that contains $w_i$ must also contain some agent in $D$ that has already been added to a family $F_j$ in $M$, where $j < i$. It follows similarly that no family in $S_i$ contains $w_i$.
+
+It remains that every family in $S_i$ contains $d_i$. Consider an arbitrary family $( u_j, w_k, d_i )$ in $S_i$. By the definition of $S_i$ it must be that $j > i$ and $k > i$. Note that for any choice of $u_j$, by assumption $u_j$ prefers $w_k$ to $w_j$. It follows by the algorithm that $w_k \notin W_j$ and thus $k < j$. 
+
+In conclusion, we have shown that for any family $( u_j, w_k, d_i ) \in S_i$ it must be that $i < j \leq n$ and $i < k < j$. We can now count $|S_i|$ by considering each possible value of $j$, from $i+1$ to $n$ inclusive and each possible value of $k$, of which there are $j - i - 1$. It follows that
+\begin{align}
+    |S_i| &\leq \sum\limits_{j=i+1}^{n} (j - i - 1)\nonumber\\
+    &= \frac{(n-i)(n-i-1)}{2} \label{eqn:three_dsm_cyc_sizeofsi}\enspace.
+\end{align}
+Now
+\begin{align}
+    |\text{bf}(M)| &= \sum\limits_{i=1}^{n-1} |S_i| && \mbox{Equation~\ref{eqn:threedsm_cyc_si}}\nonumber\\
+    &\leq \sum\limits_{i=1}^{n-1} \frac{(n - i)(n - i - 1)}{2} && \mbox{by Inequality~\ref{eqn:three_dsm_cyc_sizeofsi}}\nonumber\\
+    &= \frac{n^3}{6} - \frac{n^2}{2} + \frac{n}{3}\label{eqn:threedsm_cyc_bf_basic}\enspace.
+\end{align}
+Suppose $M^*$ is a matching in $(N, P)$ with the maximum number of non-blocking families. The approximation ratio of the algorithm is thus
+\begin{align*}
+    \frac{|\textrm{nbf}(M^*)|}{|\textrm{nbf}(M)|} &\leq \frac{n^3}{|\textrm{nbf}(M)|}\\
+    &= \frac{n^3}{n^3 - |\textrm{bf}(M)|} && \mbox{by the definition of $\textrm{nbf}$}\\
+    &\leq \frac{6n^2}{5n^2 + 3n - 2} && \mbox{by Inequality~\ref{eqn:threedsm_cyc_bf_basic}}\\
+    &\leq \frac{6}{5} && \mbox{since $n \geq 1$.} 
+\end{align*}
+\end{proof}
+It is desirable to show that the analysis is tight, for example by constructing an instance $(N, P)$ such that there exists some execution of the algorithm that returns a matching $M$ for which $|\textrm{nbf}(M^*)|/|\textrm{nbf}(M)| = 6/5$, where $M^*$ is some matching in $(N, P)$ with the maximum number of non-blocking families. We show that this analysis is tight asymptotically, by constructing an instance $\mathcal{I}_n$ for some fixed $n \geq 1$, where the approximation ratio obtained by Algorithm~\algorithmfont{cyclicDicatorship} on $\mathcal{I}_n$ in the worst case is $6/5 - o(1)$.
+
+The structure of the preferences of the agents in $\mathcal{I}_n$ corresponds directly to the counting argument used in the proof of Theorem~\ref{thm:three_dsm_cyc_unrestricted}. For any fixed $n$, construct $\mathcal{I}_n$ as follows. Let $U = \{ u_1, u_2, \dots, u_n \}$, $W =  \{ w_1, w_2, \dots, w_n \}$, and $D = \{ d_1, d_2, \dots, d_n \}$, and for each $i$ where $1\leq i \leq n$ let
+\begin{flalign*}
+\setlength\arraycolsep{2pt}
+\begin{array}{r c c c c}
+P_{u_i} :& w_1 & w_2 & \dots & w_{n}\\
+P_{w_i} :& d_1 & d_2 & \dots & d_{n}\\
+P_{d_i} :& u_n & u_{n-1} & \dots & u_1
+\end{array}
+\end{flalign*}
+% \begin{flalign*}
+% \setlength\arraycolsep{2pt}
+% \begin{array}{r l l r}
+% P_{u_i} :& [& W \text{ in ascending order} &]\\
+% P_{w_i} :& [& D \text{ in ascending order} &]\\
+% P_{d_i} :& [& U \text{ in descending order} &]\\
+% \end{array}
+% \end{flalign*}
+In the algorithm the selection of each agent in $U \cap V$ is arbitrary, so suppose the algorithm selects $u_1$ in the first iteration, $u_2$ in the second iteration, and so on. It follows that the first family added to $M$ is $( u_1, w_1, d_1 )$ and $V = N \setminus \{ u_1, w_1, d_1 \}$ at the start of the second iteration. It then follows that the next family added to $M$ is $( u_2, w_2, d_2 )$. In general, in the $i\textsuperscript{th}$ iteration $w_i$ must be the most-preferred agent in $W \cap V$ according to $P_{u_i}$ and $d_i$ must be the most-preferred agent in $D \cap V$ according to $P_{w_i}$. It follows that the algorithm returns $M = \{ ( u_1, w_1, d_1 ), ( u_2, w_2, d_2 ), \dots, ( u_n, w_n, d_n ) \}$. As in the proof of Theorem~\ref{thm:three_dsm_cyc_unrestricted}, for each $i$ where $1\leq i \leq n$, let $F_i$ be the family $( u_i, w_i, d_i )$ selected in the $i\textsuperscript{th}$ iteration and let $S_i$ be the set of families that block $M$, have a non-empty intersection with $F_i$ and an empty intersection with $F_j$ for every $1\leq j < i$. Note that as before, $S_n = \varnothing$. As before, it can be shown that for any $i$ where $1\leq i \leq n$, no family in $S_i$ contains $u_i$ and no family in $S_i$ contains $w_i$. It remains that each family in $S_i$ contains $d_i$. Note that by the construction of $\mathcal{I}_n$, $d_i$ prefers to $u_i$ each agent $u_j$ where $j > i$. Moreover, any such $u_j$ prefers to $w_j$ each agent $w_k$ where $k < j$, and any such $w_k$ prefers to $d_k$ each agent $d_i$ where $i < k$. It follows that $S_i$ contains the family $( u_j, w_k, d_i )$ for each $j$ where $i < j \leq n$ and each $k$ where $i < k < j$. As in the proof of Theorem~\ref{thm:three_dsm_cyc_unrestricted}, it is straightforward to show that no other families are contained in $S_i$. It follows that since
+\begin{align*}
+    S_i = \{ ( u_j, w_k, d_i ) : i < j \leq n \text{ and } i < k < j \}
+\end{align*}
+it must be that
+\begin{align*}
+    |S_i| &= \sum\limits_{j = i + 1}^{n} (j - i - 1)
+\end{align*}
+which shows that the upper bound on $|S_i|$ shown in Inequality~\ref{eqn:three_dsm_cyc_sizeofsi} in Theorem~\ref{thm:three_dsm_cyc_unrestricted} is tight. The same argument used in the proof of Theorem~\ref{thm:three_dsm_cyc_unrestricted} then shows that
+\begin{align}
+    |\textrm{nbf}(M)| = \frac{5n^3}{6} + \frac{n^2}{2} - \frac{n}{3} \label{eqn:three_dsm_cyc_sizeofsiintight}\enspace.
+\end{align}
+We now show that a stable matching exists in $\mathcal{I}_n$. Let $M^* = \{ ( u_i, w_{n - i + 1}, d_{n - i + 1} ) : 1 \leq i \leq n \}$. Suppose for a contradiction that $M^*$ is not stable and thus some family $( u_j, w_k, d_i )$ blocks $M^*$ in $(N, P)$. By the definition of a blocking family, $u_j$ prefers $w_k$ to $w_{n - j + 1}$. By the preference list of $u_j$ it follows that $k < n - j + 1$. Similarly, since $w_k$ prefers $d_i$ to $d_k$ by the preference list of $w_k$ it must be that $i < k$. Since $k < n - j + 1$ and $i < k$ it follows that $j < n - i + 1$. By the construction of $P_{d_i}$, it follows that $u_j$ appears after $u_{n - i + 1}$ in $P_{d_i}$. This is a contradiction since by the definition of a blocking family $d_i$ must prefer $u_j$ to its assigned partner of the next type, $u_{n - i + 1}$. It follows that $M^*$ is stable. Now
+\begin{align*}
+    \frac{|\textrm{nbf}(M^*)|}{|\textrm{nbf}(M)|} &= \frac{n^3}{|\textrm{nbf}(M)|} && \mbox{since $M^*$ is stable}\\
+    &= \frac{6n^2}{5n^2 + 3n - 2} && \mbox{by Equation~\ref{eqn:three_dsm_cyc_sizeofsiintight}}\\
+    % &= \frac{6}{5} - \left( \frac{6}{7(n + 1)} + \frac{24}{35(5n - 2)} \right)\\
+    &= \frac{6}{5} - \frac{18n - 12}{25n^2 + 15n - 10}\\
+    &= \frac{6}{5} - o(1)
+\end{align*}
+which shows that the analysis is asymptotically tight.
+
+Since all agents of the same type in $\mathcal{I}_n$ had the same preference list, it was straightforward to construct a stable matching. In the next section, we consider instances in which the preference lists of all agents of at least one type are derived from a master list, and consider the problem of finding a matching with the maximum number of non-blocking families.

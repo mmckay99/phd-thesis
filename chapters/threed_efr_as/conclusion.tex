@@ -1,0 +1,62 @@
+In this chapter we considered the existence of envy-free, wj-envy-free, and j-envy-free matchings in 3DR-AS and the complexity of the associated decision and construction problems. For each of the three solution concepts, we considered various restrictions on the agents' valuations.
+
+We first showed that an arbitrary instance of 3DR-AS may not contain an envy-free matching, even when preferences are binary and symmetric and the maximum degree of the underlying graph is $2$. We described a polynomial-time algorithm for this case that can, in a given instance of 3DR-AS, either construct an envy-free matching or report that no such matching exists. We then contrasted this result by showing that the corresponding existence problem is $\NP$-complete even when the maximum degree of the underlying graph is $3$.
+
+Next, we considered wj-envy-freeness. Our results for wj-envy-freeness were similar to those for envy-freeness.  We first showed that, as in the case of envy-freeness, a wj-envy-free matching may not exist even when preferences are binary and symmetric and the maximum degree of the underlying graph is $2$. We described a slightly more complex polynomial-time algorithm for this case, compared to the corresponding algorithm for envy-freeness, which either constructs a wj-envy-free matching or reports that no such matching exists. We also showed that the corresponding existence problem is $\NP$-complete even when the maximum degree of the underlying graph is $3$. 
+
+We then considered j-envy-freeness. We showed that if preferences are binary but not necessarily symmetric, a j-envy-free matching must exist and can be found in polynomial time. We then considered two restrictions of 3DR-AS, in which valuations are ternary but not symmetric, and non-binary and symmetric. In both restrictions, we showed that a given instance of 3DR-AS may not contain a j-envy-free matching and the associated existence problem is $\NP$-complete.
+
+We summarise our new existence and complexity results in Table~\ref{tab:introduction_3dsras_mainresults}, which also includes the corresponding results for stability from Chapter~\ref{c:threed_sr_as}. In the table, for a given solution concept and preference restriction, ``must exist?'' refers to whether an arbitrary such instance of 3DR-AS must contain a matching that satisfies that solution concept, and ``search'' refers to the complexity class of the associated construction problem. From this table (and the associated theorems) we can identify a general trend in our results that for successively weaker solution concepts, existence and polynomial-time solvability hold under successively weaker restrictions on the agents' preferences.
+
+\begin{table}[ht]
+\begin{center}
+% \resizebox{\textwidth}{!}{
+% \begin{tabular}{c@{\hspace{1pt}}c@{\hspace{1pt}}c@{\hspace{3pt}}c@{\hspace{1pt}}}\\\noalign{\hrule}
+\begin{tabular}{ccccc}\\\noalign{\hrule}
+\multicolumn{2}{c}{input settings}            
+& \multicolumn{2}{c}{results} 
+\\
+solution concept & preference restriction &  must exist? & search & Theorem\\
+\noalign{\hrule}
+\noalign{\hrule}
+stability & binary and symmetric & \checkmark & \P & \ref{thm:threed_sr_as_symmetric_binary_construction}\\
+'' & binary & \xmark & \NP-h. &  \ref{thm:threed_sr_as_binary_reduction}\\
+'' & ternary and symmetric & \xmark & \NP-h. & \ref{thm:threed_sr_as_symmetric_ternary_reduction}\\[4.5pt]
+envy & binary and symmetric, $\Delta=2$  & \xmark & \P & \ref{thm:threed_efr_as_ef_algorithm}\\
+'' & binary and symmetric, $\Delta=3$  & \xmark & \NP-h. & \ref{thm:threed_efr_as_regularenvy_npcomplete}\\[4.5pt]
+weakly justified envy & binary and symmetric, $\Delta=2$ & \xmark & \P & \ref{thm:threed_efr_as_wjef_algowjpathscycles}\\
+'' & binary and symmetric, $\Delta=3$  & \xmark & \NP-h. & \ref{thm:threed_efr_as_wjef_npcomplete}\\[4.5pt]
+justified envy & binary and symmetric & \checkmark & \P & Obs.~\ref{obs:threed_efr_as_jef_binary_symmetric_from_stability}\\
+'' & binary & \checkmark & \P & \ref{thm:threed_efr_as_jef_binary_algorithm}\\
+'' & ternary & \xmark & \NP-h. & \ref{thm:threed_efr_as_jef_terasym_npcomplete}\\
+'' & symmetric and $0 \leq v_i(j) \leq 6$ & \xmark & \NP-h. & \ref{thm:threed_efr_as_jef_symmetric_6_npcomplete}\\
+\noalign{\hrule}
+\end{tabular}
+% }
+\end{center}
+\caption{Our complexity results for 3DR-AS (from Chapters~\ref{c:threed_sr_as} and~\ref{c:threed_efr_as}). In restrictions involving binary and symmetric preferences, $\Delta$ refers to the maximum degree of the underlying graph.}
+\label{tab:introduction_3dsras_mainresults}
+\end{table}
+
+We now present some open problems specifically involving envy-freeness, wj-envy-freeness, and j-envy-freeness in 3DR-AS. More general problems, involving solution concepts that do not involve envy and other models of fixed-size coalitions, are discussed in Chapter~\ref{c:conclusion}.
+
+The immediate open problem relates to j-envy-freeness and preferences that are ternary and symmetric. Specifically, it would be interesting to resolve the computational complexity of the problem of deciding if a given instance 3DR-AS with ternary preferences contains j-envy-free matching. The first step in this direction would be to determine whether every instance of 3DR-AS with ternary preferences contains a j-envy-free matching. 
+
+In Theorem~\ref{thm:threed_efr_as_jef_symmetric_6_npcomplete} we showed that there exist instances of 3DR-AS with symmetric preferences that do not contain a j-envy-free matching. The proof involved a gadget $H$ from which such an instance can be directly derived, by adding a single ``isolated'' agent. This specific instance was discovered by sequential search, using an integer programming \cite{IPbook} model to test candidate solutions (similar techniques have been used in the context of hedonic games~\cite{bullinger21}). In order to reduce the search space, certain assumptions were made about the design of the instance, such as the existence of an isolated agent (an ``undesired guest'' \cite{BJ02,GS62}). Although this technique was effective, it is hard to provide any intuition as to why this specific instance contains no j-envy-free matching. It is also open whether this instance is minimal, or if a smaller instance of 3DR-AS exists, with fewer than $12$ agents, that contains no j-envy-free matching. 
+
+As we noted in Chapter~\ref{c:threed_sr_as}, another open problem is whether our results apply to a setting involving more general definitions of binary and ternary. For example, whether our results for binary preferences hold in a more general setting in which $v_{\alpha_i}(\alpha_j) \in \{ a, b \}$ for any non-negative integers $a$ and $b$ where $a < b$.
+
+% . A similar technique has been previously applied in a model of a hedonic game \cite{bullinger21}. In order to reduce the search space, certain assumptions were made. For example, one assumption was that any candidate instance would be highly symmetric. Another was the existence of an ``undesired guest'' (i.e.\ $h_1$) \cite{BJ02,GS62}. Although this technique was effective, it is hard to provide any intuition why this particular instance contains no j-envy-free matching. It also remains open whether this instance is minimal, or if a smaller instance of 3DR-AS exists, with fewer than $12$ agents, that contains no j-envy-free matching. 
+
+% We believe the apparent difficulty of constructing such instances leads to interesting directions for future work. For example, identifying a minimal such instance might provide a deeper insight into the structure of 3DR-AS. 
+% interesting open direction of work is to either prove 
+% To our knowledge, such instances are non-trivial, and in fact the instance presented 
+% A central contribution of this theorem is that it proves the existence of an instance of 3DR-AS with no j-envy-free 
+% of this proof, shown in Lemmas~\ref{lem:threed_efr_as_jef_two_and_one_in_h}--\ref{lem:threed_efr_as_jef_hopen}, is a lengthy case analysis. This part of the proof is essentially equivalent 
+
+As we also noted in Chapter~\ref{c:threed_sr_as}, it might be interesting to identify other restrictions of 3DR-AS in which an envy-free, wj-envy-free or j-envy-free matching can be found in polynomial time. The gadgets used in our reductions are highly regular and it might be that there exist interesting classes of instances that must contain a stable matching. Alternatively, we could study these problems from the perspective of parameterised complexity. For example, in the case of binary and symmetric preferences, one could consider the tree-width \cite{Robertson84} of the instance.
+
+It might be also interesting to estimate the probability that a random instance of 3DR-AS contains an envy-free, wj-envy-free, or j-envy-free matching, or to estimate the same probability in a random instance of 3DR-AS with binary or ternary preferences. Our complexity results indicate that, among instances with binary and symmetric preferences and maximum degree $2$, the set of instances that contain a j-envy-free matching (i.e.\ all instances) is larger than the set of instances that contain a wj-envy-free matching, which is in turn larger than the set of instances that contain an envy-free matching. We conjecture that, in a general instance of 3DR-AS, the probability that a given instance contains an envy-free matching is smaller than the probability that it contains a wj-envy-free matching, which is in turn smaller than the probability that it contains a j-envy-free matching. 
+In this direction, it might be possible to apply probabilistic techniques from graph theory, such as the Erd\H{o}s-R\'enyi model of a random graph. Of course, the probabilistic events in which agents have envy for other agents are not independent, which complicates the analysis. Alternatively an empirical approach might be informative, for example by formulating the problem as an integer program \cite{IPbook}.
+
+% As we also noted in Chapter~\ref{c:threed_sr_as}, the connection between 3DR-AS and graph theory gives rise to a number of natural parameters. In particular, recall that the problem of finding an envy-free or wj-envy-free matching in a given instance of 3DR-AS is $\NP$-complete, even when preferences are binary and symmetric and the maximum degree of the underlying graph is $3$. It might be natural to study both problems with respect to other parameters of the instance, such as tree-width \cite{Robertson84}.

@@ -1,0 +1,167 @@
+From Theorems~\ref{thm:threed_efr_as_jef_binary_algorithm} and~\ref{thm:threed_efr_as_jef_terasym_npcomplete}, a natural question arises: is it the symmetry of agents' preferences that guarantees the existence of a j-envy-free matching? 
+In this section we show that this is not the case, and a j-envy-free matching may not exist even when agents' preferences are symmetric, and the associated existence problem is $\NP$-complete. We remark, however, that the instances shown that do not contain j-envy-free matchings are relatively contrived and involve non-negative integer valuations up to $6$. We leave open the case in which preferences are symmetric and the maximum valuation is strictly less than $6$.
+
+To show that this existence problem is $\NP$-complete, we present a polynomial-time reduction from \emph{Partition into Triangles} (PIT, Problem~\ref{prob:pit}), which is $\NP$-complete \cite{GJ79}. This reduction is similar to the reduction we presented in Section~\ref{sec:threed_efr_as_jef_ternary} for the analogous problem involving ternary preferences that are not (necessarily) symmetric. Note that section we reduced from Directed Triangle Packing (DTP, Problem~\ref{pr:DTP}) but here we reduce from PIT.
+
+We describe the reduction in detail and then provide some intuition with respect to its design. The reduction, illustrated in Figure~\ref{fig:threed_efr_as_jef_symmetric_reduction}, is as follows. Suppose $G$ is an arbitrary instance of PIT. We shall construct an instance $(N, V)$ of 3DR-AS with symmetric preferences and maximum valuation $6$. Since valuations are symmetric in $(N, V)$, we shall usually specify valuations in one direction only. For example, instead of writing ``let $v_{\alpha_i}(\alpha_j)=v_{\alpha_j}(\alpha_i)=1$'' we write ``let $v_{\alpha_i}(\alpha_j)=1$''. Unless otherwise specified assume that $v_{\alpha_i}(\alpha_j)=0$ for any $\alpha_i, \alpha_j \in N$. To simplify the description of the valuations in the reduction, in this section we write $i \myoplus y$ to denote $((i + y - 2) \bmod 10) + 2$. 
+
+First, construct a set of eleven agents $H = \{ h_1, h_2, \dots, h_{11} \}$. For each $i$ where $2\leq i \leq 11$ let $v_{h_1}(h_i) = 2$. For each $i$ where $2\leq i \leq 11$, let:
+\begin{itemize}
+    \item $v_{h_i}(h_{i \myoplus 1}) = 4$ if $i$ is even otherwise $5$
+    \item $v_{h_i}(h_{i \myoplus 2}) = 6$ if $i$ is even otherwise $3$
+    \item $v_{h_i}(h_{i \myoplus 3}) = 1$
+    \item $v_{h_i}(h_{i \myoplus 4}) = 1$
+    \item $v_{h_i}(h_{i \myoplus 5}) = 3$.
+\end{itemize}
+Next, construct a set of four agents $L = \{ l_1, l_2, l_3, l_4 \}$. Let $v_{l_1}(l_2) = v_{l_3}(l_4) = 2$ and $v_{l_1}(l_3) = v_{l_1}(l_4) = v_{l_2}(l_3) = v_{l_2}(l_4) = 1$.
+
+Next, construct a set of $3q$ agents $C = \{ c_1, c_2, \dots, c_{3q} \}$. Let $v_{c_i}(l_r) = 3$ for each $i$ and $r$ where $1\leq i \leq 3q$ and $1\leq r \leq 4$. For each $i$ and $j$ where $1\leq i, j \leq 3q$ let $v_{c_i}(c_j) = 3$ if $\{ w_i, w_j \} \in E$ otherwise $2$. This completes the construction of $(N, V)$. Note that the structure of the valuations among the agents in $C$ reflects the graph $G$.
+%
+\begin{figure}
+    \centering
+    \vspace*{0.2cm}
+    \input{figures/threed_efr_as/j_envy_free_sym_reduction.tikz}
+    \vspace*{0.5cm}
+    \caption[The reduction from PIT to the problem of deciding if an instance of 3DR-AS with symmetric preferences contains a j-envy-free matching]{The reduction from PIT to the problem of deciding if an instance of 3DR-AS with symmetric preferences contains a j-envy-free matching. Valuation colour key: \textcolor{figurecolourschemewt6}{\figurecolorschemewtsixname} - 6, \textcolor{figurecolourschemewt5}{\figurecolorschemewtfivename} - 5, \textcolor{figurecolourschemewt4}{\figurecolorschemewtfourname} - 4, \textcolor{figurecolourschemewt3}{\figurecolorschemewtthreename} - 3, \textcolor{figurecolourschemewt2}{\figurecolorschemewttwoname} - 2, \textcolor{figurecolourschemewt1}{\figurecolorschemewtonename} - 1.}
+    \label{fig:threed_efr_as_jef_symmetric_reduction}
+\end{figure}
+
+We make some remarks on the design of the constructed instance. Like before, in the reduction presented in Section~\ref{sec:threed_efr_as_jef_ternary}, the design of $H$ is derived from a particular instance that contains no j-envy-free matching. This instance comprises $H$ as well as a single isolated agent $\alpha_{z}$, where $v_{\alpha_{z}}(h_i) = 0$ for each $i$ where $1\leq i \leq 11$. In fact, the proof that this instance contains no j-envy-free matching can be directly derived from the proofs of lemmas appearing later in this section (Lemmas~\ref{lem:threed_efr_as_jef_3332_case_part1}--\ref{lem:threed_efr_as_jef_hopen}). These proofs involve lengthy case analyses, and we leave open the problem of finding a more intuitive or succinct argument (see Section~\ref{sec:threed_efr_as_conclusion} for more discussion on this).
+
+It is straightforward to show that the reduction runs in polynomial time. To prove that the reduction is correct we show that the 3DR-AS instance $(N, V)$ contains a j-envy-free matching if and only if the PIT instance $G$ contains a partition into triangles.
+
+We first show that if the PIT instance $G$ contains a partition into triangles then the 3DR-AS instance $(N, V)$ contains a j-envy-free matching.
+
+\begin{lem}
+\label{lem:threed_efr_as_jef_first_direction}
+If $G$ contains a partition into triangles then $(N, V)$ contains a j-envy-free matching.
+\end{lem}
+\begin{proof}
+Suppose $G$ contains a partition into triangles $X = \{ X_1, X_2, \dots, X_q \}$. We shall construct a matching $M$ in $(N, V)$ that is j-envy-free. First, add $\{ h_2, h_{10}, h_{11} \}$, $\{ h_5, h_6, h_8 \}$, $\{ h_1, h_9, h_4 \}$, $\{ h_3, l_1, l_2 \}$ and $\{ h_7, l_3, l_4 \}$ to $M$. Next, for each triangle $X_p = \{ w_i, w_j, w_k \}$ in $X$, add $\{ c_i, c_j, c_k \}$ to $M$.
+
+Suppose for a contradiction that some agent $\alpha_j$ exists where $\alpha_j$ has j-envy for some other agent $\alpha_{k_1}$ where $M(\alpha_{k_1}) = \{ \alpha_{k_1}, \alpha_{k_2}, \alpha_{k_3} \}$. Since $N = H \cup L \cup C$ it must be that either $\alpha_{k_1} \in H$, $\alpha_{k_1} \in L$, or $\alpha_{k_1} \in C$. We show that each case leads to a contradiction. It follows that no such $\alpha_j$ exists and thus that $M$ is j-envy-free.
+\begin{itemize}
+    \item Suppose $\alpha_{k_1} \in H$. Either $\alpha_{k_1} \in \{ h_3, h_7 \}$ or $\alpha_{k_1} \in H \setminus \{ h_3, h_7 \}$.
+    \begin{itemize}
+        \item Suppose $\alpha_{k_1} \in \{ h_3, h_7 \}$. Then it must be that either $\{ \alpha_{k_2}, \alpha_{k_3} \} = \{ l_1, l_2 \}$ or $\{ \alpha_{k_2}, \alpha_{k_3} \} = \{ l_3, l_4 \}$. Suppose firstly that $\{ \alpha_{k_2}, \alpha_{k_3} \} = \{ l_1, l_2 \}$. We can see immediately that $\alpha_j \notin H$ since otherwise $u_{\alpha_j}(\{ l_1, l_2 \}) = 0$. It must also be that $\alpha_j \notin C$, since  $u_{c_{a}}(\{ l_1, l_2 \}) = 6 = u_{c_a}(M)$ for any $c_a \in C$. Similarly, $u_{l_3}(\{ l_1, l_2 \}) = 2 = u_{l_3}(M)$ and $u_{l_4}(\{ l_1, l_2 \}) = 2 = u_{l_4}(M)$ so $\alpha_j \neq l_3$ and $\alpha_j \neq l_4$. This shows $\alpha_j \notin L$. We have shown that $\alpha_j \notin H$, $\alpha_j \notin C$, and $\alpha_j \notin L$, which is a contradiction. The proof for the case in which $\{ \alpha_{k_2}, \alpha_{k_3} \} = \{ l_3, l_4 \}$ is symmetric and also leads to a contradiction.
+        \item Suppose $\alpha_{k_1} \in H\setminus \{ h_3, h_7 \}$. If $\alpha_{k_1} = h_1$ then $\{ \alpha_{k_2}, \alpha_{k_3} \} = \{ h_4, h_9 \}$ so it must be that $v_{h_4}(\alpha_j) > 2 = v_{h_4}(h_1)$ and $v_{h_9}(\alpha_j) > 2 = v_{h_9}(h_1)$, which is impossible by the design of $H$. The proof for every other assignment of $\alpha_{k_1}$ is similar: if $\alpha_{k_1} = h_2$ then $v_{h_{11}}(\alpha_j) > 5$, which is impossible. If $\alpha_{k_1} = h_4$ then $v_{h_1}(\alpha_j) > 2$, which is impossible. If $\alpha_{k_1} = h_5$ then $v_{h_6}(\alpha_j) > 5$ and $v_{h_8}(\alpha_j) > 1$, which is impossible. If $\alpha_{k_1} = h_6$ then $v_{h_8}(\alpha_j) > 6$, which is impossible. If $\alpha_{k_1} = h_8$ then $v_{h_6}(\alpha_j) > 6$, which is impossible. If $\alpha_{k_1} = h_9$ then $v_{h_1}(\alpha_j) > 2$, which is impossible. If $\alpha_{k_1} = h_{10}$ then $v_{h_2}(\alpha_j) > 6$, which is impossible. If $\alpha_{k_1} = h_{11}$ then $v_{h_2}(\alpha_j) > 5$ and $v_{h_{10}}(\alpha_j) > 4$, which is impossible.
+    \end{itemize}
+    \item Suppose $\alpha_{k_1} \in C$. By construction, it must be that $\alpha_{k_1} = c_{i_1}$, $\alpha_{k_2} = c_{i_2}$, and $\alpha_{k_3} = c_{i_3}$ where $\{ c_{i_1}, c_{i_2}, c_{i_3} \} \subseteq C$, where the corresponding vertices $\{ w_{i_1}, w_{i_2}, w_{i_3} \}$ in $G$ are a triangle. It follows that  $v_{c_{i_2}}(c_{i_1}) = 3$. By assumption, $\alpha_j$ has j-envy for $c_{i_1}$ so it must be that $v_{c_{i_2}}(\alpha_j) > v_{c_{i_2}}(c_{i_1}) = 3$, which is impossible by the design of $C$.
+    \item Suppose $\alpha_{k_1} \in L$. It must be that $\alpha_{k_1} = l_{i_1}$ for some $i_1$ where $1\leq i_1 \leq 4$, $\alpha_{k_2} = l_{i_2}$ for some $i_2$ where $1\leq i_2 \leq 4$ and $\alpha_{k_3} = h_{i_3}$ where $i_3 \in \{ 3, 7 \}$. If $\alpha_j \in H$ then $v_{l_{i_2}}(\alpha_j) = 0$ which contradicts the supposition that $\alpha_j$ has j-envy for $l_{i_1}$. Otherwise, if $\alpha_j \notin H$ then $v_{h_{i_3}}(\alpha_j) = 0$, which also contradicts the supposition that $\alpha_j$ has j-envy for $l_{i_1}$.
+\end{itemize}
+\end{proof}
+
+% \paragraph{Correctness of the reduction: second direction}
+
+We now show that if the 3DR-AS instance $(N, V)$ contains a j-envy-free matching then the PIT instance $G$ contains a partition into triangles.
+
+In the first part of this proof (up to and including Lemma~\ref{lem:threed_efr_as_jef_hopen}) we focus on $H$. To begin, we define two possible configurations of $H$ in an arbitrary j-envy-free matching $M$. If some triple $t\in M$ contains exactly one agent in $H$ then we say that $H$ has an \emph{open configuration in $M$}. Otherwise, we say that $H$ has a \emph{closed configuration in $M$}. We shall eventually show, in Lemma~\ref{lem:threed_efr_as_jef_hopen}, that the only possible configuration of $H$ in $M$ is an open configuration. In Lemmas~\ref{lem:threed_efr_as_jef_two_and_one_in_h}--\ref{lem:threed_efr_as_jef_32222_case} we prove a sequence of intermediary results. 
+
+\begin{lem}
+\label{lem:threed_efr_as_jef_two_and_one_in_h}
+If $(N, V)$ contains a j-envy-free matching $M$ then no triples $t_1, t_2$ in $M$ exist such that $t_1$ contains exactly two agents in $H$ and $t_2$ contains exactly one agent in $H$.
+\end{lem}
+\begin{proof}
+Suppose for a contradiction that some such $t_1, t_2 \in M$ exist. Suppose $t_1 = \{ h_{i_1}, h_{i_2}, \alpha_{j_1} \}$ and $t_2 = \{ h_{i_3}, \alpha_{j_2}, \alpha_{j_3} \}$ where $1\leq i_1, i_2, i_3 \leq 11$ and $\alpha_{j_1}, \alpha_{j_2}, \alpha_{j_3} \in N \setminus H$. Now $h_{i_3}$ has j-envy for $\alpha_{j_1}$ since $u_{h_{i_3}}(M) = 0 < 2 \leq u_{h_{i_3}}(\{ h_{i_1}, h_{i_2} \})$, $v_{h_{i_1}}(\alpha_{j_1}) = 0 < 1 \leq v_{h_{i_1}}(h_{i_3})$ and $v_{h_{i_2}}(\alpha_{j_1}) = 0 < 1 \leq v_{h_{i_2}}(h_{i_3})$. This contradicts our supposition that $M$ is j-envy-free.
+\end{proof}
+
+
+\begin{lem}
+\label{lem:threed_efr_as_jef_3332_case_part1}
+If $(N, V)$ contains a j-envy-free matching $M$, $\sigma(H, M) = 4$, and $u_{h_1}(M) < 4$ then $H$ has an open configuration in $M$.
+\end{lem}
+\begin{proof}
+\input{chapters/threed_efr_as/jef/jef_symmetric_result_lemma_3332_proof_part1}
+\end{proof}
+
+\begin{lem}
+\label{lem:threed_efr_as_jef_3332_case_part2}
+If $(N, V)$ contains a j-envy-free matching $M$, $\sigma(H, M) = 4$, and $u_{h_1}(M) = 4$ then $H$ has an open configuration in $M$.
+\end{lem}
+\begin{proof}
+\input{chapters/threed_efr_as/jef/jef_symmetric_result_lemma_3332_proof_part2}
+\end{proof}
+
+\begin{lem}
+\label{lem:threed_efr_as_jef_3332_case}
+If $(N, V)$ contains a j-envy-free matching $M$ and $\sigma(H, M) = 4$ then $H$ has an open configuration in $M$.
+\end{lem}
+\begin{proof}
+Suppose $\sigma(H, M) = 4$. Consider $u_{h_1}(M)$. By the design of $H$, it must be that $2 \leq u_{h_1}(M) \leq 4$. If $u_{h_1}(M) < 4$ then Lemma~\ref{lem:threed_efr_as_jef_3332_case_part1} shows that $H$ has an open configuration in $M$. If $u_{h_1}(M) = 4$ then Lemma~\ref{lem:threed_efr_as_jef_3332_case_part2} shows that $H$ has an open configuration in $M$.
+\end{proof}
+
+\begin{lem}
+\label{lem:threed_efr_as_jef_32222_case}
+If $(N, V)$ contains a j-envy-free matching $M$ and $\sigma(H, M) = 5$ then $H$ has an open configuration in $M$.
+\end{lem}
+\begin{proof}
+\input{chapters/threed_efr_as/jef/jef_symmetric_result_lemma_32222}
+\end{proof}
+
+\begin{lem}
+\label{lem:threed_efr_as_jef_hopen}
+If $(N, V)$ contains a j-envy-free matching $M$ then $H$ has an open configuration in $M$.
+\end{lem}
+\begin{proof}
+By definition, $4 \leq \sigma(H, M) \leq 11$. If $\sigma(H, M) \leq 5$ then $H$ has an open configuration in $M$, by Lemmas~\ref{lem:threed_efr_as_jef_3332_case} and~\ref{lem:threed_efr_as_jef_32222_case}. If $6 \leq \sigma(H, M) \leq 11$ then, by a counting argument, at least one triple in $M$ must contain exactly one agent in $H$. In other words, $H$ has an open configuration in $M$.
+\end{proof}
+
+We have shown, in Lemma~\ref{lem:threed_efr_as_jef_hopen}, that if $(N, V)$ contains a j-envy-free matching $M$ then $H$ has an open configuration in $M$. By definition, some triple $t_{\beta}$ in $M$ contains exactly one agent in $H$. Since $|H|=11$, if $t_{\beta}$ is the only triple in $M$ to contain exactly one agent in $H$ then there must exist some triple in $M$ that contains exactly two agents in $H$. By Lemma~\ref{lem:threed_efr_as_jef_two_and_one_in_h}, this is a contradiction. It follows that at least two triples in $M$ exist that each contain exactly one agent in $H$. Suppose $t_{\beta}, t_{\gamma} \in M$ are two such triples and $t_{\beta} = \{ h_{a_1}, \alpha_{b_1}, \alpha_{b_2} \}$ and $t_{\gamma} = \{ h_{a_2}, \alpha_{b_3}, \alpha_{b_4} \}$.
+
+\begin{lem}
+\label{lem:threed_efr_as_jef_lequalsthefourisolated}
+If $(N, V)$ contains a j-envy-free matching then $\{ \alpha_{b_1}, \alpha_{b_2}, \alpha_{b_3}, \alpha_{b_4} \} = L$.
+\end{lem}
+\begin{proof}
+Suppose for a contradiction that $\{ \alpha_{b_1}, \alpha_{b_2}, \alpha_{b_3}, \alpha_{b_4} \} \neq L$.
+
+By definition, $\{ \alpha_{b_1}, \alpha_{b_2}, \alpha_{b_3}, \alpha_{b_4} \} \cap H = \varnothing$ and $\{ \alpha_{b_1}, \alpha_{b_2}, \alpha_{b_3}, \alpha_{b_4} \} \neq L$ it must be that at least one agent in $\{ \alpha_{b_1}, \alpha_{b_2}, \alpha_{b_3}, \alpha_{b_4} \}$ belongs to $C$. Assume without loss of generality that $\alpha_{b_1} \in C$.
+
+We have already shown that $t_{\beta}$ contains exactly one agent in $H$. Since $v_{\alpha_{b_1}}(h_{a_1}) = 0$, by the design of the instance it must be that $u_{\alpha_{b_1}}(M) = v_{\alpha_{b_1}}(\alpha_{b_2}) \leq 3$. By the design of the instance $v_{\alpha_{b_1}}(\alpha_{b_3}) \geq 2$ and $v_{\alpha_{b_1}}(\alpha_{b_4}) \geq 2$ so $u_{\alpha_{b_1}}(\{ \alpha_{b_3}, \alpha_{b_4} \}) \geq 4$. Now $\alpha_{b_1}$ has j-envy for $h_{a_2}$ since $u_{\alpha_{b_1}}(M) \leq 3 < 4 \leq u_{\alpha_{b_1}}(\{ \alpha_{b_3}, \alpha_{b_4} \})$, $v_{\alpha_{b_3}}(h_{a_2}) = 0 < 2 \leq v_{\alpha_{b_3}}(\alpha_{b_1})$, and $v_{\alpha_{b_4}}(h_{a_2}) = 0 < 2 \leq v_{\alpha_{b_4}}(\alpha_{b_1})$.
+\end{proof}
+
+\begin{lem}
+\label{lem:threed_efr_as_jef_structureofL}
+If $(N, V)$ contains a j-envy-free matching then $\{ \{ \alpha_{b_1}, \alpha_{b_2} \}, \{ \alpha_{b_3}, \alpha_{b_4} \} \} = \{ \{ l_1, l_2 \}, \{ l_3, l_4 \} \}$.
+\end{lem}
+\begin{proof}
+By Lemma~\ref{lem:threed_efr_as_jef_lequalsthefourisolated}, $\{ \alpha_{b_1}, \alpha_{b_2}, \alpha_{b_3}, \alpha_{b_4} \} = L$. There are now three possibilities: first that $\{ \{ \alpha_{b_1}, \alpha_{b_2} \}, \{ \alpha_{b_3}, \alpha_{b_4} \} \} = \{ \{ l_1, l_3 \}, \{ l_2, l_4 \} \}$, second that $\{ \{ \alpha_{b_1}, \alpha_{b_2} \}, \{ \alpha_{b_3}, \alpha_{b_4} \} \} = \{ \{ l_1, l_4 \}, \{ l_2, l_3 \} \}$, and third that $\{ \{ \alpha_{b_1}, \alpha_{b_2} \}, \{ \alpha_{b_3}, \alpha_{b_4} \} \} = \{ \{ l_1, l_2 \}, \{ l_3, l_4 \} \}$.
+
+First suppose $\{ \{ \alpha_{b_1}, \alpha_{b_2} \}, \{ \alpha_{b_3}, \alpha_{b_4} \} \} = \{ \{ l_1, l_3 \}, \{ l_2, l_4 \} \}$. Now $l_1$ has j-envy for $h_{a_2}$ since $u_{l_1}(\{ h_{a_1}, l_3 \}) = 1 < 3 \leq u_{l_1}(\{ l_2, l_4 \})$, $v_{l_2}(h_{a_2}) = 0 < 2 = v_{l_2}(l_1)$, and $v_{l_4}(h_{a_2}) = 0 < 1 \leq v_{l_4}(l_1)$.
+
+Second suppose $\{ \{ \alpha_{b_1}, \alpha_{b_2} \}, \{ \alpha_{b_3}, \alpha_{b_4} \} \} = \{ \{ l_1, l_4 \}, \{ l_2, l_3 \} \}$. As before, $l_1$ has j-envy for $h_{a_2}$ since $u_{l_1}(\{ h_{a_1}, l_4 \}) = 1 < 3 \leq u_{l_1}(\{ l_2, l_3 \})$, $v_{l_2}(h_{a_2}) = 0 < 2 = v_{l_2}(l_1)$, and $v_{l_3}(h_{a_2}) = 0 < 1 \leq v_{l_3}(l_1)$.
+
+It remains that $\{ \{ \alpha_{b_1}, \alpha_{b_2} \}, \{ \alpha_{b_3}, \alpha_{b_4} \} \} = \{ \{ l_1, l_2 \}, \{ l_3, l_4 \} \}$.
+\end{proof}
+
+By Lemma~\ref{lem:threed_efr_as_jef_structureofL}, either $\{ \alpha_{b_1}, \alpha_{b_2} \} = \{ l_1, l_2 \}$ or $\{ \alpha_{b_1}, \alpha_{b_2} \} = \{ l_3, l_4 \}$. Without loss of generality assume that $\{ \alpha_{b_1}, \alpha_{b_2} \} = \{ l_1, l_2 \}$.
+
+\begin{lem}
+\label{lem:threed_efr_as_jef_eachpigets6}
+If $(N, V)$ contains a j-envy-free matching then $u_{c_i}(M) = 6$ for each $i$ where $1\leq i \leq 3q$.
+\end{lem}
+\begin{proof}
+Suppose to the contrary that some $1\leq i \leq 3q$ exists where $u_{c_i}(M) < 6$. Then $c_i$ has j-envy for $h_{a_1}$ since $u_{c_i}(M) \leq 5 < 6 \leq u_{c_i}(\{ l_1, l_2 \})$, $v_{l_1}(h_{a_1}) = 0 < 3 = v_{l_1}(c_i)$, and $v_{l_2}(h_{a_1}) = 0 < 3 = v_{l_2}(c_i)$. This contradicts our supposition that $M$ is j-envy-free.
+\end{proof}
+
+\begin{lem}
+\label{lem:threed_efr_as_jef_second_direction}
+If $(N, V)$ contains a j-envy-free matching then $G$ contains a partition into triangles.
+\end{lem}
+\begin{proof}
+Suppose $(N, V)$ contains a j-envy-free partition into triangles $M$. Lemma~\ref{lem:threed_efr_as_jef_eachpigets6} shows that $u_{c_i}(M) = 6$ for each $i$ where $1\leq i \leq 3q$. By construction, it follows that $M(c_i)$ contains two agents $c_j, c_k$ such that $v_{c_i}(c_j) = v_{c_i}(c_k) = 3$. By construction, $c_j$ and $c_k$ therefore correspond to vertices $w_j, w_k \in W$ where $\{ w_i, w_j \} \in E$ and $\{ w_i, w_k \} \in E$. It follows thus that there are exactly $q$ triples in $M$ each containing three agents $\{ c_i, c_j, c_k \}$, where the three corresponding vertices $w_i, w_j, w_k$ are pairwise adjacent in $G$. From these triples a partition into triangles $X$ can be easily constructed.
+\end{proof}
+
+% \paragraph{Correctness of the reduction: conclusion}
+
+We have now shown that the 3DR-AS instance $(N, V)$ contains a j-envy-free matching if and only if the PIT instance $G$ contains a partition into triangles. This shows that the reduction is correct.
+
+\begin{thm}
+\label{thm:threed_efr_as_jef_symmetric_6_npcomplete}
+Deciding if a given instance of 3DR-AS contains a j-envy-free matching is $\NP$-complete, even when preferences are symmetric and the maximum possible valuation is~$6$.
+\end{thm}
+\begin{proof}
+It is straightforward to show that this decision problem belongs to $\NP$, since for any two agents $\alpha_i, \alpha_j \in N$ we can test if $\alpha_i$ j-envies $\alpha_j$ in constant time. 
+
+We have presented a polynomial-time reduction from Partition Into Triangles (PIT, Problem~\ref{prob:pit}), which is $\NP$-complete \cite{GJ79}. Given a graph $G$, the reduction constructs an instance $(N, V)$ of 3DR-AS with symmetric preferences in which the maximum valuation is $6$. Lemmas~\ref{lem:threed_efr_as_jef_first_direction} and~\ref{lem:threed_efr_as_jef_second_direction} show that $(N, V)$ contains a j-envy-free matching if and only if $G$ contains a partition into triangles and thus that this decision problem is $\NP$-hard.
+\end{proof}

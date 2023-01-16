@@ -1,0 +1,287 @@
+\subsection{Vertex-disjoint packing} 
+
+We show that if $\Delta \geq \lceil 5r/3 \rceil - 1$ then \vdkr is $\APX$-hard. In other words, there exists some fixed constant $\varepsilon > 0$ such that no polynomial-time $\varepsilon$-approximation algorithm exists for \vdkr, unless $\P=\NP$. To do this, we use an \emph{$L$-reduction} \cite{Crescenzi97}, which is a type of approximability-preserving reduction. An $L$-reduction from an optimisation problem $A$ to another optimisation problem $B$ implies that if $B$ admits a polynomial-time approximation scheme, then so does $A$.
+
+We reduce from the problem of finding a Maximum Independent Set (MIS) in graphs that are $3$-regular and are triangle-free, which we refer to as \mistfvariant/ (Problem~\ref{pr:mistfvariant}).
+
+\begin{myproblem}[Maximum Independent Set in $3$-regular Triangle-Free graphs (\mistfvariant/)]
+\label{pr:mistfvariant}\mysymbolfirstusedefinition{symboldef:mistfvariant}{}
+\begin{samepage}
+\begin{adjustwidth}{8pt}{8pt}
+\instance an undirected graph $G=(V, E)$ that is $3$-regular and triangle-free\\
+\solution a set $S \subseteq V$ such that $\{ v_i, v_j \} \notin E$ for any $v_i, v_j \in S$\\
+\measure $|S|$
+\end{adjustwidth}
+\end{samepage}
+\end{myproblem}
+Berman and Karpinski \cite{BK99} show that \mistfvariant/ is $\APX$-hard, providing an explicit lower bound on the approximation ratio (specifically, they showed that it is $\NP$-hard to approximate \mistfvariant/ within $140/139-\varepsilon$, for any $\varepsilon > 0$).
+
+The reduction from \mistfvariant/ is as follows. Our goal is to construct a new graph $G'=(V', E')$ where each $K_r$ in $G'$ corresponds to exactly one vertex in $V$ and each vertex in $V$ corresponds to exactly one $K_r$ in $G'$. For any two adjacent vertices in $G$, the intersection of the two corresponding $K_r$s in $G'$ will contain exactly $\lfloor r/3 \rfloor$ vertices. 
+
+To do this, first construct a set of $|V|$ disjoint $K_r$s in $G'$, labelled $\mathcal{U} = \{ U_1, U_2, \dots, U_{|V|} \}$ where $U_i = \{ u_i^1, u_i^2, \dots, u_i^r \}$. Next, consider each edge $\{ v_i, v_j \} \in E$. let $U'_i = \{ u_i^{a_1}, u_i^{a_2}, \dots, u_i^{a_{\lfloor r/3 \rfloor}} \}$ be any set of $\lfloor r/3 \rfloor$ vertices in $U_i$ with degree $r-1$ and $U'_j = \{ u_j^{b_1}, u_j^{b_2}, \dots, u_j^{b_{\lfloor r/3 \rfloor}} \}$ be any set of $\lfloor r/3 \rfloor$ vertices in $U_j$ with degree $r-1$. For each $q$ from $1$ to $\lfloor r/3 \rfloor$ inclusive, identify $u_i^{a_q}$ and $u_j^{b_q}$ to create a single vertex labelled $u_{ij}^{a_q}$. Label $U'_j = U'_i$ as $W_{ij}$. % Note that since $\Delta(G) = 3$, for any edge $\{ v_i, v_j \} \in E$ considered there must exist some set of $\lfloor r/3 \rfloor$ vertices in $U_i$ with degree $r-1$ and some set of $\lfloor r/3 \rfloor$ vertices in $U_j$ with degree $r-1$.
+
+Finally, for each vertex $v_i \in V$ let $X_i$ be the set of (at least $r \bmod 3$) vertices in $U_i$ with degree $r-1$. Note that any vertex in $G'$ either belongs to some set $W_{ij}$ where $\{ v_i, v_j \} \in E$ or some set $X_i$ where $v_i \in V$.
+
+We first show that the set of $K_r$s in $G'$ is $\mathcal{U}$.
+
+\begin{lem}
+\label{lem:krpacking_lissetofkrs}
+$\mathcal{U} = K_r^{G'}$.
+\end{lem}
+\begin{proof}
+By definition, $\mathcal{U} \subseteq K_r^{G'}$ so it remains to show that each $K_r$ in $G'$ belongs to $\mathcal{U}$. Suppose $K$ is an arbitrary $K_r$ in $G'$. By definition, any vertex in any set $X_i$ has degree $r-1$ in $G'$ and thus belongs to exactly one $K_r$ in $G'$, namely $U_i$, which belongs to $K_r^{G'}$. The only other possibility is that each vertex in $K$ belongs to some set $W_ij$ where $1\leq i, j \leq |V|$. Since $|W_ij| = \lfloor r/3 \rfloor$ it must be that either there exist three sets $W_{i_1, j_1}, W_{i_2, j_2}, W_{i_3, j_3}$ where $1\leq i_1, i_2, \dots, j_3 \leq |V|$ and $K \subseteq W_{i_1, j_1} \cup W_{i_2, j_2} \cup W_{i_3, j_3}$, or there exist four sets $W_{i_1, j_1}, W_{i_2, j_2}, W_{i_3, j_3}, W_{i_4, j_4}$ where $1\leq i_1, i_2, \dots, j_4 \leq |V|$ and $K \subseteq W_{i_1, j_1} \cup W_{i_2, j_2} \cup W_{i_3, j_3} \cup W_{i_4, j_4}$. In the latter case, we may assume without loss of generality that $\{ i_1, j_1 \} \cap \{ i_2, j_2 \} = \varnothing$. By the construction of $G'$ it follows that no edge exists between any vertex in $W_{i_1, j_1}$ and any vertex in $W_{i_2, j_2}$ which contradicts the supposition that $K$ is a $K_r$ in $G'$. It remains that there exist three sets $W_{i_1, j_1}, W_{i_2, j_2}, W_{i_3, j_3}$ where $K \subseteq W_{i_1, j_1} \cup W_{i_2, j_2} \cup W_{i_3, j_3}$ and $1\leq i_1, i_2, \dots, j_3 \leq |V|$.
+
+By construction, the closed neighbourhood of any vertex in $W_{i_1, j_1}$ is $U_{i_1} \cup U_{j_1}$ so since $K$ is a $K_r$, without loss of generality assume that $i_1 \in \{ i_2, j_2 \}$ and $j_1 \in \{ i_3, j_3 \}$. A symmetric argument shows that $i_2 \in \{ i_1, j_1 \}$ and $j_2 \in \{ i_3, j_3 \}$, and $i_3 \in \{ i_1, j_1 \}$ and $j_3 \in \{ i_2, j_2 \}$. By symmetry, we need only consider the two cases, in which $i_1 = i_2 = i_3$ and in which $K = W_{i_1, i_2} \cup W_{i_2, i_3} \cup W_{i_3, i_1}$. In the former case, $K$ must be labelled $U_{i_1}$ and thus belongs to $K_r^G$. In the latter case, by the construction of $G'$ the three vertices $\{ v_{i_1}, v_{i_2}, v_{i_3} \}$ in $G$ form a triangle, which is a contradiction.
+\end{proof}
+
+\begin{lem}
+\label{lem:krpacking_vdkr_reduction_degree}
+$\Delta(G') = \lceil 5r/3 \rceil - 1$.
+\end{lem}
+\begin{proof}
+By definition, any vertex in $X_i$ has degree $r-1$. Any vertex in $W_{ij}$ has degree $|U_i| + |U_j| - |W_{ij}| - 1 = 2r - \lfloor r/3 \rfloor - 1$, for any $1\leq i, j \leq |V|$.
+\end{proof}
+
+\begin{thm}
+\label{thm:krpacking_vdkr_apxhard}
+For any simple undirected graph $G'$, if $\Delta(G') \geq \lceil 5r/3 \rceil - 1$ then \vdkr is $\APX$-hard.
+\end{thm}
+\begin{proof}
+We first show that a vertex-disjoint $K_r$-packing of size $B$ exists in $G'$ if and only if an independent set of size $B$ exists in $G$. By Lemma~\ref{lem:krpacking_lissetofkrs}, any $U_i, U_j \in K_r^G$ that are not vertex disjoint in $G'$ correspond to two vertices $v_i, v_j \in V$, which by the design of the reduction must be adjacent. Conversely, for any two $v_i, v_j \in V$ where $\{ v_i, v_j \} \in E$, by the design of the reduction it must be that the two corresponding $K_r$s, $U_i, U_j \in K_r^G$ are not vertex disjoint in $G'$. 
+It follows that, for any graph $G$, $\textrm{opt}_{\textrm{\mistfvariant/}}(G) = \textrm{opt}_{\textrm{\vdkr}}(G')$. Moreover, for any vertex-disjoint $K_r$-packing $T$ in $G'$, there exists a corresponding independent set $S$ in $G$ where $|S|=|T|$, and thus that $\textrm{m}_{\textrm{\mistfvariant/}}(G, S) = \textrm{m}_{\textrm{\textrm{\vdkr}}}(G', T)$.
+
+It follows that reduction from \mistfvariant/ to \vdkr is an $L$-reduction with $\alpha=\beta=1$ (also called a \emph{strict reduction} \cite{Crescenzi97}) and thus that \vdkr is $\APX$-hard even when $\Delta(G) = \lceil 5r/3 \rceil - 1$ (shown in Lemma~\ref{lem:krpacking_vdkr_reduction_degree}). To show that \vdkr is $\APX$-hard even when $\Delta(G) \geq \lceil 5r/3 \rceil - 1$, one can add to $G'$ a disconnected star.
+% To prove that the reduction is correct we show that the tuple $( f, g, \alpha, \beta )$ meets the five conditions of a correct $L$-reduction \cite{ausielloetal99}. First, the reduction can be performed in polynomial time. Second, if $G$ is a triangle-free undirected graph with maximum degree $3$ and there exists an independent set in $G$ then by Lemma~\ref{lem:krpacking_reductioniff} there also exists a $K_r$-packing in $G'$. Third, given any undirected graph $G$ and any $K_r$-packing in the constructed graph $G'$, a corresponding independent set $S$ in $G$ can be easily constructed in polynomial time. Fourth, if the size of a maximum $K_r$-packing $S'$ in $G'$ is $B$ then by Lemma~\ref{lem:krpacking_reductioniff} the size of the maximum independent set in $G$ is also $B$. Fifth, also by Lemma~\ref{lem:krpacking_reductioniff}, for any $K_r$-packing $S'$ in the constructed graph $G'$, the difference between the the size of a maximum independent set $S$ in $G$ and the independent set in $G$ corresponding to $S'$ is the same as the difference between the size of a maximum $K_r$-packing in $G'$ and the size of $S'$.
+\end{proof}
+
+\subsection{Edge-disjoint packing} 
+
+\subsubsection{Edge-disjoint \texorpdfstring{$K_r$}{Kr}-packing when \texorpdfstring{$r \geq 6$}{r >= 6}}
+
+If $r \geq 6$ and $\Delta = \lceil 5r/3 \rceil - 1$ then it must be that $\Delta < 2r - 2$, so by Observation~\ref{obs:krpacking_edkr_is_also_vdkr}, any edge-disjoint $K_r$-packing is also vertex disjoint. It follows by Theorem~\ref{thm:krpacking_vdkr_apxhard} that \edkr is $\APX$-hard for any $r \geq 6$ even when $\Delta = \lceil 5r/3 \rceil - 1$. We generalise this result in Theorem~\ref{thm:krpacking_edkr_rgeq6_apxhard}.
+
+% In this section we show that \edkr if $\APX$-hard for any $r \geq 6$ if $\Delta \geq \lceil 5r/3 \rceil - 1$. The proof uses the fact that if $r \geq 6$ then $\lceil 5r/3 \rceil - 1 < 2r - 2$ and thus by Observation~\ref{obs:krpacking_edkr_is_also_vdkr}, any edge-disjoint $K_r$-packing is also vertex-disjoint.
+
+\begin{thm}
+\label{thm:krpacking_edkr_rgeq6_apxhard}
+If $r \geq 6$ and $\Delta \geq \lceil 5r/3 \rceil - 1$ then \edkr is $\APX$-hard.
+\end{thm}
+\begin{proof}
+Suppose $\Delta = \lceil 5r/3 \rceil - 1$. By definition, any vertex-disjoint $K_r$-packing is also edge disjoint. Since $r \geq 6$ it follows that $\Delta = \lceil 5r/3 \rceil - 1 < 2r - 2$ so by Observation~\ref{obs:krpacking_edkr_is_also_vdkr}, any edge-disjoint $K_r$-packing is also vertex disjoint. We have shown that an edge-disjoint $K_r$-packing of size $B$ exists in $G$ if and only if a vertex-disjoint $K_r$-packing of size $B$ exists in $G$. This fact constitutes an $L$-reduction with $\alpha=\beta=1$ from the restricted case of \vdkr in which $\Delta = \lceil 5r/3 \rceil - 1$. The lemma follows by Theorem~\ref{thm:krpacking_vdkr_apxhard}. As in the proof of Theorem~\ref{thm:krpacking_vdkr_apxhard}, to show that \edkr is $\APX$-hard if $r\geq 6$ even when $\Delta(G) \geq \lceil 5r/3 \rceil - 1$, one can add to $G'$ a disconnected star.
+\end{proof}
+
+\subsubsection{Edge-disjoint \texorpdfstring{$K_4$}{K4}-packing} 
+\label{sec:krpacking_edkfour}
+
+We present an $L$-reduction from a variant of the \emph{Maximum Satisfiability} problem to \edkfour when $\Delta=7$, by extending the $L$-reduction of Caprara and Rizzi \cite{caprara_packing_2002} for \edkthree when $\Delta=5$.
+
+An instance of Maximum Satisfiability is a boolean formula $\phi$ in conjunctive normal form with \emph{clauses} $C$ and variable set $X$. Each clause contains a set of \emph{literals}. Each literal is formed by either a variable or its negation. A \emph{truth assignment} $\mathfrak{f}$ is a function $\mathfrak{f} : X \mapsto \{ \text{true}, \text{false} \}$. A clause is \emph{satisfied} by $\mathfrak{f}$ if any of its literals are true. The goal is to find a truth assignment that satisfies the maximum number of clauses. We reduce from the special case of Maximum Satisfiability in which each clause contains at most two literals and each variable occurs in at most three clauses. We shall refer to this special case as \maxtwosatthree/ (Problem~\ref{pr:maxtwosatthree}).
+
+\begin{myproblem}[\maxtwosatthree/]
+\label{pr:maxtwosatthree}\mysymbolfirstusedefinition{symboldef:maxtwosatthree}{}
+\begin{samepage}
+\begin{adjustwidth}{8pt}{8pt}
+\instance a boolean formula $\phi$ in conjunctive normal form, represented as a set of clauses $C = \{ c_1, c_2, \dots, c_{|C|} \}$ and a set of variables $X = \{ x_1, x_2, \dots, x_{|X|} \}$, in which each clause contains at most two literals and each variable occurs in at most three clauses\\
+\solution a truth assignment $\mathfrak{f} : X \mapsto \{ \text{true}, \text{false} \}$\\
+\measure the number of clauses in $\phi$ satisfied by $\mathfrak{f}$
+\end{adjustwidth}
+\end{samepage}
+\end{myproblem}
+
+Let $m_i$ be the number of occurrences of variable $x_i$ in $\phi$ for each variable $x_i \in X$. We assume that $2\leq m_i \leq 3$ for each $x_i \in X$, since if some variable $x_i$ occurs in exactly one clause it can be set to the value satisfying that clause. \maxtwosatthree/ is $\APX$-hard \cite{ACGKMP99}.
+
+Given an instance $\phi$ of \maxtwosatthree/, we construct a graph $G$ such that a truth assignment for $\phi$ exists that satisfies at least $k$ clauses if and only if there exists an edge-disjoint $K_4$-packing of size at least $\sum_{i=1}^{|X|} 3 m_i + k$. As in the case of the reduction presented for \edkthree by Caprara and Rizzi, the reduction here is one of local replacement \cite{GJ79}. As they remark, the construction and connection of variable and clause gadgets is a standard technique when reducing from variants of Maximum Satisfiability. The reduction, shown in Figure~\ref{fig:krpacking_edkfour}, is as follows.
+
+\begin{figure}
+    \centering
+    \input{figures/kr_packing/edkfour.tikz}
+    \caption{The reduction from \maxtwosatthree/ to \edkfour}
+    \label{fig:krpacking_edkfour}
+\end{figure}
+
+For each variable $x_i$, construct a variable gadget of $10 m_i$ vertices, labelled $R_i = \{ a_i^j, b_i^j, c_i^j, d_i^j, e_i^j, h_i^j, u_i^j, v_i^j, w_i^j, y_i^j \}$ for each $j$ where $1\leq j \leq m_i$. For each $j$ where $1\leq j \leq m_i$, add an edge (if it does not exist already) between each pair of vertices in $\{ a_i^j, b_i^j, u_i^j, v_i^j \}$; $\{ a_i^j, b_i^j, c_i^j, v_i^j \}$; $\{ c_i^j, v_i^j, d_i^j, w_i^j \}$; $\{ d_i^j, w_i^j, e_i^j, y_i^j \}$; $\{ d_i^j, e_i^j, h_i^j, y_i^j \}$; and finally $\{ h_i^j, a_i^{j+1}, y_i^j, u_i^{j+1} \}$ if $j < m_i$ and otherwise $\{ h_i^j, a_i^1, y_i^j, u_i^1 \}$.
+
+We shall refer to $\{ a_i^j, b_i^j, u_i^j, v_i^j \}$, $\{ c_i^j, v_i^j, d_i^j, w_i^j \}$, and $\{ d_i^j, e_i^j, h_i^j, y_i^j \}$ as the \emph{even $K_4$s in $R_i$}, and $\{ a_i^j, b_i^j, c_i^j, v_i^j \}$, $\{ d_i^j, w_i^j, e_i^j, y_i^j \}$, and $\{ h_i^j, a_i^{j+1}, y_i^j, u_i^{j+1} \}$ (and $\{ h_i^j, a_i^1, y_i^j, u_i^1 \}$) as the \emph{odd $K_4$s in $R_i$}. Note that at this point in construction, $\deg_{G}(a_i^j) = \deg_{G}(v_i^j) = \deg_{G}(d_i^j) = \deg_{G}(y_i^j) = 6$, $\deg_{G}(u_i^j) = \deg_{G}(c_i^j) = \deg_{G}(w_i^j) = \deg_{G}(h_i^j) = 5$, and $\deg_{G}(b_i^j) = \deg_{G}(e_i^j) = 4$ for each $j$ where $1\leq j \leq m_i$. 
+
+We shall now construct the clause gadgets. For each clause $c_r$, construct a clause gadget of $5$ vertices labelled $S_r = \{ s_r^1, t_r^1, s_r^2, t_r^2, w_r \}$. Add an edge (if it does not exist already) between each pair of vertices in $\{ s_r^1, t_r^1, s_r^2, w_r \}$ and $\{ s_r^1, s_r^2, t_r^2, w_r \}$. We shall refer to $\{ s_r^1, t_r^1, s_r^2, w_r \}$ and $\{ s_r^1, s_r^2, t_r^2, w_r \}$ as $P_i^r$ and $P_j^r$ supposing the variables of the first and second literals in $c_r$ are $x_i$ and $x_j$. Note that at this point in construction, $\deg_{G}(s_r^1) = \deg_{G}(s_r^2) = \deg_{G}(w_r) = 4$ and $\deg_{G}(t_r^1) = \deg_{G}(t_r^2) = 3$.
+
+We shall now connect the variable and clause gadgets. For each clause $c_r$, suppose $x_i$ is the variable of some literal in $c_r$ where $c_r$ contains the $j\textsuperscript{th}$ occurrence of $x_i$ in $\phi$. If $x_i$ is the first literal in $c_r$ and occurs positively in $c_r$ then identify $b_i^j$ and $s_r^1$, and $c_i^j$ and $t_r^1$. We shall hereafter refer to the first identified vertex as either $b_i^j$ or $s_r^1$ and the second identified vertex as either $c_i^j$ or $t_r^1$. Note that now $\deg_{G}(b_i^j) = \deg_{G}(c_i^j) = 7$. Similarly, if $x_i$ is the first literal in $c_r$ and occurs negatively in $c_r$ then identify $e_i^j$ and $s_r^1$, and $h_i^j$ and $t_r^1$. In this case $\deg_{G}(e_i^j) = \deg_{G}(h_i^j) = 7$. If $x_i$ is the second literal in $c_r$ and occurs positively in $c_r$ then identify $b_i^j$ and $s_r^2$, and $c_i^j$ and $t_r^2$. Similarly, if $x_i$ is the second literal in $c_r$ and occurs negatively in $c_r$ then identify $e_i^j$ and $s_r^2$, and $h_i^j$ and $t_r^2$. This completes the construction of $G$. Observe that $\Delta = 7$.
+
+It is straightforward that the reduction can be performed in polynomial time. We now prove that the reduction is correct in the first direction. By construction, no $K_4$ exists in $G$ that contains at least one vertex in a variable gadget and at least one vertex in a clause gadget. Thus, we shall say that some $K_4$ is \emph{in} a variable or clause gadget if it is a strict subset of that gadget.
+
+\begin{lem}
+\label{lem:krpacking_kfourpacking_firstdirection}
+If a truth assignment $\mathfrak{f}$ for $\phi$ satisfies at least $k$ clauses then an edge-disjoint $K_4$-packing $T$ exists in $G$ where $|T| \geq \sum_{i=1}^{|X|} 3 m_i + k$.
+\end{lem}
+\begin{proof}
+Suppose $\mathfrak{f}$ is a truth assignment for $\phi$ that satisfies at least $k$ clauses. We shall construct an edge-disjoint $K_4$-packing $T$ where $|T| \geq \sum_{i=1}^{|X|} 3 m_i + k$.
+
+For each variable $x_i$, if $\mathfrak{f}(x_i)$ is true then add the set of even $K_4$s in $R_i$ to $T$. Similarly, if $\mathfrak{f}(x_i)$ is false then add the set of odd $K_4$s in $R_i$ to $T$. Now $|T|=\sum_{i=1}^{|X|} 3 m_i$.
+For each clause gadget $c_r$ that is satisfied by $\mathfrak{f}$, it must be that there exists some variable $x_i$ where either $\mathfrak{f}(x_i)$ is true and $x_i$ occurs positively in $c_r$ or $\mathfrak{f}(x_i)$ is false and $x_i$ occurs negatively in $c_r$. In either case, add $P_i^r$ to $T$. Now, $T$ contains exactly $\sum_{i=1}^{|X|} 3m_i$ $K_4$s in variable gadgets and at least $k$ $K_4$s in clause gadgets.
+It remains to show that $T$ is edge disjoint. By the construction of $G$, any two $K_4$s in $T$ in the same variable gadget are edge disjoint. Consider an arbitrary $P_r^i$ in some clause gadget $c_r$ that belongs to $T$. It must be that either $\mathfrak{f}(x_i)$ is true and $x_i$ occurs positively in $c_r$ or $\mathfrak{f}(x_i)$ is false and $x_i$ occurs negatively in $c_r$. In the former case, $T$ contains the set of even $K_4$s in $R_i$ so since $P_i^r \cap R_i = \{ b_i^j, c_i^j \}$ where $1\leq j\leq 3$ it follows that $T$ is edge disjoint. In the latter case, $T$ contains the set of odd $K_4$s in $R_i$ so since $P_i^r \cap R_i = \{ e_i^j, h_i^j \}$ where $1\leq j\leq 3$ it also follows that $T$ is edge disjoint.
+\end{proof}
+
+We now prove that the reduction is correct in the second direction. We say that some edge-disjoint $K_4$-packing $T$ in $G$ is \emph{canonical} if for any variable gadget $R_i$, $T$ contains either the set of even $K_4$s in $R_i$ or the set of odd $K_4$s in $R_i$. By the construction of $G$, no edge-disjoint $K_4$-packing can contain all even $K_4$s and all odd $K_4$s.
+
+We first show that for any variable gadget $R_i$ and edge-disjoint $K_r$-packing $T$, if $T$ neither contains all even $K_4$s in $R_i$ nor all odd $K_4$s in $R_i$ then the number of $K_4$s in $T$ is at most $3 m_i - 1$.
+
+\begin{prop}
+\label{prop:krpacking_kfour_evenoddareonlymaximum}
+Suppose $T$ is an arbitrary edge-disjoint $K_4$-packing in $G$. For any variable gadget $R_i$, if $T$ neither contains all even $K_4$s in $R_i$ nor all odd $K_4$s in $R_i$ then the number of $K_4$s in $T$ is at most $3 m_i - 1$.
+\end{prop}
+\begin{proof}
+By the construction of $G$, each even $K_4$ in $R_i$ intersects exactly two odd $K_4$s in $R_i$ by at least two vertices and each odd $K_4$ in $R_i$ intersects exactly two even $K_4$s in $R_i$ by at least two vertices. 
+
+It follows that the $K_4$-edge intersection graph ${\mathcal{K}'}_r^G$ contains a cycle of $6 m_i$ vertices corresponding to the $6 m_i$ $K_4$s in $R_i$. It then follows that any edge-disjoint $K_4$-packing that contains $3 m_i$ $K_4$s in $R_i$ corresponds to an independent set of size $3 m_i$ in ${\mathcal{K}'}_r^G$, and thus is either the set of even $K_4$s in $R_i$ or the set of odd $K_4$s in $R_i$. Since $T$ neither contains all even $K_4$s in $R_i$ nor all odd $K_4$s in $R_i$ it follows that $|T| < 3m_i$.
+\end{proof}
+
+We can now prove that for any edge-disjoint $K_4$-packing in $G$ that is not canonical, there exists a canonical edge-disjoint $K_4$-packing in $G$ of at least the same cardinality.
+
+\begin{lem}
+If $T$ is an edge-disjoint $K_4$-packing then there exists a canonical edge-disjoint $K_4$-packing $T'$ where $|T'| \geq |T|$.
+\label{lem:krpacking_four_canonical}
+\end{lem}
+\begin{proof}
+If $T$ is already canonical then let $T'=T$. Otherwise, by the definition of canonical, there must exist at least one variable gadget $i$ such that $T$ neither contains all even $K_4$s in $R_i$ nor all odd $K_4$s in $R_i$. For any such $i$ where $1\leq i \leq |X|$, we show how to modify $T$ to ensure that it either contains the set of even $K_4$s in $R_i$ or the set of odd $K_4$s in $R_i$ and the cardinality of $T$ does not decrease. It follows that there exists a canonical edge-disjoint $K_4$-packing $T'$ where $|T'| \geq |T|$. 
+
+By Proposition~\ref{prop:krpacking_kfour_evenoddareonlymaximum}, the number of $K_4$s in $R_i$ in $T$ is at most $3 m_i - 1$. 
+
+Suppose the variable $x_i$ corresponding to $R_i$ occurs in clauses $c_{r_1}, c_{r_2}, \dots, c_{r_{m_i}}$, corresponding to the sets $P_i^{r_1}, P_i^{r_2}, \dots, P_i^{r_{m_i}}$. It must be that either at most one $K_4$ in $\{ P_i^{r_1}, P_i^{r_2}, \dots, P_i^{r_{m_i}} \}$ exists in $T$ where the corresponding occurrence of $x_i$ is positive; or at most one $K_4$ in $\{ P_i^{r_1}, P_i^{r_2}, \dots, P_i^{r_{m_i}} \}$ exists in $T$ where the corresponding occurrence of $x_i$ is negative. Suppose the former case is true. Remove the $K_4$ in $\{ P_i^{r_1}, P_i^{r_2}, \dots, P_i^{r_{m_i}} \}$ in $T$ where the corresponding occurrence of $x_i$ is positive. Next, remove any even $K_4$s in $R_i$ in $T$ and add the set of odd $K_4$s in $R_i$ not already in $T$. The number of $K_4$s in $R_i$ in $T$ is now $3 m_i$ so since at most one $K_4$ was removed, which was not in $R_i$, it follows that the cardinality of $T$ has not decreased. To see that $T$ is still edge-disjoint, observe that any $K_4$ in $\{ P_i^{r_1}, P_i^{r_2}, \dots, P_i^{r_{m_i}} \}$ in $T$ intersects any odd $K_4$ in $R_i$ by at most one vertex. The construction and proof in the latter case are symmetric.
+\end{proof}
+
+\begin{lem}
+\label{lem:krpacking_kfourpacking_seconddirection}
+If $T$ is an edge-disjoint $K_4$-packing where $|T| = \sum_{i=1}^{|X|} 3 m_i + k$ for some integer $k\geq 1$ then exists a truth assignment $\mathfrak{f}$ that satisfies at least $k$ clauses.
+\end{lem}
+\begin{proof}
+Assume by Lemma~\ref{lem:krpacking_four_canonical} that $T$ is canonical. It follows that $T$ contains exactly $\sum_{i=1}^{|X|} 3 m_i$ $K_4$s in variable gadgets and at least $k$ $K_4$s in clause gadgets. For each variable $x_i$, set $\mathfrak{f}(x_i)$ to be true if $T$ contains all even $K_4$s in $R_i$ and false otherwise. Now consider each clause gadget $c_r$ where $S_r$ contains some $K_4$ in $T$, denoted $P_i^r$. Suppose $x_i$ occurs positively in $c_r$. It follows that $P_i^r$ contains $b_i^j, c_i^j$ for some $j$ where $1\leq j\leq 3$. Since $T$ is canonical and edge-disjoint it follows that $T$ contains the set of even $K_4$s in $R_i$. By the construction of $\mathfrak{f}$ it follows that $\mathfrak{f}(x_i)$ is true and thus $c_r$ is satisfied. The proof for when $x_i$ occurs negatively in $c_r$ is symmetric. It follows that at least $k$ clauses are satisfied by $\mathfrak{f}$.
+\end{proof}
+
+\begin{lem}
+\label{lem:krpacking_edkr_req4_apxhard}
+If $r=4$ and $\Delta=7$ then \edkr is $\APX$-hard.
+\end{lem}
+\begin{proof}
+We shall describe an $L$-reduction from \maxtwosatthree/ (which is $\APX$-hard \cite{ACGKMP99}) to \edkfour when $\Delta = 7$, using the definition of Crescenzi \cite{Crescenzi97}. An $L$-reduction from optimisation problem $Q$ to an optimisation problem $P$ shows that if there exists a $(1+\delta)$-approximation algorithm for $P$ then there exists a $(1 + \alpha\beta\delta)$-approximation algorithm for $Q$. For compactness we abbreviate \maxtwosatthree/ when appearing in a subscript to \maxtwosatthreeshort/.
+
+An $L$-reduction is characterised by a pair $(f, g)$ of functions that can be computed in polynomial time. Here, $f$ is the reduction described at the start of the start of this section (Section~\ref{sec:krpacking_edkfour}) in which an instance $G$ of \edkfour is constructed from an arbitrary instance $\phi$ of \maxtwosatthree/. It is straightforward to show that $f$ can be computed in polynomial time.
+
+The function $g$ is described by Lemma~\ref{lem:krpacking_kfourpacking_seconddirection}. For any instance $\phi$ of \maxtwosatthree/ and edge-disjoint $K_4$-packing in $f(\phi)$, $g$ computes a truth assignment $\mathfrak{f}$ for $\phi$. It is also straightforward to show that $g$ can be computed in polynomial time.
+
+To show that $f, g$ constitute a valid $L$-reduction, we must show that there exists fixed constants $\alpha, \beta$ such that for any instance $\phi$ of \maxtwosatthree/,
+\begin{align*}
+    \textrm{opt}_{\textrm{\edkfour}}(f(\phi)) \leq \alpha \textrm{opt}_{\textrm{\maxtwosatthreeshort/}}(\phi)
+\end{align*}
+and that for any instance $\phi$ and any edge-disjoint $K_4$-packing $T$ in $f(\phi)$,
+\begin{align*}
+    \textrm{opt}_{\textrm{\maxtwosatthreeshort/}}(\phi) - \textrm{m}_{\textrm{\maxtwosatthreeshort/}}(\phi, g(\phi, T)) \leq \beta(\textrm{opt}_{\textrm{\edkfour}}(f(\phi)) - \textrm{m}_{\textrm{\edkfour}}(f(\phi), T))\enspace.
+\end{align*}
+We shall now demonstrate the existence of some such $\alpha$ and $\beta$. Recall that in the instance of \maxtwosatthree/, $X$ is the set of variables, $C$ is the set of clauses, and $m_i$ is the number of occurrences of each variable $x_i$. Note that by the definition of \maxtwosatthree/, $\sum_{i=1}^{|X|} m_i$ is the total number of literals, which must be at most $2|C|$. Note also that for any instance $\phi$ of \maxtwosatthree/, it must be that $\textrm{opt}_{\textrm{\maxtwosatthreeshort/}}(\phi) \geq |C|/2$. This is because a truth assignment satisfying $|C|/2$ clauses can be found using a greedy algorithm that in each step assigns a truth value to a variable occurring in the maximum number of clauses \cite{approximationvazirani}. We can now show that
+\begin{align*}
+    \textrm{opt}_{\textrm{\edkfour}}(f(\phi)) &\leq \sum\limits_{i=1}^{|X|} 3 m_i + \textrm{opt}_{\textrm{\maxtwosatthreeshort/}}(\phi) && \mbox{by Lemma~\ref{lem:krpacking_kfourpacking_seconddirection}}\\
+    &= 3 \sum\limits_{i=1}^{|X|} m_i + \textrm{opt}_{\textrm{\maxtwosatthreeshort/}}(\phi)\\[-0.8em]
+    &\leq 6|C| + \textrm{opt}_{\textrm{\maxtwosatthreeshort/}}(\phi) && \mbox{since $2|C| \geq \sum_{i=1}^{|X|} m_i$}\\[-1.0em]
+    &\leq 13 \textrm{opt}_{\textrm{\maxtwosatthreeshort/}}(\phi)  && \mbox{since $\textrm{opt}_{\textrm{\maxtwosatthreeshort/}}(\phi) \geq |C|/2$}
+\end{align*}
+so $\alpha = 13$. We can also show that for any instance $\phi$ and any edge-disjoint $K_4$-packing $T$ in $f(\phi)$, 
+\begin{align*}
+    \textrm{opt}_{\textrm{\maxtwosatthreeshort/}}(\phi) - \textrm{m}_{\textrm{\maxtwosatthreeshort/}}(\phi, g(\phi, T)) &\leq \textrm{opt}_{\textrm{\maxtwosatthreeshort/}}(\phi) - \left(|T| - \sum\limits_{i=1}^{|X|} 3 m_i \right) && \mbox{by Lemma~\ref{lem:krpacking_kfourpacking_seconddirection}}\\
+    &= \sum\limits_{i=1}^{|X|} 3 m_i + \textrm{opt}_{\textrm{\maxtwosatthreeshort/}}(\phi) - |T|\\[-0.8em]
+    &\leq \textrm{opt}_{\textrm{\edkfour}}(f(\phi)) - |T| && \mbox{by Lemma~\ref{lem:krpacking_kfourpacking_firstdirection}}\\[0.2em]
+    &= \textrm{opt}_{\textrm{\edkfour}}(f(\phi)) - \textrm{m}_{\textrm{\edkfour}}(f(\phi), T)
+\end{align*}
+since $\textrm{m}_{\textrm{\edkfour}}(f(\phi), T) = |T|$, which shows that $\beta = 1$.
+\end{proof}
+
+\subsubsection{Edge-disjoint \texorpdfstring{$K_5$}{K5}-packing} 
+
+In this section we show that \edkfive is $\APX$-hard even when $\Delta=9$. The proof uses an $L$-reduction that follows the same pattern as the one shown in Section~\ref{sec:krpacking_edkfour} for \edkfour, extending the $L$-reduction of Caprara and Rizzi \cite{caprara_packing_2002}. The reduction, shown in Figure~\ref{fig:krpacking_edkfive}, is as follows.
+\begin{figure}
+    \centering
+    \input{figures/kr_packing/edkfive.tikz}
+    \caption{The reduction from \maxtwosatthree/ to \edkfive}
+    \label{fig:krpacking_edkfive}
+\end{figure}
+As before, we reduce from \maxtwosatthree/ (Problem~\ref{pr:maxtwosatthree}) and construct a set of variable and clause gadgets. For each variable $x_i$, construct a variable gadget of $8 m_i$ vertices, labelled $R_i = \{ a_i^j, b_i^j, c_i^j, d_i^j, e_i^j, h_i^j, u_i^j, v_i^j \}$ for each $j$ where $1\leq j \leq m_i$. For each $j$ where $1\leq j \leq m_i$, add an edge (if it does not exist already) between each pair of vertices in $\{ a_i^j, b_i^j, e_i^j, u_i^j, v_i^j \}$; $\{ b_i^j, c_i^j, e_i^j, h_i^j, v_i^j \}$; and finally $\{ c_i^j, d_i^j, h_i^j, v_i^j, u_i^{j+1} \}$ and $\{ d_i^j, a_i^{j+1}, h_i^j, e_i^{j+1}, u_i^{j+1} \}$ if $j < m_i$, otherwise $\{ c_i^j, d_i^j, h_i^j, v_i^j, u_i^1 \}$ and $\{ d_i^j, a_i^1, h_i^j, e_i^1, u_i^1 \}$. We shall refer to $\{ a_i^j, b_i^j, e_i^j, u_i^j, v_i^j \}$ and $\{ c_i^j, d_i^j, h_i^j, v_i^j, u_i^{j+1} \}$ (and $\{ c_i^j, d_i^j, h_i^j, v_i^j, u_i^1 \}$) as \emph{odd $K_5$s in $R_i$}, and $\{ b_i^j, c_i^j, e_i^j, h_i^j, v_i^j \}$ and $\{ d_i^j, a_i^{j+1}, h_i^j, e_i^{j+1}, u_i^{j+1} \}$ (and $\{ d_i^j, a_i^1, h_i^j, e_i^1, u_i^1 \}$) as \emph{even $K_5$s in $R_i$}. At this point $\deg_{G}(a_i^j) = \deg_{G}(b_i^j) = \deg_{G}(c_i^j) = \deg_{G}(d_i^j) = 6$ and $\deg_{G}(e_i^j) = \deg_{G}(h_i^j) = \deg_{G}(u_i^j) = \deg_{G}(v_i^j) = 8$ for any $j$ where $1\leq j \leq m_i$. 
+
+% We begin by constructing the variable gadgets. For each variable $x_i$, construct $10m_i$ vertices labelled $a_i^1, b_i^1, c_i^1, d_i^1, e_i^1, h_i^1, u_i^1, v_i^1, a_i^2, b_i^2, \dots, u_i^{m_i}, v_i^{m_i}$. We shall refer to these vertices as the \emph{$i\textsuperscript{th}$ variable gadget}. For each $j$ where $1\leq j \leq m_i$, add an edge (if it does not exist already) between each pair of vertices in $\{ a_i^j, b_i^j, e_i^j, u_i^j, v_i^j \}$; $\{ b_i^j, c_i^j, e_i^j, h_i^j, v_i^j \}$; and finally $\{ c_i^j, d_i^j, h_i^j, v_i^j, u_i^{j+1} \}$ and $\{ d_i^j, a_i^{j+1}, h_i^j, e_i^{j+1}, u_i^{j+1} \}$ if $j < m_i$, otherwise $\{ c_i^j, d_i^j, h_i^j, v_i^j, u_i^1 \}$ and $\{ d_i^j, a_i^1, h_i^j, e_i^1, u_i^1 \}$. We shall refer to $\{ a_i^j, b_i^j, e_i^j, u_i^j, v_i^j \}$ and $\{ c_i^j, d_i^j, h_i^j, v_i^j, u_i^{j+1} \}$ (and $\{ c_i^j, d_i^j, h_i^j, v_i^j, u_i^1 \}$) as \emph{even} $K_5$s, and $\{ b_i^j, c_i^j, e_i^j, h_i^j, v_i^j \}$ and $\{ d_i^j, a_i^{j+1}, h_i^j, e_i^{j+1}, u_i^{j+1} \}$ (and $\{ d_i^j, a_i^1, h_i^j, e_i^1, u_i^1 \}$) as \emph{odd} $K_5$s. Note that at this point of construction, $\deg_{G}(a_i^j) = \deg_{G}(b_i^j) = \deg_{G}(c_i^j) = \deg_{G}(d_i^j) = 6$ and $\deg_{G}(e_i^j) = \deg_{G}(h_i^j) = \deg_{G}(u_i^j) = \deg_{G}(v_i^j) = 8$ for any $j$ where $1\leq j \leq m_i$. 
+
+We shall now construct the clause gadgets. For each clause $c_r$, construct a clause gadget of $7$ vertices labelled $S_r = \{ s_r^1, t_r^1, s_r^2, t_r^2, w_r^1, w_r^2, w_r^3, w_r^4 \}$. Add an edge (if it does not exist already) between each pair of vertices in $\{ s_r^1, t_r^1, w_r^1, w_r^2, w_r^3 \}$ and $\{ s_r^2, t_r^2, w_r^2, w_r^3, w_r^4 \}$. Label $\{ s_r^1, t_r^1, w_r^1, w_r^2, w_r^3 \}$ and $\{ s_r^2, t_r^2, w_r^2, w_r^3, w_r^4 \}$ as $P_i^r$ and $P_j^r$, where the variables of the literals in $c_r$ are $x_i$ and $x_j$.
+
+% We shall now construct the clause gadgets. For each clause $c_r$, construct $7$ vertices labelled $s_r^1, t_r^1, s_r^2, t_r^2, w_r^1, w_r^2, w_r^3, w_r^4$. We shall refer to these vertices as the \emph{$r\textsuperscript{th}$ clause gadget}. Add an edge (if it does not exist already) between each pair of vertices in $\{ s_r^1, t_r^1, w_r^1, w_r^2, w_r^3 \}$ and $\{ s_r^2, t_r^2, w_r^2, w_r^3, w_r^4 \}$. We shall refer to $\{ s_r^1, t_r^1, w_r^1, w_r^2, w_r^3 \}$ and $\{ s_r^2, t_r^2, w_r^2, w_r^3, w_r^4 \}$ as $P_i^r$ and $P_j^r$ where the variables of the literals in $c_r$ are $x_i$ and $x_j$.
+
+The connection of variable and clause gadgets follows the same pattern as for \edkfour. For each clause $c_r$, suppose $x_i$ is the variable of some literal in $c_r$ where $c_r$ contains the $j\textsuperscript{th}$ occurrence of $x_i$ in $\phi$. If $x_i$ is the first literal in $c_r$ and occurs positively in $c_r$ then identify $a_i^j$ and $s_r^1$, and $b_i^j$ and $t_r^1$. Now $\deg_{G}(a_i^j) = \deg_{G}(b_i^j) = 9$. Similarly, if $x_i$ is the first literal in $c_r$ and occurs negatively in $c_r$ then identify $b_i^j$ and $s_r^1$, and $c_i^j$ and $t_r^1$. If $x_i$ is the second literal in $c_r$ and occurs positively in $c_r$ then identify $a_i^j$ and $s_r^2$, and $b_i^j$ and $t_r^2$. If $x_i$ is the second literal in $c_r$ and occurs negatively in $c_r$ then identify $b_i^j$ and $s_r^2$, and $c_i^j$ and $t_r^2$. Now $\Delta = 9$.
+
+% We shall now connect the variable and clause gadgets. For each clause $c_r$, suppose $x_i$ is the variable of the some literal in $c_r$ where $c_r$ contains the $j\textsuperscript{th}$ occurrence of $x_i$ in $\phi$. If $x_i$ is the first literal in $c_r$ and occurs positively in $c_r$ then identify $a_i^j$ and $s_r^1$, and $b_i^j$ and $t_r^1$. We shall hereafter refer to the first identified vertex as either $a_i^j$ or $s_r^1$ and the second identified vertex as either $b_i^j$ or $t_r^1$. Note that now $\deg_{G}(a_i^j) = \deg_{G}(b_i^j) = 9$. Similarly, if $x_i$ is the first literal in $c_r$ and occurs negatively in $c_r$ then identify $b_i^j$ and $s_r^1$, and $c_i^j$ and $t_r^1$. If $x_i$ is the second literal in $c_r$ and occurs positively in $c_r$ then identify $a_i^j$ and $s_r^2$, and $b_i^j$ and $t_r^2$. If $x_i$ is the second literal in $c_r$ and occurs negatively in $c_r$ then identify $b_i^j$ and $s_r^2$, and $c_i^j$ and $t_r^2$. This completes the construction of $G$. Observe that $\Delta = 9$.
+
+As before, the reduction can be performed in polynomial time.  We now prove correctness in the first direction.
+
+\begin{lem}
+\label{lem:krpacking_kfivepacking_firstdirection}
+If a truth assignment $\mathfrak{f}$ for $\phi$ satisfies at least $k$ clauses then an edge-disjoint $K_5$-packing $T$ exists in $G$ where $|T| \geq \sum_{i=1}^{|X|} 2 m_i + k$.
+\end{lem}
+\begin{proof}
+Suppose $\mathfrak{f}$ is a truth assignment for $\phi$ that satisfies at least $k$ clauses. We shall construct an edge-disjoint $K_5$-packing $T$ where $|T| \geq \sum_{i=1}^{|X|} 2 m_i + k$.
+For each variable $x_i$, add to $T$ the set of even $K_5$s in $R_i$ if $\mathfrak{f}(x_i)$ is true and otherwise the set of odd $K_5$s in $R_i$. Now $|T|=\sum_{i=1}^{|X|} 3 m_i$.
+For each clause $c_r$ satisfied by $\mathfrak{f}$, it must be that there exists some variable $x_i$ where $\mathfrak{f}(x_i)$ is true and $x_i$ occurs positively in $c_r$, or there exists some variable $x_i$ where $\mathfrak{f}(x_i)$ is false and $x_i$ occurs negatively in $c_r$. As before, in either case add $P_i^r$ to $T$. Now $|T| = \sum_{i=1}^{|X|} 2m_i + k$. The proof that $T$ is edge disjoint is analogous to the proof in Lemma~\ref{lem:krpacking_kfourpacking_firstdirection}.
+\end{proof}
+
+% We now prove that the reduction is correct in the second direction. In the remainder of this section, assume that $T$ is an edge-disjoint $K_r$-packing where $|T|=\sum_{i=1}^{|X|} 2m_i + k$ for some integer $k\geq 1$. We shall eventually construct a truth assignment $\mathfrak{f}$ that satisfies at least $|T|=\sum_{i=1}^{|X|} 2m_i + k$ clauses.
+
+We now prove the second direction. Like before, we say that some edge-disjoint $K_5$-packing $T$ in $G$ is \emph{canonical} if for any $R_i$, $T$ contains either the set of even $K_5$s in $R_i$ or the set of odd $K_5$s in $R_i$.
+
+\begin{lem}
+If $T$ is an edge-disjoint $K_5$-packing then there exists a canonical edge-disjoint $K_5$-packing $T'$ where $|T'| \geq |T|$.
+\label{lem:krpacking_five_canonical}
+\end{lem}
+\begin{proof}
+The proof is analogous to the proof of Lemma~\ref{lem:krpacking_four_canonical}. Here we describe the modification of a single variable gadget $R_i$ where $T$ neither contains all even $K_5$s nor all odd $K_5$s in $R_i$. It must be that the number of $K_5$s in $R_i$ in $T$ is at most $2 m_i - 1$.
+
+% By the definition of canonical, there exists at least one variable gadget $i$ such that $T$ neither contains all even $K_5$s in the $i\textsuperscript{th}$ variable gadget nor all odd $K_5$s in the $i\textsuperscript{th}$ variable gadget. For any such $i$, we show how to modify $T$ to construct $T'$ such that $|T'|\geq |T|$ and $T'$ contains either all even $K_5$s in $i\textsuperscript{th}$ variable gadget or all odd $K_5$s in the $i\textsuperscript{th}$ variable gadget. It follows from this that there exists some canonical edge-disjoint $K_r$-packing $T'$ where $|T'| \geq |T|$. 
+
+% In the remainder of this proof we shall consider only one variable gadget, namely the $i\textsuperscript{th}$. It must be that at most $2m_i - 1$ $K_5$s that are subsets of this variable gadget belong to $T$.
+
+Suppose $x_i$ occurs in clauses $c_{r_1}, c_{r_2}, \dots, c_{r_{m_i}}$, corresponding to the sets $P_i^{r_1}, P_i^{r_2}, \dots, P_i^{r_{m_i}}$. It must be that either at most one $K_5$ in $\{ P_i^{r_1}, P_i^{r_2}, \dots, P_i^{r_{m_i}} \}$ exists in $T$ where the corresponding occurrence of $x_i$ is positive, or at most one $K_5$ in $\{ P_i^{r_1}, P_i^{r_2}, \dots, P_i^{r_{m_i}} \}$ exists in $T$ where the corresponding occurrence of $x_i$ is negative. In the former case, remove the $K_5$ in $\{ P_i^{r_1}, P_i^{r_2}, \dots, P_i^{r_{m_i}} \}$ where the corresponding occurrence of $x_i$ is positive as well as any even $K_5$s in $R_i$ in $T$, then add the set of odd $K_5$s not already in $T$. The number of $K_5$s in $R_i$ is now $2 m_i$ so since at most one $K_5$ was removed, which was not in $R_i$, it follows that the cardinality of $T$ has not decreased. To see that $T$ is still edge-disjoint, observe that any $K_5$ in $\{ P_i^{r_1}, P_i^{r_2}, \dots, P_i^{r_{m_i}} \}$ in $T$ intersects any odd $K_5$ by at most one vertex. The construction and proof in the latter case is symmetric.
+\end{proof}
+
+\begin{lem}
+\label{lem:krpacking_kfivepacking_seconddirection}
+If $T$ is an edge-disjoint $K_5$-packing where $|T| = \sum_{i=1}^{|X|} 2 m_i + k$ for some integer $k\geq 1$ then exists a truth assignment $\mathfrak{f}$ that satisfies at least $k$ clauses.
+\end{lem}
+\begin{proof}
+Assume by Lemma~\ref{lem:krpacking_five_canonical} that $T$ is canonical. It follows that $T$ contains exactly $\sum_{i=1}^{|X|} 2 m_i$ $K_5$s in variable gadgets and at least $k$ $K_5$s in clause gadgets. For each variable $x_i$, set $\mathfrak{f}(x_i)$ to be true if $T$ contains all even $K_5$s in $R_i$ and false otherwise. Now consider each clause gadget $c_r$ where $S_r$ contains some $K_5$ in $T$, which we label $P_i^r$. Suppose $x_i$ occurs positively in $c_r$. It follows that $P_i^r$ contains $a_i^j, b_i^j$ for some $j$ where $1\leq j\leq 3$. Since $T$ is edge disjoint it follows that $T$ contains the even $K_5$s in $R_i$. By the construction of $\mathfrak{f}$ it follows that $\mathfrak{f}(x_i)$ is true and thus $c_r$ is satisfied. The proof when $x_i$ occurs negatively in $c_r$ is symmetric. It follows thus that at least $k$ clauses are satisfied by $\mathfrak{f}$.
+\end{proof}
+
+\begin{lem}
+\label{lem:krpacking_edkr_req5_apxhard}
+If $r=5$ and $\Delta=9$ then \edkr is $\APX$-hard.
+\end{lem}
+\begin{proof}
+The reduction described runs in polynomial time, and Lemma~\ref{lem:krpacking_kfivepacking_seconddirection} shows how to construct a truth assignment $\mathfrak{f}$ that satisfies $k$ clauses given an edge-disjoint $K_5$-packing of cardinality $\sum_{i=1}^{|X|} 3 m_i + k$ where $k \geq 1$. By Lemmas~\ref{lem:krpacking_kfivepacking_firstdirection} and~\ref{lem:krpacking_kfivepacking_seconddirection}, in the reduction a truth assignment $\mathfrak{f}$ for $\phi$ exists that satisfies at least $k$ clauses if and only if there exists an edge-disjoint $K_5$-packing of size at least $\sum_{i=1}^{|X|} 3 m_i + k$. This reduction is thus an $L$-reduction with $\alpha=9$ and $\beta=1$.
+\end{proof}
+
+We now combine Lemmas~\ref{lem:krpacking_edkr_req4_apxhard} and \ref{lem:krpacking_edkr_req4_apxhard} with the existing result of Caprara and Rizzi \cite{caprara_packing_2002} in Theorem~\ref{thm:krpacking_edkr345apxhard}.
+
+\begin{thm}
+\label{thm:krpacking_edkr345apxhard}
+If $r \leq 5$ and $\Delta > 2r - 2$ then \edkr is $\APX$-hard.
+\end{thm}
+\begin{proof}
+Caprara and Rizzi \cite{caprara_packing_2002} prove the case when $r = 3$ and $\Delta = 5$. In Lemma~\ref{lem:krpacking_edkr_req4_apxhard} we prove the case when $r=4$ and $\Delta=7$. In Lemma~\ref{lem:krpacking_edkr_req5_apxhard} we prove the case when $r=5$ and $\Delta=9$.
+\end{proof}
+
+% \subsubsection{Conclusion} 
+
+% We now combine Lemmas~\ref{lem:krpacking_edkr_req4_apxhard}, \ref{lem:krpacking_edkr_req5_apxhard}, and \ref{lem:krpacking_edkr_rgeq6_apxhard} in Theorem~\ref{thm:krpacking_edkr_conclusion_apxhard}.
+
+% \begin{thm}
+% \label{thm:krpacking_edkr_conclusion_apxhard}
+% For any simple undirected graph $G$, If either $r \leq 5$ and $\Delta > 2r - 2$, or $r > 5$ and $\Delta \geq \lceil 5r/3 \rceil - 1$, then \edkr is $\APX$-hard.
+% \end{thm}
+% \begin{proof}
+% Lemma~\ref{lem:krpacking_edkr_rgeq6_apxhard} shows the case when $r\geq 6$ and $\Delta \geq \lceil 5r/3 \rceil - 1$.
+% \end{proof}
+
+
+
+%Construct $r|V| - r/3|E|$ vertices in $V'$ labelled $w_1, w_2, \dots, w_{|V'|}$. 

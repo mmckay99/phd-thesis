@@ -1,0 +1,197 @@
+\begin{tikzpicture}
+% \draw[help lines] (0,0) grid (12,6);
+\begin{scope}[every node/.style={circle,thick,draw,minimum size=2.4mm}, scale=1.0]
+    % \node[draw=none, align=center] (Pc) at (2.4,-0.5) {octogadget $H_r$ for some $1\leq r \leq 6q$};
+    
+    \def\hscale{0.5}
+    
+    % this one the angles are the same
+    % \begin{scope}[shift={(3.0, 3.0)}]
+    % \node[draw=none] (hr1i) at (\hscale*0 ,\hscale*-5) {};
+    % \node[draw=none] (hr2i) at (\hscale*-3,\hscale*-4) {};
+    % \node[draw=none] (hr3i) at (\hscale*-5,\hscale*-2) {};
+    % \node[draw=none] (hr4i) at (\hscale*-5,\hscale*1) {};
+    % \node[draw=none] (hr5i) at (\hscale*-4,\hscale*3) {};
+    % \node[draw=none] (hr6i) at (\hscale*-1,\hscale*5) {};
+    % \node[draw=none] (hr7i) at (\hscale*1,\hscale*5) {};
+    % \node[draw=none] (hr8i) at (\hscale*4,\hscale*3) {};
+    % \node[draw=none] (hr9i) at (\hscale*5,\hscale*1) {};
+    % \node[draw=none] (hr10i) at (\hscale*5,\hscale*-2) {};
+    % \node[draw=none] (hr11i) at (\hscale*3,\hscale*-4) {};
+    % \end{scope}
+    
+    % this one is a 12-gon with the two at the bottom merged
+    \begin{scope}[shift={(2.8, 3.0)}]
+    % http://www.rotaryspin.com/markb/courses/projects/polygon.html
+    \node[draw=none] (hr3i) at (\hscale*4.62,\hscale*1.91) {};
+    \node[draw=none] (hr2i) at (\hscale*1.91,\hscale*4.62) {};
+    \node[draw=none] (hr1i) at (\hscale*-1.91,\hscale*4.62) {};
+    \node[draw=none] (hr8i) at (\hscale*-4.62,\hscale*1.91) {};
+    \node[draw=none] (hr7i) at (\hscale*-4.62,\hscale*-1.91) {};
+    \node[draw=none] (hr6i) at (\hscale*-1.91,\hscale*-4.62) {};
+    \node[draw=none] (hr5i) at (\hscale*1.91,\hscale*-4.62) {};
+    \node[draw=none] (hr4i) at (\hscale*4.62,\hscale*-1.91) {};
+    \end{scope}
+    
+    \def\hlabeldist{0.4cm}
+    
+    \node[label={[label distance=\hlabeldist]90:$b_i$}] (bi) at (10,3) {};
+    \node[label={[label distance=\hlabeldist]180:$a_{2i}$}] (ai1) at (8.2,1.5) {};
+    \node[label={[label distance=\hlabeldist+0.19cm]180:$a_{2i-1}$}] (ai2) at (8.2,4.5) {};
+    \node[draw=none] (bk1) at (12.2,1.35) {};
+    \node[draw=none] (bk2) at (12.2,2.45) {};
+    \node[draw=none] (bkdots) at (12.5,1.9) {\hspace{2pt}$\dots$};
+    \node[draw=none] (bj) at (12.2,3.55) {$b_k$};
+    \node[draw=none] (bk) at (12.2,4.65) {$b_j$};
+    % \node[draw=none, text width=6cm, align=center] (aic) at (10.2,0.-0.4) {for each $1\leq i\leq 3q$ where $N(w_i)=\{ w_j, w_k, \dots \}$};
+\end{scope}
+\begin{scope}
+    \foreach \from in {hr1i, hr2i, hr3i, hr4i, hr5i, hr6i, hr7i, hr8i}{
+        \foreach \to in {hr1i, hr2i, hr3i, hr4i, hr5i, hr6i, hr7i, hr8i}
+            \draw[line width=0.05mm,color=black!39] (\from.center) -- (\to.center);
+    }
+    
+    % \fill [black!10] (hr1i.center) -- (hr2i.center) -- (hr3i.center) -- (hr4i.center) -- (hr5i.center) -- (hr6i.center) -- (hr7i.center) -- (hr8i.center) -- (hr9i.center) -- (hr10i.center) -- (hr11i.center) -- cycle;
+    
+    \foreach \from/\to in {hr1i/hr2i, hr3i/hr4i, hr5i/hr6i, hr7i/hr8i}
+        \draw [black, double=white, line width = 1pt, double distance = 3pt ] (\from) -- (\to);
+    
+    
+    % \foreach \from/\to in {pr2/pr1, pr3/pr2, pr4/pr3, pr5/pr4, pr1/pr5}
+    %     \path [thick, -<--] (\from) -- (\to);
+    % \foreach \from/\to in {pr1/pr3, pr3/pr5, pr5/pr2, pr2/pr4, pr4/pr1}
+        % \draw [thick] (\from) -- (\to);
+    % TRIANGLE
+     \foreach \from/\to in {bi/bj, bi/bk, bi/bk1, bi/bk2}
+        \draw [thick] (\from) -- (\to);
+    \foreach \from/\to in {bi/ai1, ai1/ai2, ai2/bi}
+        \draw [thick] (\from) -- (\to);
+    \foreach \from/\to in {ai1/bi, ai2/ai1, bi/ai2}
+        \path [thick] (\from) -- (\to);
+\end{scope}
+\begin{scope}[every node/.style={circle,thick,draw,minimum size=2.4mm, fill=white}, scale=1.0]
+    \def\hlabeldist{0.4cm}
+    
+    \node[thick, circle, label={[label distance=\hlabeldist]90:$h_r^1$}] (hr1) at (hr1i) {};
+    \node[thick, circle, label={[label distance=\hlabeldist]90:$h_r^2$}] (hr2) at (hr2i) {};
+    \node[thick, circle, label={[label distance=\hlabeldist]0:$h_r^3$}] (hr3) at (hr3i) {};
+    \node[thick, circle, label={[label distance=\hlabeldist]0:$h_r^4$}] (hr4) at (hr4i) {};
+    \node[thick, circle, label={[label distance=\hlabeldist]270:$h_r^5$}] (hr5) at (hr5i) {};
+    \node[thick, circle, label={[label distance=\hlabeldist]270:$h_r^6$}] (hr6) at (hr6i) {};
+    \node[thick, circle, label={[label distance=\hlabeldist]180:$h_r^7$}] (hr7) at (hr7i) {};
+    \node[thick, circle, label={[label distance=\hlabeldist]180:$h_r^8$}] (hr8) at (hr8i) {};
+\end{scope}
+\end{tikzpicture}
+
+    
+    
+    
+    
+    
+    
+    
+    
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% OLD VERSION with labels inside nodes
+
+
+% \begin{tikzpicture}
+% % \draw[help lines] (0,0) grid (12,6);
+% \begin{scope}[every node/.style={circle,thick,draw,inner sep=0.8mm,minimum size=1.6mm}, scale=1.0]
+%     % \node (A) at (6,0) {$.$};
+%     % \node (B) at (6,6) {$.$};
+%     \node[draw=none, align=center] (Pc) at (3,-0.6) {hendecagadget $H_r$ for some $1\leq r \leq 6q$};
+    
+%     \def\hscale{0.55}
+    
+%     % this one the angles are the same
+%     % \begin{scope}[shift={(3.0, 3.0)}]
+%     % % https://www.mathopenref.com/coordpolycalc.html
+%     % \node[draw=none] (hr1i) at (\hscale*0 ,\hscale*-5) {};
+%     % \node[draw=none] (hr2i) at (\hscale*-3,\hscale*-4) {};
+%     % \node[draw=none] (hr3i) at (\hscale*-5,\hscale*-2) {};
+%     % \node[draw=none] (hr4i) at (\hscale*-5,\hscale*1) {};
+%     % \node[draw=none] (hr5i) at (\hscale*-4,\hscale*3) {};
+%     % \node[draw=none] (hr6i) at (\hscale*-1,\hscale*5) {};
+%     % \node[draw=none] (hr7i) at (\hscale*1,\hscale*5) {};
+%     % \node[draw=none] (hr8i) at (\hscale*4,\hscale*3) {};
+%     % \node[draw=none] (hr9i) at (\hscale*5,\hscale*1) {};
+%     % \node[draw=none] (hr10i) at (\hscale*5,\hscale*-2) {};
+%     % \node[draw=none] (hr11i) at (\hscale*3,\hscale*-4) {};
+%     % \end{scope}
+    
+%     % this one is a 12-gon with the two at the bottom merged
+%     \begin{scope}[shift={(3.0, 3.0)}]
+%     % http://www.rotaryspin.com/markb/courses/projects/polygon.html
+%     \node[draw=none] (hr9i) at (\hscale*5.0 ,\hscale*0.0) {};
+%     % \node[draw=none] (hr2i) at (\hscale*-1,\hscale*-5) {};
+%     \node[draw=none] (hr10i) at (\hscale*4.3,\hscale*2.5) {};
+%     \node[draw=none] (hr11i) at (\hscale*2.5,\hscale*4.3) {};
+%     \node[draw=none] (hr1i) at (\hscale*0.0,\hscale*5.0) {};
+%     \node[draw=none] (hr2i) at (\hscale*-2.5,\hscale*4.3) {};
+%     \node[draw=none] (hr3i) at (\hscale*-4.3,\hscale*2.5) {};
+%     \node[draw=none] (hr4i) at (\hscale*-5.0,\hscale*0.0) {};
+%     \node[draw=none] (hr5i) at (\hscale*-4.3,\hscale*-2.5) {};
+%     \node[draw=none] (hr6i) at (\hscale*-1.6,\hscale*-4.3) {};
+%     % \node[draw=none] (hr7i) at (\hscale*0.0,\hscale*-5.0) {};
+%     \node[draw=none] (hr7i) at (\hscale*1.6,\hscale*-4.3) {};
+%     \node[draw=none] (hr8i) at (\hscale*4.3,\hscale*-2.5) {};
+%     \end{scope}
+    
+    
+
+%     \node (bi) at (10,3) {$b_i$};
+%     \node[minimum size=10mm] (ai1) at (8.2,1.5) {$a_{2i}$};
+%     \node[minimum size=10mm] (ai2) at (8.2,4.5) {$a_{2i-1}$};
+%     \node[draw=none] (bk1) at (12.2,1.35) {};
+%     \node[draw=none] (bk2) at (12.2,2.45) {};
+%     \node[draw=none] (bkdots) at (12.5,1.9) {\dots};
+%     \node[draw=none, label={[shift={(0.2, -0.5)}]$b_k$}] (bj) at (12.2,3.55) {};
+%     \node[draw=none, label={[shift={(0.2, -0.5)}]$b_j$}] (bk) at (12.2,4.65) {};
+%     \node[draw=none, text width=6cm, align=center] (aic) at (10.2,0.-0.2) {for each $1\leq i\leq 3q$ where $N(w_i)=\{ w_j, w_k, \dots \}$};
+% \end{scope}
+% \begin{scope}
+%     % \foreach \from in {hr1i, hr2i, hr3i, hr4i, hr5i, hr6i, hr7i, hr8i, hr9i, hr10i, hr11i}{
+%     %     \foreach \to in {hr1i, hr2i, hr3i, hr4i, hr5i, hr6i, hr7i, hr8i, hr9i, hr10i, hr11i}
+%     %         \draw[line width=0.05mm] (\from) -- (\to);
+%     % }
+    
+%     \fill [black!10] (hr1i.center) -- (hr2i.center) -- (hr3i.center) -- (hr4i.center) -- (hr5i.center) -- (hr6i.center) -- (hr7i.center) -- (hr8i.center) -- (hr9i.center) -- (hr10i.center) -- (hr11i.center) -- cycle;
+    
+%     \foreach \from/\to in {hr2i/hr3i, hr4i/hr5i, hr6i/hr7i, hr8i/hr9i, hr10i/hr11i}
+%         \draw [black, double=white, line width = 1pt, double distance = 3pt ] (\from) -- (\to);
+    
+    
+%     % \foreach \from/\to in {pr2/pr1, pr3/pr2, pr4/pr3, pr5/pr4, pr1/pr5}
+%     %     \path [thick, -<--] (\from) -- (\to);
+%     % \foreach \from/\to in {pr1/pr3, pr3/pr5, pr5/pr2, pr2/pr4, pr4/pr1}
+%         % \draw [thick] (\from) -- (\to);
+%     % TRIANGLE
+%      \foreach \from/\to in {bi/bj, bi/bk, bi/bk1, bi/bk2}
+%         \draw [thick] (\from) -- (\to);
+%     \foreach \from/\to in {bi/ai1, ai1/ai2, ai2/bi}
+%         \draw [thick] (\from) -- (\to);
+%     \foreach \from/\to in {ai1/bi, ai2/ai1, bi/ai2}
+%         \path [thick] (\from) -- (\to);
+% \end{scope}
+% \begin{scope}[every node/.style={circle,thick,draw,inner sep=0.8mm,minimum size=1.6mm, fill=white}, scale=1.0]
+
+%     \node (hr1) at (hr1i) {$h_r^{1}$};
+%     \node (hr2) at (hr2i) {$h_r^{2}$};
+%     \node (hr3) at (hr3i) {$h_r^{3}$};
+%     \node (hr4) at (hr4i) {$h_r^{4}$};
+%     \node (hr5) at (hr5i) {$h_r^{5}$};
+%     \node (hr6) at (hr6i) {$h_r^{6}$};
+%     \node (hr7) at (hr7i) {$h_r^{7}$};
+%     \node (hr8) at (hr8i) {$h_r^{8}$};
+%     \node (hr9) at (hr9i) {$h_r^{9}$};
+%     \node (hr10) at (hr10i) {$h_r^{10}$};
+%     \node (hr11) at (hr11i) {$h_r^{11}$};
+    
+% \end{scope}
+% \end{tikzpicture}

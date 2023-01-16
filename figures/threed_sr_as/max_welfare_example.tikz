@@ -1,0 +1,38 @@
+\begin{tikzpicture}
+% \node[draw=none] (casenumber) at (-1.5, 3.0) {\emph{Case 7}};
+% \draw[help lines,step=0.5] (0,0) grid (14,4);
+\def\alabeldist{0.5cm}
+\begin{scope}[every node/.style={circle,draw, minimum size=2.4mm}, scale=1.5]
+    \begin{scope}
+        \begin{scope}[rotate=-60,shift={(0.0, -0.667)}]
+                \node[thick, circle, label={[label distance=\alabeldist]90:$\alpha_5$}] (a1) at (0,0) {};
+                \node[thick, circle, label={[label distance=\alabeldist]90:$\alpha_4$}] (a2) at (-{tan(30)},-1.0) {};5                \node[thick, circle, label={[label distance=\alabeldist+0.2cm]0:$\alpha_8$}] (a3) at ({tan(30)},-1.0) {};
+        \end{scope}
+        
+        \begin{scope}[shift={(0.0, 0.0)}]
+            \begin{scope}[rotate=60,shift={(0.0, -0.667)}]
+                    \node[thick, circle, label={[label distance=\alabeldist]90:$\alpha_6$}] (a4) at (0,0) {};
+                    \node[thick, circle, label={[label distance=\alabeldist+0.2cm]0:$\alpha_9$}] (a5) at (-{tan(30)},-1.0) {};
+                    \node[thick, circle, label={[label distance=\alabeldist]90:$\alpha_7$}] (a6) at ({tan(30)},-1.0) {};
+            \end{scope}
+        \end{scope}
+        
+        \begin{scope}[shift={(0.0, 0.0)}]
+            \begin{scope}[rotate=180,shift={(0.0, -0.667)}]
+                    \node[thick, circle, label={[label distance=\alabeldist+0.2cm]0:$\alpha_3$}] (a7) at (0,0) {};
+                    \node[thick, circle, label={[label distance=\alabeldist]90:$\alpha_2$}] (a8) at (-{tan(30)},-1.0) {};
+                    \node[thick, circle, label={[label distance=\alabeldist]90:$\alpha_1$}] (a9) at ({tan(30)},-1.0) {};
+            \end{scope}
+        \end{scope}
+    \end{scope}
+\end{scope}
+
+\begin{scope}
+    \foreach \from/\to in {a1/a2, a3/a1, a7/a8, a9/a7, a4/a5, a6/a4, a1/a7, a7/a4, a4/a1}
+        \draw [thick] (\from) -- (\to);
+        
+    \dashedcontainerthing{a2,a1,a3};
+    \dashedcontainerthing{a5,a4,a6};
+    \dashedcontainerthing{a8,a7,a9};
+\end{scope}
+\end{tikzpicture}

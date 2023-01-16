@@ -1,0 +1,107 @@
+In this section we show that deciding if a given instance of 3DR-AS contains a stable matching is $\NP$-complete, even when preferences are binary (and not necessarily symmetric). The reduction is from \emph{Partition Into Triangles} (PIT, Problem~\ref{prob:pit}).
+
+The reduction, illustrated in Figure~\ref{fig:threed_sr_as_binary_reduction}, is as follows. Unless otherwise specified assume that $v_{\alpha_i}(\alpha_j)=0$ for any $\alpha_i, \alpha_j \in N$. For each $i$ where $1 \leq i \leq 3q$ construct three agents labelled $a_{2i}$, $a_{2i-1}$, and $b_i$. Let $v_{a_{2i}}(a_{2i-1})=v_{a_{2i}}(b_i)=1$, $v_{a_{2i-1}}(a_{2i})=v_{a_{2i-1}}(b_i)=1$, and $v_{b_i}(a_{2i})=v_{b_i}(a_{2i-1})=1$. For each $w_i, w_j \in W$ let  $v_{b_i}(b_j)=1$ if $\{ w_i, w_j \} \in E$ and $0$ otherwise. Next, for each $r$ where $1 \leq r \leq 6q$ construct a set of five agents $P_r = \{ p_r^1, p_r^2, \dots, p_r^5 \}$, which we refer to as the \emph{$r\textsuperscript{th}$ pentagadget}. To simplify the description of the valuations in each pentagadget, in this section we write $i \myoplus y$ to denote $((i + y - 1) \bmod 5) + 1$. For each $i$ where $1\leq i \leq 5$ let $v_{p_r^i}(p_r^{i \myoplus 1}) = v_{p_r^{i \myoplus 1}}(p_r^i) = 1$ and $v_{p_r^i}(p_r^{i \myoplus 2}) = 1$.
+This completes the construction of $(N, V)$. Note that $|N|=39q$.
+
+It is straightforward to show that this reduction can be performed in polynomial time. To prove that the reduction is correct we show that the 3DR-AS instance $(N, V)$ contains a stable matching if and only if the PIT instance $G$ contains a partition into triangles.
+%  In Section~\ref{sec:threed_sr_as_binary_reduction_firstdirection} we consider the first direction and show that if a partition into triangles $X=\{X_1,X_2,\dots,X_q\}$ exists in $G$ then a stable matching $M$ exists in $(N, V)$. In Section~\ref{sec:threed_sr_as_binary_reduction_seconddirection} we consider the second direction and show that if a stable matching $M$ exists in $(N,V)$ then a partition into triangles $X = \{ X_1, X_2, \dots, X_q\}$ exists in $G$. 
+
+\begin{figure}
+  \centering
+    \input{figures/threed_sr_as/binary_reduction.tikz}
+    \caption[The reduction from PIT to the problem of deciding if an instance of 3DR-AS with binary preferences contains a stable matching]{The reduction from PIT to the problem of deciding if an instance of 3DR-AS with binary preferences contains a stable matching. Each vertex represents an agent. An arc is present from agent $\alpha_i$ to agent $\alpha_j$ if $v_{\alpha_i}(\alpha_j) = 1$. Depicted is some pentagadget $P_r$ and some agents $b_i$, $a_{2i}$, and $a_{2i - 1}$ where $1\leq i \leq 3q$ and $N(w_i) = \{ w_j, w_k, \dots \}$.}
+    \label{fig:threed_sr_as_binary_reduction}
+\end{figure}
+
+% \subsection{Correctness of the reduction: first direction}
+% \label{sec:threed_sr_as_binary_reduction_firstdirection}
+
+We first show that if the PIT instance $G$ contains a partition into triangles then the 3DR-AS instance $(N, V)$ contains a stable matching.
+
+\begin{lem}
+\label{lem:threed_sr_as_binary_reduction_firstdirection}
+If $G$ contains a partition into triangles then $(N, V)$ contains a stable matching.
+\end{lem}
+\begin{proof}
+Suppose $G$ contains a partition into triangles $X = \{ X_1, X_2, \dots, X_q \}$. We shall construct a matching $M$ that is stable in $(N, V)$. For each triangle $X_p=\{ w_i, w_j, w_k \}\in W$, add $\{b_i, b_j, b_k\}$ to $M$. For each $r$ where $1 \leq r \leq 6q$, add $\{ p_r^1, p_r^2, p_r^3 \}$ to $M$. This leaves agents $a_{2i}$ and $a_{2i-1}$ for each $1 \leq i \leq 3q$ and agents $p_r^4$ and $p_r^5$ for each $0 \leq r \leq 6q$. For each $1 \leq i \leq 3q$, add to $M$ the triples $\{a_{2i}, p_{2i}^4, p_{2i}^5\}, \{a_{2i-1}, p_{2i-1}^4, p_{2i-1}^5\}$. 
+
+Since $u_{b_i}(M)=2$ for each $1\leq i\leq 3q$ it follows that $b_i$ does not belong to a triple that blocks $M$.
+
+Suppose for a contradiction that some agent $a_{2i}$ where $1\leq i\leq 3q$ belongs to a triple $t$ that blocks $M$. We have shown that $b_i$ does not belong to a triple that blocks $M$, so it must be that $a_{2i-1}\in t$, otherwise $u_{a_{2i}}(t)=0$, which is impossible. Suppose then that $t=\{ a_{2i}, a_{2i-1}, \alpha_j \}$ where $\alpha_j \in N$ and $\alpha_j \neq b_i$. Considering the design of the instance, for any such $\alpha_j$ it must be that $u_{\alpha_j}(\{ a_{2i}, a_{2i-1} \})=u_{\alpha_j}(t)=0$, which is a contradiction. A symmetric argument shows that no $a_{2i-1}$ where $1\leq i \leq 3q$ belongs to a triple that blocks $M$.
+
+The remaining possibility is that some triple $\{ p_r^{s_1}, p_r^{s_2}, p_r^{s_3} \}$ blocks $M$ where $1\leq r \leq 6q$. By the construction of $M$, $u_{p_r^1}(M) = u_{p_r^2}(M) = 2$, so neither $p_r^1$ nor $p_r^2$ blocks $M$. It follows that $\{ s_1, s_2, s_3 \} = \{ 3, 4, 5 \}$, which is a contradiction since $u_{p_r^5}(M) = 1 = u_{p_r^5}(\{ p_r^3, p_r^4 \})$.
+\end{proof}
+
+% \subsection{Correctness of the reduction: second direction}
+% \label{sec:threed_sr_as_binary_reduction_seconddirection}
+
+We now show, using a sequence of lemmas, that if the 3DR-AS instance $(N, V)$ contains a stable matching then $G$ contains a partition into triangles. 
+
+We also introduce some new notation. For any set $S \subseteq N$ let $\sigma(S, N)$ be the number of triples in $N$ that each contain at least one agent in $S$.
+
+\begin{lem}
+\label{lem:threed_sr_as_pentagadgetagentsbelongtotwoagents}
+If $(N, V)$ contains a stable matching $M$ then $\sigma(P_r, M) = 2$ for any $r$ where $1 \leq r \leq 6q$.
+\end{lem}
+\begin{proof}
+By definition, $2 \leq \sigma(P_r, M) \leq 5$. Suppose for a contradiction that $\sigma(P_r) \geq 4$. It must be that at least three triples in $M$ contain exactly one agent in $P_r$. Label these three triples as $M(p_r^{s_1})$, $M(p_r^{s_2})$, and $M(p_r^{s_3})$. It follows that $u_{p_r^{s_1}}(M) = u_{p_r^{s_2}}(M) = u_{p_r^{s_3}}(M) = 0$. By the design of the reduction it must be that $u_{p_r^{s_1}}(\{p_r^{s_2}, p_r^{s_3}\}) \geq 1$, $u_{p_r^{s_2}}(\{p_r^{s_1}, p_r^{s_3}\}) \geq 1$, and $u_{p_r^{s_3}}(\{p_r^{s_1}, p_r^{s_2}\}) \geq 1$. Now $\{ p_r^{s_1}, p_r^{s_2},p_r^{s_3} \}$ blocks $M$, which is a contradiction.
+
+Suppose then, for a contradiction, that $\sigma(P_r, M) = 3$. There are two possibilities. In the first, two triples in $M$ each contain exactly two agents in $P_r$ and one triple in $M$ contains exactly one agent in $P_r$. In the second, two triples in $M$ each contain exactly one agent in $P_r$ and one triple in $M$ contains exactly three agents in $P_r$.
+
+Suppose firstly that two triples in $M$ each contain exactly two agents in $P_r$ and one triple in $M$ contains exactly one agent in $P_r$. Assume without loss of generality that $p_r^1$ is the agent in the latter triple. It follows that $u_{p_r^1}(M) = 0$. By assumption, $M(p_r^4)$ and $M(p_r^5)$ each contain exactly two agents in $P_r$ so it follows that $u_{p_r^4}(M) \leq 1$ and $u_{p_r^5}(M) \leq 1$. Now $\{ p_r^1, p_r^4, p_r^5 \}$ blocks $M$ since $u_{p_r^4}(\{p_r^5, p_r^1\}) = u_{p_r^5}(\{p_r^1, p_r^4\}) = 2$ and $u_{p_r^1}(\{p_r^4, p_r^5\}) = 1$, which is a contradiction.
+
+It remains that two triples in $M$ each contain exactly one agent in $P_r$ and one triple in $M$ contains exactly three agents in $P_r$. Suppose $p_r^{s_1}$ and $p_r^{s_2}$ are the two agents in the former two triples. Excluding symmetries, there are two possible cases. In the first case, $s_1 = 1$ and $s_2 = 2$. It follows that $\{ p_r^3, p_r^4, p_r^5 \} \in M$. Now $\{p_r^5, p_r^1, p_r^2 \}$ blocks $M$ since $u_{p_r^5}(\{p_r^1, p_r^2\}) = u_{p_r^1}(\{p_r^2, p_r^5\}) = 2$ and $u_{p_r^2}(\{p_r^1, p_r^5\}) = 1$, which is a contradiction. In the second case, $s_1 = 1$ and $s_2 = 3$. It follows that $\{ p_r^2, p_r^4, p_r^5 \} \in M$. Now $\{p_r^1, p_r^2, p_r^3 \}$ blocks $M$ since $u_{p_r^1}(\{p_r^2, p_r^3\}) = u_{p_r^2}(\{p_r^1, p_r^3\}) = 2$ and $u_{p_r^3}(\{p_r^1, p_r^2\}) = 1$, which is also a contradiction.
+\end{proof}
+
+\begin{lem}
+\label{lem:threed_sr_as_allairscores0}
+If $(N, V)$ contains a stable matching $M$ then $u_{a_k}(M)=0$ for each $1\leq k\leq 6q$.
+\end{lem}
+\begin{proof}
+Suppose $M$ is a stable matching in $(N, V)$. Consider an arbitrary pentagadget index $r_1$ where $1 \leq {r_1} \leq 6q$. By Lemma~\ref{lem:threed_sr_as_pentagadgetagentsbelongtotwoagents}, it must be that $\sigma(P_{r_1}, M) = 2$. It follows that one triple in $M$ contains exactly three agents in $P_{r_1}$ and another triple in $M$ contains exactly two agents in $P_r$ as well as some third agent $\alpha_h$. It follows that $u_{\alpha_h}(M) = 0$. We now show that $\alpha_h = a_{k}$ where $1\leq k \leq 6q$.
+
+By the design of the reduction, it must be that either $\alpha_h \in P_{r_2}$ where $1\leq r_2\leq 6q$, $\alpha_h = b_j$ where $1\leq j\leq 3q$, or $\alpha_h = a_k$ where $1\leq k\leq 6q$. 
+
+Suppose firstly that ${\alpha_h} \in P_r$ where $1\leq r_2\leq 6q$. Label $\alpha_h = p_{r_2}^{s}$ where $1\leq s\leq 5$. By the definition of $\alpha_h = p_{r_2}^{s}$, it must be that ${r_1} \neq {r_2}$. Since $M(p_{r_2}^s)$ contains $p_{r_2}^s$ and two agents in $P_{r_1}$, by Lemma~\ref{lem:threed_sr_as_pentagadgetagentsbelongtotwoagents} the four agents in $P_{r_2} \setminus \{ p_{r_2}^s \}$ must belong to exactly one triple in $M$, which is clearly a contradiction.
+
+Suppose then that ${\alpha_h} = b_j$ where $1 \leq j \leq 3q$. Consider $a_{2j}$ and $a_{2j-1}$. Since $a_{2j} \notin M(b_j)$ and $a_{2j-1} \notin M(b_j)$ it must be that $u_{a_{2j}}(M) \leq 1$ and $u_{a_{2j-1}}(M) \leq 1$. Since $u_{\alpha_h}(M) = u_{b_j}(M) = 0$ it follows that $\{ b_j, a_{2j}, a_{2j-1} \}$ blocks $M$, since $u_{b_j}(\{ a_{2j}, a_{2j-1} \}) = u_{a_{2j}}(\{b_j, a_{2j-1}\}) = u_{a_{2j-1}}(\{b_j, a_{2j}\}) = 2$, which is a contradiction.
+
+It remains that ${\alpha_h} = a_k$ where $1 \leq k \leq 6q$. Since the choice of ${r_1}$ where $1\leq r_1 \leq 6q$ was arbitrary, there are exactly $6q$ choices of $\alpha_h$. It follows that $u_{a_k}(M) = 0$ for every $1 \leq k \leq 6q$.
+\end{proof}
+
+\begin{lem}
+\label{lem:threed_sr_as_allbiscores2}
+If $(N, V)$ contains a stable matching $M$ then $u_{b_i}(M)=2$ for any $i$ where $1 \leq i \leq 3q$.
+\end{lem}
+\begin{proof}
+Suppose for a contradiction that there exists some $1 \leq i \leq 3q$ where $u_{b_i}(M) < 2$. Lemma~\ref{lem:threed_sr_as_allairscores0} shows that $u_{2i}(M) = u_{a_{2i-1}}(M) = 0$. Considering the valuation functions of $a_{2i}$, $a_{2i-1}$, and $b_i$, we can see that $u_{b_i}(\{ a_{2i}, a_{2i-1} \}) = u_{a_{2i}}(\{ b_i, a_{2i-1} \}) = u_{a_{2i-1}}(\{ b_i, a_{2i} \}) = 2$. Now $\{ b_i, a_{2i}, a_{2i-1} \}$ blocks $M$, which is a contradiction.
+\end{proof}
+
+\begin{lem}
+\label{lem:threed_sr_as_allbiintriplestogether}
+If $(N, V)$ contains a stable matching $M$ then for any $b_i$ where $1 \leq i \leq 3q$, the triple $M(b_i)$ comprises $\{b_i, b_j, b_k\}$ where $1 \leq j,k \leq 3q$ and $\{w_i, w_j\}, \{w_i, w_k\} \in E$.
+\end{lem}
+\begin{proof}
+Lemma~\ref{lem:threed_sr_as_allbiscores2} shows that $u_{b_i}(M)=2$. Suppose $M(b_i)=\{ b_i, \alpha_k, \alpha_l \}$ for some $\alpha_k, \alpha_l\in N$. Since $u_{b_i}(M)=2$, it must be that $v_{b_i}(\alpha_k)=1$ and hence either $\alpha_k = a_{2i}$, $\alpha_k = a_{2i-1}$, or $\alpha_k = b_j$ where $1\leq j \leq 3q$ where $\{w_i, w_j\}\in E$. Suppose first that $\alpha_k = a_{2i}$. Since $b_i \in M(a_{2i})$ it follows that $u_{a_{2i}}(M) \geq 1$ which contradicts Lemma~\ref{lem:threed_sr_as_allairscores0}.  A similar argument shows that $\alpha_k \neq a_{2i-1}$. It remains that $\alpha_k = b_j$ where $1\leq j \leq 3q$ such that $\{ w_i, w_j \} \in E$. The same argument shows that $\alpha_l = b_k$ where $1\leq k \leq 3q$ where $\{ w_i, w_k \} \in E$. We have shown that $M(b_i) = \{ b_i, b_j, b_k \}$ for some $j, k$ where $1 \leq j,k \leq 3q$ and $\{ w_i, w_j \}, \{ w_i, w_k \} \in E$.
+\end{proof}
+
+\begin{lem}
+\label{lem:threed_sr_as_binary_reduction_second_direction_conclusion}
+If $(N, V)$ contains a stable matching then $G$ contains a partition into triangles.
+\end{lem}
+\begin{proof}
+Lemma~\ref{lem:threed_sr_as_allbiintriplestogether} shows that for an arbitrary $b_i$ where $1 \leq i \leq 3q$, $M(b_i)$ comprises $\{b_i, b_j, b_k\}$ where $1 \leq j,k \leq 3q$, $\{w_i, w_j\}\in E$, and $\{w_i, w_k\}\in E$. It follows that there are exactly $q$ triples in $M$ each containing three agents $\{b_i, b_j, b_k\}$, where the three corresponding vertices $w_i, w_j, w_k$ are pairwise adjacent in $G$. From these triples of pairwise adjacent vertices, a partition into triangles $X$ can be easily constructed.
+\end{proof}
+
+% \subsection{Conclusion}
+
+We have now shown that the 3DR-AS instance $(N, V)$ contains a stable matching if and only if the PIT instance $G$ contains a partition into triangles. This shows that the reduction is correct.
+
+\begin{thm}
+\label{thm:threed_sr_as_binary_reduction}
+Deciding if a given instance of 3DR-AS contains a stable matching is $\NP$-complete, even when preferences are binary.
+\end{thm}
+\begin{proof}
+It is straightforward to show that this decision problem belongs to $\NP$. We have presented a polynomial-time reduction from Partition Into Triangles (PIT, Problem~\ref{prob:pit}), which is $\NP$-complete \cite{GJ79}. Given an arbitrary instance $G$ of PIT, the reduction constructs an instance $(N, V)$ of 3DR-AS with binary preferences. Lemmas~\ref{lem:threed_sr_as_binary_reduction_firstdirection} and~\ref{lem:threed_sr_as_binary_reduction_second_direction_conclusion} show that $(N, V)$ contains a stable matching if and only if $G$ contains a partition into triangles and thus that this decision problem is $\NP$-hard.
+% to the problem of deciding if a given instance of 3DR-AS contains a stable matching. If a partition into triangles exists in the PIT instance $G=(W, E)$ then a stable matching $M$ exists in $(N, V)$ where $|M|=|N|/3$ (Lemma). If a stable matching $M$ exists in $(N, V)$ where $|M|=|N|/3$ then a partition into triangles exists in $G$ (Lemma).
+\end{proof}

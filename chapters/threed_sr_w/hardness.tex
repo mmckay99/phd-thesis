@@ -1,0 +1,111 @@
+In this section we show that deciding if a given instance of 3DR-W contains a stable matching is $\NP$-complete. The reduction is from a restricted case of \emph{Partition Into Triangles} (PIT, Problem~\ref{prob:pit}) \cite{GJ79}. 
+
+\begin{myproblem}[Partition Into Triangles (PIT)]
+\label{prob:pit}\mysymbolfirstusedefinition{symboldef:pit}{}
+\begin{samepage}
+\begin{adjustwidth}{8pt}{8pt}
+\inp a simple undirected graph $G=(W, E)$ where $|W|=3q$ for some integer $q$\\
+\ques Can the vertices of $G$ be partitioned into $q$ disjoint sets $X=\{ X_1, X_2, \dots, X_q \}$, each set containing exactly three vertices, such that each $X_p=\{ w_i, w_j, w_k \}\in W$ where $1\leq p\leq q$ is a triangle?
+\end{adjustwidth}
+\end{samepage}
+\end{myproblem}
+
+Given a graph simple undirected graph $G = (W, E)$, we say that a set of three vertices $\{ w_i, w_j, w_k \}$ is a \emph{triangle} if $\{ w_i, w_j \} \in E$, $\{ w_i, w_k \} \in E$, and $\{ w_j, w_k \} \in E$. Let $\mathcal{T} = \{ T_1, T_2, \dots, T_m \}$ be the set of triangles in $G$. We reduce from the special case of PIT in which $\mathcal{T}$ has a \emph{system of distinct representatives} (\mysymbolfirstusedefinition{symboldef:sdr}{SDR}), that is, a set $Z = \{ z_1, z_2, \dots, z_m \}$ of $m$ distinct vertices where $z_i \in T_i$ for each $i$ where $1\leq i \leq m$. We refer to this restricted problem as \emph{PIT-SDR}. It can be verified that in the reduction shown by Garey and Johnson \cite[Theorem~3.7]{GJ79} from \emph{Exact Cover by Three-sets} to PIT that the constructed graph admits an SDR\footnote{In the reduction of Garey and Johnson, every triangle in $G$ is contained in exactly one subset gadget. For each subset gadget $c_i \in C$, the SDR contains the vertices labelled ``$a_i[1]$'', ``$a_i[2]$'', ``$a_i[4]$``, ``$a_i[5]$'', ``$a_i[7]$'', ``$a_i[8]$'', and ``$a_i[6]$''.}. It follows that PIT-SDR is $\NP$-complete.
+
+The reduction from PIT-SDR is as follows. Suppose $G = (W, E)$ is an arbitrary graph. We shall construct an instance $(N, P$) of 3DR-W. For each vertex $i$ where $1 \leq i \leq 3q$ construct a set of seven agents $H_i = \{ h_i^1, h_i^2, \dots, h_i^7 \}$, which we refer to as the \emph{$i\textsuperscript{th}$ heptagadget}. Let $H^7$ be the set $\bigcup_{1 \leq i \leq 3q} h_i^7$. We shall now construct the preferences of the agents in each heptagadget. First, for each heptagadget $H_i$ construct the agents' preferences as follows. Note that in the following construction ``$\dots$'' denotes all remaining agents in an arbitrary order.
+
+\begin{flalign*}
+\begin{array}{rlcrclcr}
+h_i^1 : & & & &\; \; h_i^3 \ \ h_i^7 \ \ h_i^4 \ \ h_i^6 \ \ h_i^2 \ \ h_i^5 && \dots &\\
+h_i^2 : & & & &\;\; h_i^7 \ \ h_i^1 \ \ h_i^3 \ \ h_i^6 \ \ h_i^4 \ \ h_i^5 & &
+\multicolumn{1}{c}{\dots} & \\
+h_i^3 : & & & &\;\; h_i^4 \ \ h_i^1 \ \ h_i^7 \ \ h_i^6 \ \ h_i^2 \ \ h_i^5 & &
+\multicolumn{1}{c}{\dots} & \\
+h_i^4 : & & & &\;\; h_i^6 \ \ h_i^7 \ \ h_i^1 \ \ h_i^3 \ \ h_i^2 \ \ h_i^5 & &
+\multicolumn{1}{c}{\dots} & \\
+h_i^5 : & & & &\;\; h_i^7 \ \ h_i^6 \ \ h_i^1 \ \ h_i^4 \ \ h_i^2 \ \ h_i^3 & &
+\multicolumn{1}{c}{\dots} & \\
+h_i^6 : & & & & \;\; h_i^1 \ \ h_i^3 \ \ h_i^7 \ \ h_i^4 \ \ h_i^2 \ \ h_i^5 & &
+\multicolumn{1}{c}{\dots} & \\
+h_i^7 : & \undermat{\text{\small{proper part}}}{[& h_j^7 \in (H^7\setminus \{ h_i^7 \}) : \{ w_i, w_j \} \in E &]} & \;\; h_i^6 \ \ h_i^4 \ \ h_i^1 \ \ h_i^3 \ \ h_i^2\ \ h_i^5 & &
+\multicolumn{1}{c}{\dots} &\\[5.2ex]
+\end{array}
+\end{flalign*}
+We now reorder the proper part of the preference list of each agent in $H^7$. Our aim is to ensure that for any three agents $h_i^7, h_j^7, h_k^7 \in H^7$ if the three corresponding vertices $w_i, w_j, w_k$ form a triangle in $G$ then one of the three agents is the least-preferred agent in the proper part of the preference list of at least one of the other two agents. To do this, first identify the set of triangles $\mathcal{T} = \{ T_1, T_2, \dots, T_m \}$ and then construct an SDR of $\mathcal{T}$ labelled $Z = \{ z_1, z_2, \dots, z_m \}$. Note that $Z$ can be constructed in polynomial time as a maximum matching in a bipartite graph. Next, for each $i$ where $1\leq a \leq m$ consider the triangle $T_a = \{ w_i, w_j, w_k \}$ in $G$, labelling the representative vertex $z_a$ in $Z$ as $w_i$ and the other two vertices as $w_j$ and $w_k$ arbitrarily. Since $\{ w_i, w_j \} \in E$ it must be that $h_j^7$ appears in the proper part of $P_{h_i^7}$. Reorder the proper part of $P_{h_i^7}$ such that $h_j^7$ is now the least-preferred agent in the proper part. Note that by the definition of an SDR, no preference list is modified more than once and thus we have achieved our aim. This completes the construction of $(N, P)$.
+
+It is straightforward to show that this reduction can be performed in polynomial time. To prove that the reduction is correct we show that a stable matching exists in the 3DR-W instance $(N, P)$ if and only if a partition into triangles exists in the PIT-SDR instance $G$.
+
+We first show that if the PIT-SDR instance $G$ contains a partition into triangles then the 3DR-W instance $(N, P)$ contains a stable matching.
+
+\begin{lem}
+\label{lem:threed_sr_w_stablematchingifpartitionexists}
+If $G$ contains a partition into triangles then $(N, P)$ contains a stable matching.
+\end{lem}
+\begin{proof}
+Suppose $\mathcal{X} = \{ X_1, X_2, \dots, X_q \}$ is a partition into triangles in $G$. For each triangle $X_p = \{ w_i, w_j, w_k \} \in \mathcal{X}$ construct in $M$ the triples $\{h_i^7,h_j^7,h_k^7\}$, $\{h_i^1,h_i^3,h_i^4\}$, $\{h_i^2,h_i^5,h_i^6\}$, $\{h_j^1,h_j^3,h_j^4\}$, $\{h_j^2,h_j^5,h_j^6\}$, $\{h_k^1,h_k^3,h_k^4\}$ and $\{h_k^2,h_k^5,h_k^6\}$.
+
+To show that $M$ is stable, we consider each agent in an arbitrary heptagadget $H_i$. 
+
+First, consider $h_i^7$. Suppose for a contradiction that $h_i^7$ belongs to a triple that blocks $M$. By the construction of $M$, $\mathscr{W}_{h_i^7}(M)$ belongs to the proper part of $P_{h_i^7}$ so it must be that this blocking triple comprises three agents $\{ h_i^7, h_j^7, h_k^7 \}$ where $\{ w_i, w_j \} \in E$ and $\{ w_i, w_k \} \in E$. A symmetric argument shows that $h_i^7$ must appear in the proper part of $P_{h_j^7}$ and thus that $\{ w_i, w_j, w_k \}$ is a triangle in $G$. Suppose the triangle $\{ w_i, w_j, w_k \}$ is labelled $T_a$ where $1\leq a \leq m$ and assume without loss of generality that $w_i$ is the representative vertex $z_a$ in the SDR $Z$ of $\mathcal{T}$. It follows that $\{ h_i^7, h_j^7, h_k^7 \}$ contains the least-preferred agent in the proper part of $P_{h_i^7}$. Assume without loss of generality that $h_j^7$ is the least-preferred agent in the proper part of $P_{h_i^7}$. This contradicts the fact that $h_j^7$ must appear before $\mathscr{W}_{h_i^7}(M)$, which also belongs to the proper part of $P_{h_i^7}$. It remains that $h_i^7$ does not belong to a triple that blocks $M$.
+
+Next, consider $h_i^3$. No triple is preferred by $h_i^3$ to $M(h_i^3)$ so $h_i^3$ does not belong to a blocking triple. 
+Similarly, the only triple that $h_i^1$ prefers to $M(h_i^1)$ contains $h_i^7$, which we have shown does not belong to a blocking triple. It follows that $h_i^1$ also does not belong to a blocking triple. 
+Any triple $h_i^4$ prefers to $M(h_i^4)$ and contains $h_i^1$ or $h_i^3$ is not blocking, and the only triple that $h_i^4$ prefers to $M(h_i^4)$ that contains neither $h_i^1$ nor $h_i^3$ is $\{ h_i^4, h_i^6, h_i^7 \}$. Since $h_i^7$ does not belong to a blocking triple it follows thus that $h_i^4$ does not belong to a blocking triple. 
+Similarly, the only triples that $h_i^2$, $h_i^5$, and $h_i^6$ prefer to $M(h_i^2)$, $M(h_i^5)$, and $M(h_i^6)$ contain at least one of $h_i^1$, $h_i^3$, $h_i^4$, and $h_i^7$ so are not blocking. It follows that neither $h_i^2$, $h_i^5$, nor $h_i^6$ belong to blocking triples.
+\end{proof}
+
+We now show, using a sequence of lemmas, that if the 3DR-W instance $(N, P)$ contains a stable matching then the PIT-SDR instance $G$ contains a partition into triangles.
+
+In the reduction, for some matching $M$ we say that some agent $h_i^r$ is \emph{internal in $M$} if $M(h_i^r) \subset H_i$, some agent $h_i^7 \in H^7$ is \emph{proper in $M$} if $\mathscr{W}_{h_i^7}(M)$ belongs to the proper part of $P_{h_i^7}$ and some agent $h_i^r \in N$ is \emph{external in $M$} if $h_i^r$ is neither proper nor internal. It follows that every agent in $H_i$ is either proper, internal, or external in $M$. We will eventually show that in $M$ no agent is external and every agent in $H^7$ is proper, from which the existence of a partition into triangles is straightforward to show.
+
+\begin{lem}
+\label{lem:threed_sr_w_exactlysixinternal}
+If $(N, P)$ contains a stable matching $M$ then each heptagadget $H_i$ contains exactly six agents that are internal in $M$.
+\end{lem}
+\begin{proof}
+By definition, the number of internal agents in $M$ in $H_i$ is divisible by three. It follows that if $H_i$ does not contain six agents that are internal in $M$ it contains at most three agents that are internal in $M$. Suppose for a contradiction that $H_i$ contains at most three agents that are internal in $M$. Since by definition $H_i$ contains at most one proper agent in $M$, namely $h_i^7$, it follows that $H_i$ contains at least three agents that are external in $M$, which we label $h_i^r$, $h_i^s$, and $h_i^t$. By the definition of an external agent it must be that $\mathscr{W}(\{ h_i^s, h_i^t \}) \succ_{h_i^r} \mathscr{W}_{h_i^r}(M)$, $\mathscr{W}(\{ h_i^r, h_i^t \}) \succ_{h_i^s} \mathscr{W}_{h_i^s}(M)$, and $\mathscr{W}(\{ h_i^r, h_i^s \}) \succ_{h_i^t} \mathscr{W}_{h_i^t}(M)$. It follows that $\{ h_i^r, h_i^s, h_i^t \}$ blocks $M$, which is a contradiction.
+\end{proof}
+
+\begin{lem}
+If $(N, P)$ contains a stable matching $M$ then no agent in $N$ is external in $M$.
+\label{lem:threed_sr_w_noneeexternal}
+\end{lem}
+\begin{proof}
+Consider an arbitrary heptagadget $H_i$, which by Lemma~\ref{lem:threed_sr_w_exactlysixinternal} contains exactly six agents that are internal in $M$. The remaining agent is either external or proper in $M$. Suppose for a contradiction that the remaining agent $h_i^r$ is external in $M$. If $r \neq 5$ then it must be that $h_i^5$ is internal in $M$ and thus $M(h_i^5) = \{ h_i^5, h_i^s, h_i^t \}$ where $s, t \in \{ 1, 2, 3, 4, 6, 7 \}$. Notice that by the design of the constructed instance $(N, P)$, it must be that $h_i^r \succ_{h_i^s} h_i^5$ and $h_i^r \succ_{h_i^t} h_i^5$. Moreover, since $h_i^r$ is external in $M$ it follows that $\mathscr{W}_{h_i^r}(\{ h_i^s, h_i^t \}) \succ_{h_i^r} \mathscr{W}_{h_i^r}(M)$ and thus $\{ h_i^r, h_i^s, h_i^t \}$ blocks $M$, which is a contradiction. It remains that $r = 5$. In this case we consider the two triples in $M$ that contain the six agents in $H_i$ that are internal in $M$. We enumerate the $\binom{6}{2}/2$ possible such pairs of triples and show that in any case $M$ is not stable. Since all agents in both triples belong to $H_i$, in the following table we shorten $\{ h_i^r, h_i^s, h_i^t \}$ to $\{ r, s, t \}$.
+\begin{center}
+\begin{tabular}{ c c }
+triples in $M$ & $M$ is blocked by\Tstrut\Bstrut\\
+\hline
+$\{1,2,3\}$, $\{4,6,7\}$ & $\{1,3,6\}$\Tstrut\\
+$\{1,2,4\}$, $\{3,6,7\}$ & $\{1,3,4\}$ \\
+$\{1,2,6\}$, $\{3,4,7\}$ & $\{1,4,6\}$ \\
+$\{1,2,7\}$, $\{3,4,6\}$ & $\{1,3,7\}$ \\
+$\{1,3,4\}$, $\{2,6,7\}$ & $\{4,6,7\}$ \\
+$\{1,3,6\}$, $\{2,4,7\}$ & $\{1,3,4\}$ \\
+$\{1,3,7\}$, $\{2,4,6\}$ & $\{4,6,7\}$ \\
+$\{1,4,6\}$, $\{2,3,7\}$ & $\{1,3,7\}$ \\
+$\{1,4,7\}$, $\{2,3,6\}$ & $\{4,6,7\}$ \\
+$\{1,6,7\}$, $\{2,3,4\}$ & $\{1,3,4\}$ \\
+\end{tabular}
+\end{center}
+\end{proof}
+
+We remark that from the proof of Lemma~\ref{lem:threed_sr_w_noneeexternal} it is straightforward to identify a (minimal) instance of 3DR-W that contains no stable matching, by using six agents $h_i^1$, $h_i^2$, $h_i^3$, $h_i^4$, $h_i^6$, and $h_i^7$ from a single gadget $H_i$.
+
+\begin{lem}
+\label{lem:threed_sr_w_pitexistsifmisstable}
+If $(N, P)$ contains a stable matching then $G$ contains a partition into triangles.
+\end{lem}
+\begin{proof}
+Suppose $M$ is a stable matching in $(N, P)$. Recall that $|N|=21q$. By Lemma~\ref{lem:threed_sr_w_exactlysixinternal}, there are $18q$ internal agents that by definition belong to $6q$ triples in $M$. By Lemma~\ref{lem:threed_sr_w_noneeexternal}, none of the remaining $3q$ agents are external and thus there are exactly $3q$ proper agents. It follows that there are $q$ triples in $M$ that each contain three proper agents. By the construction of the proper part of the preference list of each agent in $H^7$, each of these $q$ triples corresponds to a triangle in $G$. It follows that this set of $q$ triples corresponds directly to a partition into triangles in $G$.
+\end{proof}
+
+We have now shown that the 3DR-W instance $(N, P)$ contains a stable matching if and only if a partition into triangles exists in $G$. This shows that the reduction is correct.
+
+\begin{thm}
+\label{thm:threed_sr_w_existence}
+Deciding if a given instance of 3DR-W contains a stable matching is $\NP$-complete.
+\end{thm}
+\begin{proof}
+It is straightforward to show that this decision problem belongs to $\NP$. We have presented a polynomial-time reduction from a restricted version of Partition Into Triangles, known as PIT-SDR, which we showed was $\NP$-complete. Given an arbitrary instance $G$ of PIT-SDR, the reduction constructs an instance $(N, P)$ of 3DR-W. Lemmas~\ref{lem:threed_sr_w_stablematchingifpartitionexists} and~\ref{lem:threed_sr_w_pitexistsifmisstable} shows that $(N, P)$ contains a stable matching if and only if $G$ contains a partition into triangles and thus that this decision problem is $\NP$-hard.
+\end{proof}

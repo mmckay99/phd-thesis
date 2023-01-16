@@ -1,0 +1,40 @@
+
+Our first result is a necessary and sufficient condition for the existence of an envy-free matching in an instance $(N, V)$ of 3DR-AS with binary and symmetric preferences and maximum degree $2$. Since preferences are binary and symmetric, in the following proof we refer to the \emph{underlying graph} $(N, E)$ of the instance $(N, V)$. The underlying graph $(N, E)$ is constructed such that $\{ \alpha_i, \alpha_j \} \in E$ if and only if $v_{\alpha_i}(\alpha_j) = 1$, for any two agents $\alpha_i, \alpha_j \in N$.
+
+\begin{lem}
+\label{lem:threed_efr_as_ef_if_and_only_if}
+Consider an instance of 3DR-AS with binary and symmetric preferences and maximum degree $2$. Let $P$ be the set of isolated agents, $\mathcal{Q}$ be the set of connected components of size $3{k_1} - 2$ for any ${k_1} > 1$, and $\mathcal{R}$ be the set of connected components of size $3{k_2} - 1$ for any ${k_2} \geq 1$. An envy-free matching exists if and only if $2|\mathcal{Q}| + |\mathcal{R}| \leq |P|$.
+\end{lem}
+\begin{proof}
+Consider an arbitrary instance of 3DR-AS with binary and symmetric preferences, represented by its underlying graph $(N, E)$. Let $\mathcal{S}$ be the set of connected components of size $3{k_3}$ for any ${k_3} \geq 1$.
+
+To show the first direction, suppose $2|\mathcal{Q}| + |\mathcal{R}| \leq |P|$. We shall construct a matching $M$ and demonstrate that it is envy-free. First, observe that if any agent has utility $1$ or more then that agent is not envious, since the maximum degree of the underlying graph is $2$.
+
+Construct $M$ as follows. First, consider each $S = ( s_1, s_2, \dots, s_{3{k_3}} )$ in $\mathcal{S}$. For each $i$ where $1\leq i\leq {k_3}$, add $\{ s_{3i-2}, s_{3i-1}, s_{3i} \}$ to $M$. It follows that each agent in $S$ has utility at least $1$ and thus is not envious. Now consider each $R = ( r_1, r_2, \dots, r_{3{k_2}-1} )$ in $\mathcal{R}$. For each $i$ where $1\leq i \leq {k_2}-1$, add $\{ r_{3i-2}, r_{3i-1} r_{3i} \}$ to $M$. Next, add $\{ r_{3{k_2}-2}, r_{3{k_2}-1}, p_{2|\mathcal{Q}|+i} \}$ to $M$ (recall that $|P| \geq 2|\mathcal{Q}| + |\mathcal{R}|$). It follows that each agent in $R$ is not envious. Now consider each $Q = ( q_1, q_2, \dots, q_{3{k_1}-2} )$ in $\mathcal{Q}$. For each $i$ where $1\leq i \leq {k_1}-2$, add $\{ q_{3i-2}, q_{3i-1}, q_{3i} \}$ to $M$. Next, add to $M$ the triples $\{ q_{3{k_1}-5}, q_{3{k_1}-4}, p_{i} \}$ and $\{ q_{3{k_1}-3}, q_{3{k_1}-2}, p_{2i} \}$. It follows that each agent in $Q$ has utility at least $1$  and thus is not envious.
+
+Finally, arbitrarily add the remaining agents in $P$ to triples in $M$. Since these agents are isolated they are not envious.
+
+To show the second direction, suppose for a contradiction that $(N, E)$ has an envy-free matching $M$ and $2|\mathcal{Q}| + |\mathcal{R}| > |P|$. Since the degree of any agent in $\bigcup \mathcal{Q}$ is at least $1$, it must be that the utility of each agent in $\bigcup \mathcal{Q}$ is at least $1$. Similarly, the utility of each agent in $\bigcup \mathcal{R}$ must also be at least $1$. It follows that any agent in $M$ that has utility $0$ belongs to $P$.
+
+Now consider some $Q \in \mathcal{Q}$. By definition, $|Q| = 3{k_1} - 2$ for some ${k_1} > 1$. It follows that there exists two triples in $M$ that each contain exactly two agents in $Q$ and some agent with utility $0$ in $M$. Similarly, for each $R \in \mathcal{R}$ there must exist at least one triple in $M$ that contains exactly two agents in $R$ and some agent with utility $0$ in $M$. It follows that there are at least $2|\mathcal{Q}| + |\mathcal{R}|$ agents with utility $0$ in $M$. The only possibility is that there exists $2|\mathcal{Q}| + |\mathcal{R}|$ agents in $P$, which is a contradiction.
+\end{proof}
+
+\begin{thm}
+\label{thm:threed_efr_as_ef_algorithm}
+Consider an instance of 3DR-AS with binary and symmetric preferences and maximum degree $2$. There exists an $O(|N|)$-time algorithm that can either find an envy-free matching or report that no such matching exists.
+\end{thm}
+\begin{proof}
+Lemma~\ref{lem:threed_efr_as_ef_if_and_only_if} gives a necessary and sufficient condition for the existence of an envy-free matching in $(N, E)$, based on the number of connected components of different sizes. Define $P$, $\mathcal{Q}$, and $\mathcal{R}$ as before in Lemma~\ref{lem:threed_efr_as_ef_if_and_only_if}. We outline a linear-time algorithm based on the constructive proof in Lemma~\ref{lem:threed_efr_as_ef_if_and_only_if}. The algorithm outputs either $\bot$, if no envy-free matching exists, or a labelling $\tau$ of each agent $\alpha_i$ with some index $1\leq \tau(\alpha_i) \leq n$ that represents the index of $M(\alpha_i)$ in some arbitrary ordering of the triples in an envy-free matching $M$. 
+
+The algorithm has three phases. In the first phase, the algorithm constructs a stack $P$ that contains all isolated agents in $(N, E)$. It also constructs a stack $T$, which contains exactly one agent per connected component of size two or more, such that if a connected component is a path then $T$ contains one of its endpoints. The construction of $T$ can thus be performed in linear time.
+
+The algorithm now enters the second phase, which is as follows. The algorithm maintains a counter $r$ to track the label of the agent last labelled. Initially, $r=1$. The algorithm pops an unmarked agent $m_i$ from the stack $T$ and marks $\tau(m_i)=1$. It sets a counter $c$ to $1$, which will track the size of the connected component that contains $m_i$. It then identifies successive adjacent agents and labels each one with $r$, incrementing $r$ by one every third agent, following the path or cycle in the underlying graph. The successive agents are therefore marked $1,1,1,2,2,2,3,3,3\dots$. The counter $c$ is updated to ensure that $c$ is the size of this connected component. Eventually, either some agent with degree $1$ or some previously labelled agent is discovered. In this case, there are three possibilities. 
+
+The first possibility is that $c=3{k_3}$ for some ${k_3}\geq 1$. In this case the algorithm pops some yet unlabelled $m_i$ from the stack $T$ and repeats the above process. 
+
+The second possibility is that $c=3{k_2}-1$ for some ${k_2}\geq 1$. In this case the algorithm pops some isolated agent $p_i$ from the stack $P$ and labels $\tau(p_i)=r$. If the stack $P$ is empty then it must be that $2|\mathcal{Q}| + |\mathcal{R}| > |P|$ and thus the algorithm returns $\bot$. The algorithm then pops some yet unlabelled $m_i$ from the stack $T$ and repeats the above process.
+
+The third possibility is that $c=3{k_1}-2$ for some ${k_1}>1$. In this case it must be that exactly one agent $\alpha_j$ has been marked with $r$. The algorithm identifies the last agent $\alpha_l$ that was labelled with $r-1$, which must be adjacent to $\alpha_j$. It relabels $\tau(\alpha_l)=r$. It follows that exactly two adjacent agents are labelled with $r-1$ and exactly two adjacent agents are labelled with $r$. The algorithm then pops two isolated agents $p_g, p_h$ from the stack $P$ and labels $\tau(p_g)=r$ and $\tau(p_h)=r-1$. If $|P|<2$ then it must be that $2|\mathcal{Q}| + |\mathcal{R}|>|P|$ and thus the algorithm returns $\bot$. The algorithm then pops some yet-unlabelled $m_i$ from the stack $T$ and repeats the above process.
+
+In the third phase, since the algorithm has not yet returned $\bot$, it must be that each agent with degree $1$ or more has been labelled and therefore assigned to some triple in $M$. The algorithm arbitrarily assigns the remaining agents in $P$ to triples in $M$ by popping successive agents $p_i$ from the stack $P$ and labelling $\tau(p_i)=r$, incrementing $r$ every third agent.
+\end{proof}

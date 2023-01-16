@@ -1,0 +1,75 @@
+\subsection{Vertex-disjoint packing} 
+\label{sec:krpacking_vdkr_polytimesolvability}
+
+In this section we show that \vdkr is solvable in polynomial time if $\Delta < 5r/3 - 1$. The proof involves finding an independent set in the $K_r$-vertex intersection graph $\mathcal{K}_r^G$. We build on the technique of Caprara and Rizzi \cite{caprara_packing_2002} and show that if $\Delta(G) < 5r/3 - 1$ then $\mathcal{K}_r^G$ is claw-free. It follows that a a maximum independent set in $\mathcal{K}_r^G$ can be found in polynomial time (a result of Minty \cite{MINTY1980284} and Sbihi \cite{SBIHI198053}), which corresponds directly to a maximum vertex-disjoint $K_r$-packing.
+
+In his paper on claw-free graphs, Minty \cite{MINTY1980284} remarked that an algorithm to find a maximum cardinality matching, or vertex-disjoint $K_2$-packing, can be used to find a maximum independent set in a line graph (the $K_2$ vertex-intersection graph). Here, like Caprara and Rizzi~\cite{caprara_packing_2002}, we make use of the converse relationship, that if the corresponding intersection graph is claw-free then \vdkr and \edkr can be solved in polynomial time. A general relationship between packing problems and independent sets in intersection graphs is also noted by Kann~\cite{kann91}.
+
+In what follows, suppose $\Delta(G) < {5r}/{3}-1$. In Lemma~\ref{lem:krpacking_polytime_overlap} we place a lower bound on the size of the intersection of two non-vertex intersecting $K_r$s in $G$.
+
+\begin{lem}
+\label{lem:krpacking_polytime_overlap}
+$|U_i \cap U_j| > r/3$ for any $\{ U_i, U_j \} \in E_{\mathcal{K}_r^G}$.
+\end{lem}
+\begin{proof}
+Consider an arbitrary vertex $u_l \in |U_i \cap U_j|$. By definition, $u_l$ is adjacent to each vertex in $U_i \cup U_j$. By the principle of inclusion-exclusion, $|U_i \cup U_j| = 2r - |U_i \cap U_j|$ so $\deg_{G}(u_l) \geq 2r - |U_i \cap U_j| - 1$. Since $\deg_{G}(u_l) \leq \Delta(G) < {5r}/{3}-1$, it must be that $2r - |U_i \cap U_j| - 1 < {5r}/{3}-1$. Rearranging gives $|U_i \cap U_j| > r/3$.
+\end{proof}
+
+\begin{lem}
+$\mathcal{K}_r^G$ is claw-free.
+\end{lem}
+\begin{proof}
+Consider some $U_i, U_{j_1}, U_{j_2}, U_{j_3} \in K_r^G$ exist where $\{ U_i, U_{j_a} \} \in E_{\mathcal{K}_r^G}$ for each $a \in \{1, 2, 3\}$. By Lemma~\ref{lem:krpacking_polytime_overlap}, it must be that $|U_i \cap U_{j_1}| > r/3$, $|U_i \cap U_{j_2}| > r/3$, and $|U_i \cap U_{j_3}| > r/3$. Since $|U_i|=r$ it follows by the pigeonhole principle that either $U_{j_1} \cap U_{j_2} \neq \varnothing$, $U_{j_2} \cap U_{j_3} \neq \varnothing$, or $U_{j_1} \cap U_{j_3} \neq \varnothing$ and thus $\{ U_i, U_{j_1}, U_{j_2}, U_{j_3} \}$ is not a claw in $\mathcal{K}_r^G$.
+\end{proof}
+
+\begin{thm}
+\label{thm:krpacking_vdkr_polytime_5r3minus1}
+If $\Delta(G)<5r/3-1$ then \vdkr can be solved in polynomial time.
+\end{thm}
+\begin{proof}
+First, construct the $K_r$-vertex intersection graph $\mathcal{K}_r^G = (K_r^G, E_{\mathcal{K}_r^G})$. The set $K_r^G$ can be constructed in $O(\binom{|V|}{r})=O(|V|^r)$ by considering every possible set of $r$ vertices in $V$. The set $E_{\mathcal{K}_r^G}$ can then be constructed in $O(|V|^{2r})$ time. Next, find a maximum independent set in $\mathcal{K}_r^G$, which can be accomplished using Minty's algorithm (other algorithms have since been developed with improved worst-case time complexity \cite{FOS11}).
+\end{proof}
+
+We remark that Minty's algorithm also extends to the problem in which the vertices are weighted and the goal is to find an independent set of maximum total weight \cite{Nakamura01}. It might be interesting to study a weighted generalisation of \vdkr, in which a weight function exists on either the vertices or edges of the graph, and see if this approach can be used to derive other polynomial-time solvability results.
+
+\subsection{Edge-disjoint packing} 
+
+In this section we consider \edkr. Using Theorem~\ref{thm:krpacking_vdkr_polytime_5r3minus1} and Observation~\ref{obs:krpacking_edkr_is_also_vdkr} it is straightforward to show by that if $r \geq 4$ then \edkr can be solved in polynomial time. We state this result as Theorem~\ref{thm:krpacking_edkrgeq6_polytime}.
+
+% NOTE - NOT A TYPO, this result is true for r \geq 4, but we only care about the case when r \geq 6, since we improve it for 4, 5.
+\begin{thm}
+\label{thm:krpacking_edkrgeq6_polytime}
+If $r \geq 4$ and $\Delta(G) < 5r/3 - 1$ then \edkr can be solved in polynomial time.
+\end{thm}
+\begin{proof}
+If $r > 3$ and $\Delta(G) < 5r/3 - 1$ then we can find a maximum vertex-disjoint $K_r$-packing in polynomial time by Theorem~\ref{thm:krpacking_vdkr_polytime_5r3minus1}. Such a packing is also a is also a maximum edge-disjoint $K_r$-packing, by Observation~\ref{obs:krpacking_edkr_is_also_vdkr}.
+\end{proof}
+
+We now show that this upper bound on $\Delta(G)$ can be improved if $r \in \{ 4, 5 \}$. The key insight in this case is that if $r \in \{ 4, 5 \}$ and $\Delta \leq 2r - 2$ then the $K_r$-edge intersection graph ${\mathcal{K}'}_r^G$ is claw-free.
+
+\begin{lem}
+\label{lem:krpacking_edgedisjoint_r45}
+If $r\in \{ 4, 5 \}$ and $\Delta(G) \leq 2r - 2$ then the $K_r$-edge intersection graph ${\mathcal{K}'}_r^G$ is claw-free.
+\end{lem}
+\begin{proof}
+Suppose $U_i, U_{j_1}, U_{j_2}, U_{j_3} \in K_r^G$ exist where $\{ U_i, U_{j_a} \} \in E_{{\mathcal{K}'}_r^G}$ for each $a \in \{1, 2, 3\}$. Suppose for a contradiction that $U_i, U_{j_1}, U_{j_2}, U_{j_3}$ is a claw in ${\mathcal{K}'}_r^G$, i.e.\ $|U_{j_a} \cap U_{j_b}| < 2$ for each $a, b \in \{ 1, 2, 3 \}$. By the definition of $E_{{\mathcal{K}'}_r^G}$, it follows that $|U_i \cap U_{j_a}| \geq 2$ for each $a \in \{ 1, 2, 3 \}$. Since $|U_i| = r \leq 5$, we assume without loss of generality that $|U_i \cap U_{j_1} \cap U_{j_2}| \geq 1$. Furthermore, it must be that $|U_i \cap U_{j_1} \cap U_{j_2}| = 1$, otherwise $|U_{j_1} \cap U_{j_2}| > 1$ which is a contradiction.  Let $v_r$ be the single vertex in $U_i \cap U_{j_1} \cap U_{j_2}$. Since $U_{j_1}$ and $U_{j_2}$ are $K_r$s in $G$ and $\deg_{G}(v_r) \leq 2r-2$ it must be that $N_{G}[v_r]=U_{j_1} \cup U_{j_2}$. Since $U_i$ is also a $K_r$ it follows that $U_i \subset U_{j_1} \cup U_{j_2}$. 
+
+Now consider $U_i \cap U_{j_1}$ and $U_i \cap U_{j_2}$. If $|U_i \cap U_{j_1}| + |U_i \cap U_{j_2}| \geq r+2$ then since $|U_i|=r$ it follows that $|U_{j_1} \cap U_{j_2}| \geq 2$ which is a contradiction. It follows that $|U_i \cap U_{j_1}| + |U_i \cap U_{j_2}| \leq r + 1$ and either $|U_i \cap U_{j_1}| \leq (r+1)/2$ or $|U_i \cap U_{j_2}| \leq (r+1)/2$. Assume without loss of generality that $|U_i \cap U_{j_1}| \leq (r+1)/2$. 
+
+Now consider $U_{j_3}$. Since $U_i, U_{j_1}, U_{j_2}, U_{j_3}$ is a claw in ${\mathcal{K}'}_r^G$, it must be that $|U_{j_3} \cap U_{i}| \geq 2$, $|U_{j_3} \cap U_{j_1}| \leq 1$, and $|U_{j_3} \cap U_{j_2}| \leq 1$. Since $U_i \subset U_{j_1} \cup U_{j_2}$, the only possibility is that $|U_{j_3} \cap U_i| = 2$, $|U_{j_3} \cap U_i \cap U_{j_2}| = 1$ and $|U_{j_3} \cap U_i \cap U_{j_1}| = 1$. 
+
+Let $v_s$ be the single vertex in $U_{i} \cap U_{j_1} \cap U_{j_3}$. Since $U_i$, $U_{j_1}$, and $U_{j_3}$ are $K_r$s in $G$ it follows that $v_s$ is adjacent to every other vertex in $U_{j_3} \cup U_{i} \cup U_{j_1}$ so
+\begin{align*}
+    \deg_{G}(v_s) &\geq |U_i \cup U_{j_1} \cup U_{j_3}| - 1\\
+    &= 3r - |U_i \cap U_{j_1}| - |U_{i} \cap U_{j_3}| - |U_{j_1} \cap U_{j_3}| + |U_i \cap U_{j_1} \cap U_{j_3}| - 1\enspace.
+\end{align*}
+Recall that since $U_i, U_{j_1}, U_{j_2}, U_{j_3}$ is a claw in ${\mathcal{K}'}_r^G$, $|U_{j_1} \cap U_{j_3}| \leq 1$. We deduced earlier in this proof that $|U_i \cap U_{j_1}| \leq (r+1)/2$, $|U_i \cap U_{j_3}| = 2$, and $|U_{j_3} \cap U_i \cap U_{j_1}| = 1$. Since $r \geq 4$ it follows that $\deg_{G}(v_s) \geq (5r-7)/2 > 2r - 2$, which contradicts the fact that $\Delta(G) \leq 2r - 2$.
+\end{proof}
+
+\begin{thm}
+\label{thm:krpacking_edkr345_polytime}
+If $r \leq 5$ and $\Delta \leq 2r - 2$ then \edkr can be solved in polynomial time.
+\end{thm}
+\begin{proof}
+Caprara and Rizzi \cite{caprara_packing_2002} prove the case when $r=3$ and $\Delta \leq 4$. If $r \in \{ 4, 5 \}$ and $\Delta(G) \leq 2r - 2$ then Lemma~\ref{lem:krpacking_edgedisjoint_r45} shows that the $K_r$-edge intersection graph ${\mathcal{K}'}_r^G$ is claw-free. It follows that a maximum edge-disjoint $K_r$-packing can be found in polynomial time by constructing ${\mathcal{K}'}_r^G$, in $O(\binom{|V|}{2r})$ time, and finding in it a maximum independent set, which can also be accomplished in time polynomial in the size of ${\mathcal{K}'}_r^G$ \cite{FOS11}.
+\end{proof}
