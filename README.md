@@ -1,8 +1,3 @@
----
-header-includes:
-  - \usepackage{mathrsfs}
----
-
 # LaTeX source code of my Ph.D. thesis
 
 My thesis is titled Algorithmic Aspects of Fixed-Size Coalition Formation, and was submitted on the 16th September 2022 and released on xxx.
@@ -20,6 +15,6 @@ Abstract:
 >
 > We also consider a variant of 3DR known as _Three-Dimensional Stable Matching with Cyclic preferences_ (3-DSM-CYC), which has been of independent interest. It was recently shown that finding a stable matching is NP-hard, so we consider a related optimisation problem and present an approximation algorithm based on serial dictatorship. We also consider a situation in which the preferences of some agents are sufficiently similar to some master list, and show that the approximation ratio of this algorithm can be improved in relation to a specific similarity measure.
 >
-> Finally, we consider a problem in graph theory that generalises the notion of assigning agents to coalitions of a fixed size. Rather than organising a set of agents, the problem is to find a maximum-cardinality set of $r$-cliques in an undirected graph subject to that set being either vertex disjoint or edge disjoint, for a fixed integer $r \geq 3$. This general problem is known as the \emph{$K_r$-packing problem}. Here we study the restriction of this problem in which the graph has a fixed maximum degree $\Delta$. It is known for $r=3$ that the vertex-disjoint (edge-disjoint) variant is solvable in linear time if $\Delta=3$ ($\Delta=4$) but APX-hard if $\Delta \geq 4$ ($\Delta \geq 5$). We generalise these results to an arbitrary but fixed $r \geq 3$, and provide a full complexity classification for both the vertex- and edge-disjoint variants in graphs of maximum degree $\Delta$, for all $r \geq 3$.
+> Finally, we consider a problem in graph theory that generalises the notion of assigning agents to coalitions of a fixed size. Rather than organising a set of agents, the problem is to find a maximum-cardinality set of $r$-cliques in an undirected graph subject to that set being either vertex disjoint or edge disjoint, for a fixed integer $r \geq 3$. This general problem is known as the $K_r$-_packing problem_. Here we study the restriction of this problem in which the graph has a fixed maximum degree $\Delta$. It is known for $r=3$ that the vertex-disjoint (edge-disjoint) variant is solvable in linear time if $\Delta=3$ ( $\Delta=4$ ) but APX-hard if $\Delta \geq 4$ ( $\Delta \geq 5$ ). We generalise these results to an arbitrary but fixed $r \geq 3$, and provide a full complexity classification for both the vertex- and edge-disjoint variants in graphs of maximum degree $\Delta$, for all $r \geq 3$.
 
 ![cover page](coverpage.png)
