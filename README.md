@@ -5,9 +5,11 @@ header-includes:
 
 # LaTeX source code of my Ph.D. thesis
 
-My thesis is titled Algorithmic Aspects of Fixed-Size Coalition Formation, and was typeset using LaTeX.
+My thesis is titled Algorithmic Aspects of Fixed-Size Coalition Formation, and was submitted on the 16th September 2022 and released on xxx.
 
-Specifically, I used pdfLaTeX and to compile it (on Overleaf, with TeX live 2022).
+It is written in LaTeX. I used pdfLaTeX and to compile it (on Overleaf, with TeX live 2022).
+
+I based it on [Stephen Strowes' template](https://github.com/sdstrowes/Glasgow-Thesis-Template), but made a few changes, including changing the maths font to newtxmath, so it matches the Times New Roman text font.
 
 Abstract:
 
