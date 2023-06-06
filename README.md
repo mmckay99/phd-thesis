@@ -1,6 +1,6 @@
 # LaTeX source code of my Ph.D. thesis
 
-My thesis is titled [Algorithmic Aspects of Fixed-Size Coalition Formation](https://theses.gla.ac.uk/83367/), and was submitted on the 16 September 2022 and released on 19 January 2023.
+[Algorithmic Aspects of Fixed-Size Coalition Formation](https://theses.gla.ac.uk/83367/) was submitted on the 16 September 2022 and released on 19 January 2023.
 
 It is written in LaTeX. I used pdfLaTeX and to compile it (on Overleaf, with TeX live 2022).
 
